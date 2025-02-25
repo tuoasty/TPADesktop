@@ -1,9 +1,9 @@
 use diesel::prelude::*;
 
 #[derive(Queryable, Selectable)]
-#[diesel(table_name = crate::schema::users)]
+#[diesel(table_name = crate::schema::staffs)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
-pub struct User {
+pub struct Staff {
     pub id : i32,
     pub name : String,
     pub password : String,
@@ -11,8 +11,8 @@ pub struct User {
 }
 
 #[derive(Insertable)]
-#[diesel(table_name = crate::schema::users)]
-pub struct NewUser {
+#[diesel(table_name = crate::schema::staffs)]
+pub struct NewStaff {
     pub name: String,
     pub password: String,
     pub admin: bool,

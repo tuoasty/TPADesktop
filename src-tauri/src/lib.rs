@@ -1,17 +1,20 @@
 use std::env;
 use std::sync::Mutex;
 use diesel::PgConnection;
-use r2d2::Pool;
+use r2d2::{Pool, PooledConnection};
 use diesel::r2d2::{self, ConnectionManager};
 use dotenvy::dotenv;
+use tauri::command;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 pub mod db;
 pub mod models;
 pub mod schema;
-type DbPool = Pool<ConnectionManager<PgConnection>>;
+pub mod seed;
 
-pub struct CurrentUser(pub Mutex<Option<(i32, String)>>);
+pub type DbPool = Pool<ConnectionManager<PgConnection>>;
+
+pub struct CurrentStaff(pub Mutex<Option<(i32, String)>>);
 fn establish_connection() -> DbPool {
     dotenv().ok();
 
@@ -21,16 +24,41 @@ fn establish_connection() -> DbPool {
     Pool::builder().max_size(10).build(manager).expect("Failed to create database")
 }
 
+pub fn get_conn(pool:&DbPool) -> Result<PooledConnection<ConnectionManager<PgConnection>>, String> {
+    pool.get().map_err(|_| "failed to get DB pool".to_string())
+}
+
+#[command]
+fn get_app_id() -> Result<String, String> {
+    let path = std::path::Path::new("./config.conf");
+    let content = match std::fs::read_to_string(path) {
+        Ok(file) => file,
+        Err(e) => return Err(format!("Error : {}", e)),
+    };
+
+    let id = content.lines().find_map(|line| {
+        if line.starts_with("AppId="){
+            Some(line.trim_start_matches("AppId=").to_string())
+        } else {
+            None
+        }
+    }).unwrap_or_else(|| "1".to_string());
+
+    Ok(id)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let pool = establish_connection();
-    let current_user = CurrentUser(Mutex::new(None));
+    let current_staff = CurrentStaff(Mutex::new(None));
+
+    seed::seed_database(&pool);
 
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .manage(pool)
-        .manage(current_user)
-        .invoke_handler(tauri::generate_handler![db::login_user, db::register_user, db::get_user])
+        .manage(current_staff)
+        .invoke_handler(tauri::generate_handler![get_app_id, db::login_staff, db::register_staff, db::get_staff])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

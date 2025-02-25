@@ -1,12 +1,11 @@
 import {Button} from "@/components/ui/button.tsx";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useAuth} from "@/auth/AuthProvider.tsx";
 
-export default function LoginPage() {
+export default function StaffLogin() {
     const {checkAuth} = useAuth();
     const [formData, setFormData] = useState({
         username:"",
@@ -22,11 +21,11 @@ export default function LoginPage() {
     async function handleLogin(event: React.FormEvent){
         event.preventDefault()
         try {
-            const result:string = await invoke("login_user", {
+            const result:string = await invoke("login_staff", {
                 username:formData.username,
                 inputPassword:formData.password
             })
-            checkAuth();
+            await checkAuth();
             setMessage(result)
             navigate("/dashboard")
         } catch {
@@ -35,23 +34,16 @@ export default function LoginPage() {
     }
 
     return (
-        <main className={"w-full h-screen flex flex-col items-center justify-center"}>
-            <form className={"w-96 h-96 flex flex-col items-center justify-center bg-cyan-800 gap-3 p-10"}
+        <main className={"w-full h-screen flex flex-col items-center justify-center bg-blue-300"}>
+            <form className={"w-96 h-96 flex flex-col items-center justify-center bg-white gap-3 p-10 rounded-2xl"}
             onSubmit={handleLogin}>
-                <h1 className={"text-white"}>Login Page</h1>
+                <h1 className={"text-black font-bold text-3xl"}>Staff Login</h1>
                 <Input type={"text"} placeholder={"Username"} name="username" value={formData.username}
                 onChange={handleInputChange}/>
                 <Input type={"password"} placeholder={"Password"} name="password" value={formData.password}
                 onChange={handleInputChange}/>
-                <div className={"flex items-center gap-2"}>
-                    <Checkbox/>
-                    <label className={"text-white"}>Accept the terms and conditions</label>
-                </div>
-                <Button className={"w-72 bg-white text-cyan-800"}>Login</Button>
-                <label className="text-white">{message}</label>
-                <Link to="/register">
-                    <label>Don't have an account? Register here</label>
-                </Link>
+                <Button className={"w-full bg-blue-500 text-white"}>Login</Button>
+                <label className="text-red-700">{message}</label>
             </form>
         </main>
     )

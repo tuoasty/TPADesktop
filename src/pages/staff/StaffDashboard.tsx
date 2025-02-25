@@ -1,6 +1,6 @@
 import {useAuth} from "@/auth/AuthProvider.tsx";
 
-export default function Dashboard(){
+export default function StaffDashboard(){
 
     const { username } = useAuth();
 

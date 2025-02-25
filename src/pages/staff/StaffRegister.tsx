@@ -5,7 +5,7 @@ import {useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
 import {Link} from "react-router-dom";
 
-export default function RegisterPage(){
+export default function StaffRegister(){
     const [formData, setFormData] = useState({
         username:"",
         password:"",
@@ -24,7 +24,7 @@ export default function RegisterPage(){
     async function handleRegister(e: React.FormEvent){
         e.preventDefault();
 
-        const result : string = await invoke("register_user", {
+        const result : string = await invoke("register_staff", {
             username:formData.username,
             inputPassword:formData.password,
             role:formData.admin

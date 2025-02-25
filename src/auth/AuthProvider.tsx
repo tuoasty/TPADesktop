@@ -5,14 +5,14 @@ import {Navigate, useNavigate} from "react-router-dom";
 const AuthContext = createContext<AuthContextType | null>(null)
 
 type AuthContextType = {
-    userId:number | null;
+    staffId:number | null;
     username: string | null;
     isAuthenticated: boolean;
     logout: () => Promise<void>;
     checkAuth: () => Promise<void>;
 }
 export const AuthProvider = ({children} : {children:React.ReactNode}) => {
-    const [userId, setUserId] = useState<number | null>(null);
+    const [staffId, setStaffId] = useState<number | null>(null);
     const [username, setUsername] = useState<string | null>(null);
     const navigate = useNavigate();
 
@@ -22,21 +22,21 @@ export const AuthProvider = ({children} : {children:React.ReactNode}) => {
 
     const checkAuth = async () => {
         try {
-            const result = await invoke<[number, string]>("get_user");
+            const result = await invoke<[number, string]>("get_staff");
             if(result){
-                setUserId(result[0])
+                setStaffId(result[0])
                 setUsername(result[1])
             }
         } catch {
             setUsername(null)
-            setUserId(null)
+            setStaffId(null)
         }
     }
 
     const logout = async () => {
         try {
             await invoke("logout");
-            setUserId(null);
+            setStaffId(null);
             setUsername(null);
             navigate("/login")
         } catch {
@@ -45,9 +45,9 @@ export const AuthProvider = ({children} : {children:React.ReactNode}) => {
     }
 
     const value:AuthContextType = {
-        userId,
+        staffId,
         username,
-        isAuthenticated: userId != null,
+        isAuthenticated: staffId != null,
         logout,
         checkAuth
     };
