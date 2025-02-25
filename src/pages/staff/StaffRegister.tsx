@@ -1,5 +1,4 @@
 import {Input} from "@/components/ui/input.tsx";
-import {Checkbox} from "@/components/ui/checkbox.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
@@ -9,16 +8,12 @@ export default function StaffRegister(){
     const [formData, setFormData] = useState({
         username:"",
         password:"",
-        admin:false
+        role:"",
     })
 
     const [responseMessage, setResponseMessage] = useState("");
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
         setFormData({...formData, [e.target.name]: e.target.value});
-    }
-
-    function handleCheckbox(checked:boolean){
-        setFormData({...formData, admin:checked});
     }
 
     async function handleRegister(e: React.FormEvent){
@@ -27,7 +22,7 @@ export default function StaffRegister(){
         const result : string = await invoke("register_staff", {
             username:formData.username,
             inputPassword:formData.password,
-            role:formData.admin
+            role:formData.role
         })
 
         setResponseMessage(result);
@@ -40,12 +35,10 @@ export default function StaffRegister(){
                 <label className="text-3xl font-bold">Register</label>
                 <Input type="text" placeholder="Username" name="username" value={formData.username}
                        onChange={handleInputChange}/>
-                <Input type="password" placeholder="password" name="password" value={formData.password}
+                <Input type="password" placeholder="Password" name="password" value={formData.password}
                        onChange={handleInputChange}/>
-                <section className="flex gap-5 items-center">
-                    <Checkbox name="admin" checked={formData.admin} onCheckedChange={handleCheckbox}/>
-                    <label>Register as Admin?</label>
-                </section>
+                <Input type="text" placeholder="Role" name="role" value={formData.role}
+                       onChange={handleInputChange}/>
                 <Link to="/login">
                     <label>Have an account? Login</label>
                 </Link>

@@ -15,7 +15,7 @@ pub fn seed_database(pool: &DbPool) {
         let coo = NewStaff {
             name:"COO".to_string(),
             password:coo_password,
-            admin:true,
+            role:"COO".to_string()
         };
 
         diesel::insert_into(staffs)

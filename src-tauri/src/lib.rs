@@ -14,7 +14,7 @@ pub mod seed;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 
-pub struct CurrentStaff(pub Mutex<Option<(i32, String)>>);
+pub struct CurrentStaff(pub Mutex<Option<(i32, String, String)>>);
 fn establish_connection() -> DbPool {
     dotenv().ok();
 

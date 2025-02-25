@@ -5,6 +5,6 @@ diesel::table! {
         id -> Int4,
         name -> Varchar,
         password -> Varchar,
-        admin -> Bool,
+        role -> Varchar,
     }
 }

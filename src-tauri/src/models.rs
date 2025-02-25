@@ -7,7 +7,7 @@ pub struct Staff {
     pub id : i32,
     pub name : String,
     pub password : String,
-    pub admin : bool
+    pub role : String
 }
 
 #[derive(Insertable)]
@@ -15,5 +15,5 @@ pub struct Staff {
 pub struct NewStaff {
     pub name: String,
     pub password: String,
-    pub admin: bool,
+    pub role: String,
 }

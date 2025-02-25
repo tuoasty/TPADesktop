@@ -6,7 +6,7 @@ use crate::models::{NewStaff, Staff};
 use crate::schema::staffs::dsl::*;
 
 #[command]
-pub fn register_staff(state: State<DbPool>, username:String, input_password:String, role:bool) -> Result<String, String>{
+pub fn register_staff(state: State<DbPool>, username:String, input_password:String, user_role:String) -> Result<String, String>{
    use crate::schema::staffs::dsl::*;
    let conn = &mut get_conn(&state)?;
    let hashed_password = hash(input_password, DEFAULT_COST).map_err(|_| "failed to hash".to_string())?;
@@ -14,7 +14,7 @@ pub fn register_staff(state: State<DbPool>, username:String, input_password:Stri
    let new_staff = NewStaff {
       name: username,
       password: hashed_password,
-      admin:role,
+      role:user_role,
    };
 
    diesel::insert_into(staffs)
@@ -26,7 +26,7 @@ pub fn register_staff(state: State<DbPool>, username:String, input_password:Stri
 }
 
 #[command]
-pub fn get_staff(current_staff: State<CurrentStaff>) -> Result<Option<(i32, String)>, String>{
+pub fn get_staff(current_staff: State<CurrentStaff>) -> Result<Option<(i32, String, String)>, String>{
    let staff = current_staff.0.lock().expect("Current staff access error").clone();
    Ok(staff)
 }
@@ -41,7 +41,7 @@ pub fn login_staff(state: State<DbPool>, current_staff:State<CurrentStaff>, user
        .map_err(|e| e.to_string())?;
 
    if verify(input_password, &staff.password).map_err(|_| "Error verifying password".to_string())?{
-      *current_staff.0.lock().unwrap() = Some((staff.id, staff.name.clone()));
+      *current_staff.0.lock().unwrap() = Some((staff.id, staff.name.clone(), staff.role.clone()));
       Ok(format!("Welcome {}", &staff.name))
    } else {
       Err("Incorrect credentials".to_string())

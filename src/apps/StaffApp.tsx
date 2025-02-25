@@ -1,5 +1,5 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {AuthProvider, ProtectedRoute} from "@/auth/AuthProvider.tsx";
+import {StaffAuthProvider, ProtectedRoute} from "@/auth/StaffAuthProvider.tsx";
 import StaffLogin from "@/pages/staff/StaffLogin.tsx";
 import StaffRegister from "@/pages/staff/StaffRegister.tsx";
 import StaffDashboard from "@/pages/staff/StaffDashboard.tsx";
@@ -7,7 +7,7 @@ import StaffDashboard from "@/pages/staff/StaffDashboard.tsx";
 export default function StaffApp(){
     return (
         <BrowserRouter>
-            <AuthProvider>
+            <StaffAuthProvider>
                 <Routes>
                     <Route path="/login" element={<StaffLogin/>} />
                     <Route path="/register" element={<StaffRegister/>}/>
@@ -17,7 +17,7 @@ export default function StaffApp(){
                         </ProtectedRoute>
                     }/>
                 </Routes>
-            </AuthProvider>
+            </StaffAuthProvider>
         </BrowserRouter>
     )
 }

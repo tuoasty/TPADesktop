@@ -2,18 +2,20 @@ import {createContext, useContext, useEffect, useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
 import {Navigate, useNavigate} from "react-router-dom";
 
-const AuthContext = createContext<AuthContextType | null>(null)
+const StaffAuthContext = createContext<StaffAuthContextType | null>(null)
 
-type AuthContextType = {
+type StaffAuthContextType = {
     staffId:number | null;
     username: string | null;
+    role: string | null;
     isAuthenticated: boolean;
     logout: () => Promise<void>;
     checkAuth: () => Promise<void>;
 }
-export const AuthProvider = ({children} : {children:React.ReactNode}) => {
+export const StaffAuthProvider = ({children} : {children:React.ReactNode}) => {
     const [staffId, setStaffId] = useState<number | null>(null);
     const [username, setUsername] = useState<string | null>(null);
+    const [role, setRole] = useState<string | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,14 +24,16 @@ export const AuthProvider = ({children} : {children:React.ReactNode}) => {
 
     const checkAuth = async () => {
         try {
-            const result = await invoke<[number, string]>("get_staff");
+            const result = await invoke<[number, string, string]>("get_staff");
             if(result){
                 setStaffId(result[0])
                 setUsername(result[1])
+                setRole(result[2])
             }
         } catch {
             setUsername(null)
             setStaffId(null)
+            setRole(null)
         }
     }
 
@@ -44,23 +48,24 @@ export const AuthProvider = ({children} : {children:React.ReactNode}) => {
         }
     }
 
-    const value:AuthContextType = {
+    const value:StaffAuthContextType = {
         staffId,
         username,
+        role,
         isAuthenticated: staffId != null,
         logout,
         checkAuth
     };
 
     return (
-        <AuthContext.Provider value={value}>
+        <StaffAuthContext.Provider value={value}>
             {children}
-        </AuthContext.Provider>
+        </StaffAuthContext.Provider>
     )
 }
 
 export const useAuth = () => {
-    const context = useContext(AuthContext);
+    const context = useContext(StaffAuthContext);
     if(!context){
         throw new Error("error using context");
     }
