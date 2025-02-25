@@ -29,7 +29,7 @@ export default function StaffRegister(){
     }
 
     return (
-        <main className="h-screen w-screen flex justify-center items-center">
+        <main className="h-full w-full flex justify-center items-center">
             <form className="bg-gray-400 w-[30%] h-[75%] flex flex-col justify-center items-center p-5 gap-5"
             onSubmit={handleRegister}>
                 <label className="text-3xl font-bold">Register</label>

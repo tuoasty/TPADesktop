@@ -1,11 +1,9 @@
 import {useEffect, useState} from "react";
-import CustomerApp from "@/apps/CustomerApp.tsx";
+import CustomerApp from "@/apps/customer/CustomerApp.tsx";
 import {invoke} from "@tauri-apps/api/core";
-import "./main.css";
 import StaffApp from "@/apps/StaffApp.tsx";
-
 export default function App(){
-    const [appId, setAppId] = useState<string>("1");
+    const [appId, setAppId] = useState<string>("customer");
 
     useEffect(() => {
         const fetchAppId = async ()=> {
@@ -13,13 +11,13 @@ export default function App(){
                 const id:string = await invoke("get_app_id");
                 setAppId(id);
             } catch {
-                setAppId("2");
-
-                // 1 = Customer
-                // 2 = Staff
-                // 3 = Ride
-                // 4 = Restaurant
-                // 5 = Store
+                let debugId = "2";
+                setAppId(debugId);
+                // 1 = customer
+                // 2 = staff
+                // 3 = ride
+                // 4 = restaurant
+                // 5 = store
             }
         }
 
@@ -27,9 +25,9 @@ export default function App(){
     }, []);
 
     switch(appId){
-        case `1`:
+        case "1":
             return <CustomerApp/>
-        case `2`:
+        case "2":
             return <StaffApp/>
         default:
             return <CustomerApp/>

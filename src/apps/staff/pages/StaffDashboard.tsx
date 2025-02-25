@@ -1,4 +1,4 @@
-import {useAuth} from "@/auth/StaffAuthProvider.tsx";
+import {useAuth} from "@/context/StaffAuthProvider.tsx";
 
 export default function StaffDashboard(){
 

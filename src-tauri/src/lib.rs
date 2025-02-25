@@ -42,8 +42,8 @@ fn get_app_id() -> Result<String, String> {
         } else {
             None
         }
-    }).unwrap_or_else(|| "1".to_string());
-
+    }).unwrap_or_else(|| "customer".to_string());
+    eprintln!("{}", id);
     Ok(id)
 }
 
