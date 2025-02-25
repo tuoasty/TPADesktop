@@ -3,10 +3,10 @@ import {Input} from "@/components/ui/input.tsx";
 import {useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
 import {useNavigate} from "react-router-dom";
-import {useAuth} from "@/context/StaffAuthProvider.tsx";
+import {useStaffAuth} from "@/context/StaffAuthProvider.tsx";
 
 export default function StaffLogin() {
-    const {checkAuth} = useAuth();
+    const {checkAuth} = useStaffAuth();
     const [formData, setFormData] = useState({
         username:"",
         password:"",

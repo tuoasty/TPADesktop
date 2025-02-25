@@ -7,10 +7,10 @@ use dotenvy::dotenv;
 use tauri::command;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-pub mod db;
 pub mod models;
 pub mod schema;
 pub mod seed;
+mod handlers;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 
@@ -58,7 +58,8 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .manage(pool)
         .manage(current_staff)
-        .invoke_handler(tauri::generate_handler![get_app_id, db::login_staff, db::register_staff, db::get_staff])
+        .invoke_handler(tauri::generate_handler![get_app_id])
+        .invoke_handler(all_commands!())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -4,7 +4,7 @@ import {useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
 import {Link} from "react-router-dom";
 
-export default function StaffRegister(){
+export default function CreateStaffAccount(){
     const [formData, setFormData] = useState({
         username:"",
         password:"",
@@ -22,7 +22,7 @@ export default function StaffRegister(){
         const result : string = await invoke("register_staff", {
             username:formData.username,
             inputPassword:formData.password,
-            role:formData.role
+            userRole:formData.role
         })
 
         setResponseMessage(result);

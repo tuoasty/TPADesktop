@@ -1,8 +1,8 @@
-import {useAuth} from "@/context/StaffAuthProvider.tsx";
+import {useStaffAuth} from "@/context/StaffAuthProvider.tsx";
 
 export default function StaffDashboard(){
 
-    const { username, role } = useAuth();
+    const { username, role } = useStaffAuth();
 
     return (
         <main>
