@@ -13,7 +13,7 @@ export default function StaffApp() {
             <BrowserRouter>
                 <StaffAuthProvider>
                     <StaffNavbar/>
-                    <div className="pt-20 h-screen w-screen">
+                    <div className="pt-20 h-screen flex flex-col w-full overflow-auto">
                         <Routes>
                             <Route path="*" element={<Navigate to="/staff/login" replace />} />
                             <Route path="/staff">

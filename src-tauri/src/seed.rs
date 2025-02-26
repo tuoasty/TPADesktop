@@ -4,7 +4,7 @@ use bcrypt::{hash, DEFAULT_COST};
 use chrono::NaiveTime;
 use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
-use crate::{DbConnection, DbPool};
+use crate::{DbConnect, DbPool};
 use crate::models::{NewImage, NewRestaurant, NewStaff};
 
 pub fn seed_database(pool: &DbPool) {
@@ -90,13 +90,21 @@ pub fn seed_database(pool: &DbPool) {
             },
         ];
 
+
         let seed_restaurants = vec![
             NewRestaurant {
-                name: "Burger King".to_string(),
-                image_id: seed_image(conn, "images/seed/img.png").unwrap(),
+                name: "Kemuning".to_string(),
+                image_id: seed_image(conn, "images/seed/kemuning.png").unwrap(),
+                open_time: NaiveTime::from_hms(9,0,0),
+                close_time:NaiveTime::from_hms(18,0,0),
+                cuisine: "Warteg".to_string()
+            },
+            NewRestaurant {
+                name: "Gyukaku".to_string(),
+                image_id: seed_image(conn, "images/seed/gyukaku.png").unwrap(),
                 open_time: NaiveTime::from_hms(8,0,0),
                 close_time:NaiveTime::from_hms(23,0,0),
-                cuisine: "Western".to_string()
+                cuisine: "Japanese".to_string()
             }
         ];
 
@@ -112,7 +120,7 @@ pub fn seed_database(pool: &DbPool) {
     }
 }
 
-pub fn seed_image(conn: &mut DbConnection, file_path: &str) -> Result<i32, String> {
+pub fn seed_image(conn: &mut DbConnect, file_path: &str) -> Result<i32, String> {
     let path = Path::new(file_path);
     let image_data = fs::read(&path).map_err(|e| e.to_string())?;
 
@@ -131,7 +139,7 @@ pub fn seed_image(conn: &mut DbConnection, file_path: &str) -> Result<i32, Strin
     create_image(conn, image_data, mime_type, filename)
 }
 
-pub fn create_image(conn: &mut DbConnection, image:Vec<u8>, mime:String, name: String) -> Result<i32, String> {
+pub fn create_image(conn: &mut DbConnect, image:Vec<u8>, mime:String, name: String) -> Result<i32, String> {
     use crate::schema::images::dsl::*;
 
     let new_image = NewImage {

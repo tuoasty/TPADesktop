@@ -1,5 +1,6 @@
 use diesel::prelude::*;
 use chrono::NaiveTime;
+use serde::Serialize;
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::staffs)]
@@ -69,4 +70,14 @@ pub struct Menu {
     pub image_id: i32,
     pub name: String,
     pub price: i32,
+}
+
+#[derive(Serialize)]
+pub struct RestaurantDetail {
+    pub id: i32,
+    pub name: String,
+    pub open_time: String,
+    pub close_time: String,
+    pub cuisine: String,
+    pub image_data: String,
 }

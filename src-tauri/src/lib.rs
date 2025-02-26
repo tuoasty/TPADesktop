@@ -14,7 +14,7 @@ mod handler;
 mod model;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
-pub type DbConnection = r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;
+pub type DbConnect = r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;
 
 pub struct CurrentStaff(pub Mutex<Option<(i32, String, String)>>);
 fn establish_connection() -> DbPool {

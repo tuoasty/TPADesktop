@@ -1,11 +1,11 @@
-use crate::{DbConnection};
+use crate::{DbConnect};
 use crate::models::Staff;
 use crate::schema::staffs::dsl::staffs;
 use crate::schema::staffs::name;
 use diesel::prelude::*;
 
 impl Staff {
-    pub fn get_staff(conn: &mut DbConnection, username:&str) -> Result<Self, String> {
+    pub fn get_staff(conn: &mut DbConnect, username:&str) -> Result<Self, String> {
         staffs
             .filter(name.eq(&username))
             .first(conn)
