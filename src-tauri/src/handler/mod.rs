@@ -1,4 +1,5 @@
 pub mod staff_handler;
+pub mod image_handler;
 
 #[macro_export]
 macro_rules! all_handlers {

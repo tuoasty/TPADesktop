@@ -1,10 +1,16 @@
+use std::path::Path;
+use std::fs;
 use bcrypt::{hash, DEFAULT_COST};
+use chrono::NaiveTime;
 use diesel::{QueryDsl, RunQueryDsl};
+use mime_guess::from_path;
 use crate::{DbPool};
-use crate::models::NewStaff;
+use crate::models::{NewImage, NewRestaurant, NewStaff};
 
+type DbConnection = diesel::r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;
 pub fn seed_database(pool: &DbPool) {
     use crate::schema::staffs::dsl::*;
+    use crate::schema::restaurants::dsl::*;
     let conn = &mut pool.get().unwrap();
 
     let staff_count: i64 = staffs.count().get_result(conn).unwrap();
@@ -85,9 +91,60 @@ pub fn seed_database(pool: &DbPool) {
             },
         ];
 
+        let seed_restaurants = vec![
+            NewRestaurant {
+                name: "Burger King".to_string(),
+                image_id: seed_image(conn, "src/images/seed/img.png").unwrap(),
+                open_time: NaiveTime::from_hms(8,0,0),
+                close_time:NaiveTime::from_hms(23,0,0),
+                cuisine: "Western".to_string()
+            }
+        ];
+
         diesel::insert_into(staffs)
             .values(&staff_members)
             .execute(conn)
             .map_err(|e| e.to_string()).unwrap();
+
+        diesel::insert_into(restaurants)
+            .values(&seed_restaurants)
+            .execute(conn)
+            .map_err(|e| e.to_string()).unwrap();
     }
 }
+
+pub fn seed_image(conn: &mut DbConnection, file_path: &str) -> Result<i32, String> {
+    let path = Path::new(file_path);
+    let image_data = fs::read(&path).map_err(|e| e.to_string())?;
+
+
+    let mime_type = from_path(&path)
+        .first()
+        .map(|m| m.to_string())
+        .unwrap_or_else(|| "application/octet-stream".to_string());
+
+    let filename = path
+        .file_name()
+        .and_then(|name| name.to_str())
+        .ok_or("Invalid filename".to_string())?
+        .to_string();
+
+    create_image(conn, image_data, mime_type, filename)
+}
+
+pub fn create_image(conn: &mut DbConnection, image:Vec<u8>, mime:String, name: String) -> Result<i32, String> {
+    use crate::schema::images::dsl::*;
+
+    let new_image = NewImage {
+        image_data:image,
+        mime_type:mime,
+        filename:name,
+    };
+
+    diesel::insert_into(images)
+        .values(&new_image)
+        .returning(id)
+        .get_result(conn)
+        .map_err(|e| e.to_string())
+}
+
