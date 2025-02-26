@@ -4,6 +4,7 @@ import {useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
 import {useNavigate} from "react-router-dom";
 import {useStaffAuth} from "@/context/StaffAuthProvider.tsx";
+import {toast} from "sonner";
 
 export default function StaffLogin() {
     const {checkAuth} = useStaffAuth();
@@ -11,7 +12,6 @@ export default function StaffLogin() {
         username:"",
         password:"",
     })
-    const [message, setMessage] = useState("")
     const navigate = useNavigate()
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
@@ -21,15 +21,15 @@ export default function StaffLogin() {
     async function handleLogin(event: React.FormEvent){
         event.preventDefault()
         try {
-            const result:string = await invoke("login_staff", {
+            await invoke("login_staff", {
                 username:formData.username,
                 inputPassword:formData.password
             })
             await checkAuth();
-            setMessage(result)
+            toast.success("Successfull login!")
             navigate("/dashboard")
         } catch {
-            setMessage("Incorrect credentials")
+            toast.error("Incorrect Credentials")
         }
     }
 
@@ -43,7 +43,6 @@ export default function StaffLogin() {
                 <Input type={"password"} placeholder={"Password"} name="password" value={formData.password}
                 onChange={handleInputChange}/>
                 <Button className={"w-full bg-purple-500 text-white"}>Login</Button>
-                <label className="text-red-700">{message}</label>
             </form>
         </main>
     )

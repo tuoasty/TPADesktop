@@ -2,6 +2,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
+import {toast} from "sonner";
 
 export default function CreateStaffAccount(){
     const [formData, setFormData] = useState({
@@ -9,8 +10,6 @@ export default function CreateStaffAccount(){
         password:"",
         role:"",
     })
-
-    const [responseMessage, setResponseMessage] = useState("");
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement>){
         setFormData({...formData, [e.target.name]: e.target.value});
     }
@@ -18,13 +17,13 @@ export default function CreateStaffAccount(){
     async function handleRegister(e: React.FormEvent){
         e.preventDefault();
 
-        const result : string = await invoke("register_staff", {
+        await invoke("register_staff", {
             username:formData.username,
             inputPassword:formData.password,
             userRole:formData.role
         })
 
-        setResponseMessage(result);
+        toast("Successfully created account");
     }
 
     return (
@@ -39,7 +38,6 @@ export default function CreateStaffAccount(){
                 <Input type="text" placeholder="Role" name="role" value={formData.role}
                        onChange={handleInputChange}/>
                 <Button className="w-full bg-purple-500 text-white bold ">Register</Button>
-                <label>{responseMessage}</label>
             </form>
         </main>
     )

@@ -1,9 +1,10 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {StaffAuthProvider, ProtectedRoute} from "@/context/StaffAuthProvider.tsx";
 import StaffLogin from "@/apps/staff/pages/StaffLogin.tsx";
 import CreateStaffAccount from "@/apps/staff/pages/CreateStaffAccount.tsx";
 import StaffDashboard from "@/apps/staff/pages/StaffDashboard.tsx";
 import StaffNavbar from "@/apps/staff/components/navbar/StaffNavbar.tsx";
+import {Toaster} from "@/components/ui/sonner.tsx";
 
 export default function StaffApp() {
     return (
@@ -12,7 +13,8 @@ export default function StaffApp() {
                     <StaffNavbar/>
                     <div className="pt-20 h-screen w-screen">
                         <Routes>
-                            <Route path="/staff">
+                            <Route path="*" element={<Navigate to="/staff/login" replace />} />
+                            <Route path="/staff/">
                                 <Route path="login" element={<StaffLogin/>}/>
                                 <Route path="create-account" element={
                                     <ProtectedRoute allowedRoles={["COO"]}>
@@ -28,6 +30,7 @@ export default function StaffApp() {
                         </Routes>
                     </div>
                 </StaffAuthProvider>
+                <Toaster/>
             </BrowserRouter>
     )
 }

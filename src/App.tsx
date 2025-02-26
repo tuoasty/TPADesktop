@@ -4,7 +4,6 @@ import {invoke} from "@tauri-apps/api/core";
 import StaffApp from "@/apps/StaffApp.tsx";
 export default function App(){
     const [appId, setAppId] = useState<string>("customer");
-
     useEffect(() => {
         const fetchAppId = async ()=> {
             try {
