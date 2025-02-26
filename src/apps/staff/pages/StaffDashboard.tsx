@@ -5,9 +5,9 @@ export default function StaffDashboard(){
     const { username, role } = useStaffAuth();
 
     return (
-        <main>
-            <h1>Name : {username}</h1>
-            <h1>Role : {role}</h1>
+        <main className="bg-purple-700 h-full w-full flex flex-col place-items-center justify-center">
+            <h1 className="text-white font-bold text-3xl">Welcome {username}!</h1>
+            <h1 className="text-white font-bold text-3xl">{role}</h1>
         </main>
     )
 }

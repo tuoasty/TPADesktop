@@ -10,7 +10,8 @@ use tauri::command;
 pub mod models;
 pub mod schema;
 pub mod seed;
-mod handlers;
+mod handler;
+mod model;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 
@@ -59,7 +60,8 @@ pub fn run() {
         .manage(pool)
         .manage(current_staff)
         .invoke_handler(tauri::generate_handler![get_app_id])
-        .invoke_handler(all_commands!())
+        .invoke_handler(all_handlers!())
+        .invoke_handler(all_models!())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

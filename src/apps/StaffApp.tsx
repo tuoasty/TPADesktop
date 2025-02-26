@@ -1,10 +1,11 @@
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {StaffAuthProvider, ProtectedRoute} from "@/context/StaffAuthProvider.tsx";
 import StaffLogin from "@/apps/staff/pages/StaffLogin.tsx";
-import CreateStaffAccount from "@/apps/staff/pages/CreateStaffAccount.tsx";
+import CreateStaffAccount from "@/apps/staff/pages/coo/CreateStaffAccount.tsx";
 import StaffDashboard from "@/apps/staff/pages/StaffDashboard.tsx";
 import StaffNavbar from "@/apps/staff/components/navbar/StaffNavbar.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
+import AddNewMenu from "@/apps/staff/pages/fbsupervisor/AddNewMenu.tsx";
 
 export default function StaffApp() {
     return (
@@ -14,18 +15,11 @@ export default function StaffApp() {
                     <div className="pt-20 h-screen w-screen">
                         <Routes>
                             <Route path="*" element={<Navigate to="/staff/login" replace />} />
-                            <Route path="/staff/">
+                            <Route path="/staff">
                                 <Route path="login" element={<StaffLogin/>}/>
-                                <Route path="create-account" element={
-                                    <ProtectedRoute allowedRoles={["COO"]}>
-                                        <CreateStaffAccount/>
-                                    </ProtectedRoute>
-                                }/>
-                                <Route path="/staff/" element={
-                                    <ProtectedRoute>
-                                        <StaffDashboard/>
-                                    </ProtectedRoute>
-                                }/>
+                                <Route path="create-account" element={<ProtectedRoute allowedRoles={["COO"]}><CreateStaffAccount/></ProtectedRoute>}/>
+                                <Route path="add-new-menu" element={<ProtectedRoute allowedRoles={["F&B Supervisor"]}><AddNewMenu/></ProtectedRoute>}/>
+                                <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>
                         </Routes>
                     </div>

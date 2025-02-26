@@ -8,6 +8,7 @@ export default function StaffNavbar(){
 
     const navItems = [
         {text:"Create Staff Account", key:1, to:"/staff/create-account", roles: ["COO"]},
+        {text:"Add New Menu", key:2, to:"/staff/add-new-menu", roles: ["F&B Supervisor"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {
