@@ -14,7 +14,7 @@ export default function CreateStaffAccount(){
         setFormData({...formData, [e.target.name]: e.target.value});
     }
 
-    async function handleRegister(e: React.FormEvent){
+    async function createStaff(e: React.FormEvent){
         e.preventDefault();
 
         await invoke("register_staff", {
@@ -29,7 +29,7 @@ export default function CreateStaffAccount(){
     return (
         <main className="h-full w-full bg-purple-200 flex justify-center items-center">
             <form className="bg-white w-[30%] h-[75%] flex flex-col justify-center items-center p-5 gap-5 rounded-2xl"
-            onSubmit={handleRegister}>
+            onSubmit={createStaff}>
                 <label className="text-3xl font-bold">Create Staff Account</label>
                 <Input type="text" placeholder="Username" name="username" value={formData.username}
                        onChange={handleInputChange}/>

@@ -27,7 +27,7 @@ export default function StaffLogin() {
             })
             await checkAuth();
             toast.success("Successfull login!")
-            navigate("/dashboard")
+            navigate("/staff/")
         } catch {
             toast.error("Incorrect Credentials")
         }

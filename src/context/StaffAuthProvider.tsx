@@ -43,6 +43,7 @@ export const StaffAuthProvider = ({children} : {children:React.ReactNode}) => {
             await invoke("logout_staff");
             setStaffId(null);
             setUsername(null);
+            setRole(null);
             navigate("/login")
         } catch {
             console.error("logout failed");
@@ -76,16 +77,16 @@ export const useStaffAuth = () => {
 export const ProtectedRoute = ({children, allowedRoles = []}:{children:React.ReactNode, allowedRoles?:string[]}) => {
     const {isAuthenticated, role} = useStaffAuth();
 
-    // Add ! to isAuthenticated and to hasRole to enable middleware
+    // remove && false to enable middlware
 
-    if(isAuthenticated){
+    if(!isAuthenticated && false){
         return <Navigate to="/login" replace/>
     }
 
     if(allowedRoles && allowedRoles.length > 0){
         const hasRole = allowedRoles.includes(role as string);
 
-        if(hasRole){
+        if(!hasRole && false){
             return <NotAuthorized/>
         }
     }

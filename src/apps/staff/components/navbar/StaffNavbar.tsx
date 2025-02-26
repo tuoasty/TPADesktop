@@ -1,12 +1,13 @@
 import {StaffNavButton} from "@/apps/staff/components/navbar/StaffNavButton.tsx";
 import {useStaffAuth} from "@/context/StaffAuthProvider.tsx";
-import {StaffLogout} from "@/apps/staff/components/navbar/StaffLogout.tsx";
+import {StaffLogoutMenu} from "@/apps/staff/components/navbar/StaffLogoutMenu.tsx";
+import {StaffDashboardMenu} from "@/apps/staff/components/navbar/StaffDashboardMenu.tsx";
 
 export default function StaffNavbar(){
     const {role, isAuthenticated} = useStaffAuth();
 
     const navItems = [
-        {text:"Create Staff Account", to:"/staff/create-account", roles: ["COO"]},
+        {text:"Create Staff Account", key:1, to:"/staff/create-account", roles: ["COO"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {
@@ -17,21 +18,20 @@ export default function StaffNavbar(){
 
     return (
         <main className="fixed bg-purple-500 w-full h-20 top-0 flex flex-row">
-            <div className="pl-8 pr-8 justify-center items-center flex">
-                <h1 className="text-white text-center place-items-center font-bold text-xl">{isAuthenticated ? role : "Hello"}</h1>
-            </div>
+            <StaffDashboardMenu/>
             {!isAuthenticated ? (
                 <StaffNavButton text="Login" to="/staff/login"/>
             ) : (
-                <StaffLogout/>
+                <StaffLogoutMenu/>
             )}
 
-            {/*Remove negation from showNavItem and isAuthenticated to enable middleware*/}
-            {!isAuthenticated && (
+            {/*Remove || true to enable middleware*/}
+
+            {isAuthenticated || true && (
                 <div className="flex flex-row">
                     {navItems.map((item) => (
-                        !showNavItem(item.roles) && (
-                            <StaffNavButton text={item.text} to={item.to}/>
+                        showNavItem(item.roles) || true && (
+                            <StaffNavButton key={item.key} text={item.text} to={item.to}/>
                         )
                     ))}
                 </div>

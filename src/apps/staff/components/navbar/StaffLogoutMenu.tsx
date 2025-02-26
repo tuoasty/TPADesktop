@@ -1,6 +1,6 @@
 import {useStaffAuth} from "@/context/StaffAuthProvider.tsx";
 
-export const StaffLogout= () => {
+export const StaffLogoutMenu= () => {
     const {logout} = useStaffAuth()
 
     return (

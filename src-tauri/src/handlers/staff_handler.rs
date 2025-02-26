@@ -9,14 +9,14 @@ pub fn register_staff(state: State<DbPool>, username:String, input_password:Stri
    let conn = &mut get_conn(&state)?;
    let hashed_password = hash(input_password, DEFAULT_COST).map_err(|_| "failed to hash".to_string())?;
 
-   let new_staff = NewStaff {
+   let staff = NewStaff {
       name: username,
       password: hashed_password,
       role:user_role,
    };
 
    diesel::insert_into(staffs)
-       .values(&new_staff)
+       .values(&staff)
        .execute(conn)
        .map_err(|e| e.to_string())?;
 

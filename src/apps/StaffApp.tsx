@@ -21,7 +21,7 @@ export default function StaffApp() {
                                         <CreateStaffAccount/>
                                     </ProtectedRoute>
                                 }/>
-                                <Route path="*" element={
+                                <Route path="/staff/" element={
                                     <ProtectedRoute>
                                         <StaffDashboard/>
                                     </ProtectedRoute>
