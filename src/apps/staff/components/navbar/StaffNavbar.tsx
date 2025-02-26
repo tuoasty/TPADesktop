@@ -9,12 +9,14 @@ export default function StaffNavbar(){
     const navItems = [
         {text:"Create Staff Account", key:1, to:"/staff/create-account", roles: ["COO"]},
         {text:"Add New Menu", key:2, to:"/staff/add-new-menu", roles: ["F&B Supervisor"]},
+        {text:"View All Restaurant", key:3, to:"/staff/view-all-restaurant", roles: ["F&B Supervisor"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {
-        if (!isAuthenticated) return false;
-        if (allowedRoles.length === 0) return true;
-        return allowedRoles.includes(role as string);
+        // if (!isAuthenticated) return false;
+        // if (allowedRoles.length === 0) return true;
+        // return allowedRoles.includes(role as string);
+        return true;
     }
 
     return (
@@ -26,17 +28,17 @@ export default function StaffNavbar(){
                 <StaffLogoutMenu/>
             )}
 
-            {/*Remove || true to enable middleware*/}
+            {/*Uncommented isAuthenticated, and uncomment the showNavItem function*/}
 
-            {isAuthenticated || true && (
+            {/*{isAuthenticated && (*/}
                 <div className="flex flex-row">
                     {navItems.map((item) => (
-                        showNavItem(item.roles) || true && (
+                        showNavItem(item.roles) && (
                             <StaffNavButton key={item.key} text={item.text} to={item.to}/>
                         )
                     ))}
                 </div>
-            )}
+             {/*)}*/}
         </main>
     )
 }

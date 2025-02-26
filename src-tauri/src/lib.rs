@@ -14,6 +14,7 @@ mod handler;
 mod model;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
+pub type DbConnection = r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;
 
 pub struct CurrentStaff(pub Mutex<Option<(i32, String, String)>>);
 fn establish_connection() -> DbPool {
@@ -61,7 +62,6 @@ pub fn run() {
         .manage(current_staff)
         .invoke_handler(tauri::generate_handler![get_app_id])
         .invoke_handler(all_handlers!())
-        .invoke_handler(all_models!())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

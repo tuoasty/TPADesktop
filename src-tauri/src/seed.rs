@@ -4,10 +4,9 @@ use bcrypt::{hash, DEFAULT_COST};
 use chrono::NaiveTime;
 use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
-use crate::{DbPool};
+use crate::{DbConnection, DbPool};
 use crate::models::{NewImage, NewRestaurant, NewStaff};
 
-type DbConnection = diesel::r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;
 pub fn seed_database(pool: &DbPool) {
     use crate::schema::staffs::dsl::*;
     use crate::schema::restaurants::dsl::*;
@@ -94,7 +93,7 @@ pub fn seed_database(pool: &DbPool) {
         let seed_restaurants = vec![
             NewRestaurant {
                 name: "Burger King".to_string(),
-                image_id: seed_image(conn, "src/images/seed/img.png").unwrap(),
+                image_id: seed_image(conn, "images/seed/img.png").unwrap(),
                 open_time: NaiveTime::from_hms(8,0,0),
                 close_time:NaiveTime::from_hms(23,0,0),
                 cuisine: "Western".to_string()

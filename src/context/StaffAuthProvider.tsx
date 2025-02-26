@@ -10,8 +10,8 @@ type StaffAuthContextType = {
     username: string | null;
     role: string | null;
     isAuthenticated: boolean;
-    logout: () => Promise<void>;
-    checkAuth: () => Promise<void>;
+    logoutStaff: () => Promise<void>;
+    getCurrentStaff: () => Promise<void>;
 }
 export const StaffAuthProvider = ({children} : {children:React.ReactNode}) => {
     const [staffId, setStaffId] = useState<number | null>(null);
@@ -20,12 +20,12 @@ export const StaffAuthProvider = ({children} : {children:React.ReactNode}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        checkAuth();
+        getCurrentStaff();
     }, []);
 
-    const checkAuth = async () => {
+    const getCurrentStaff = async () => {
         try {
-            const result = await invoke<[number, string, string]>("get_staff");
+            const result = await invoke<[number, string, string]>("get_current_staff");
             if(result){
                 setStaffId(result[0])
                 setUsername(result[1])
@@ -38,7 +38,7 @@ export const StaffAuthProvider = ({children} : {children:React.ReactNode}) => {
         }
     }
 
-    const logout = async () => {
+    const logoutStaff = async () => {
         try {
             await invoke("logout_staff");
             setStaffId(null);
@@ -55,8 +55,8 @@ export const StaffAuthProvider = ({children} : {children:React.ReactNode}) => {
         username,
         role,
         isAuthenticated: staffId != null,
-        logout,
-        checkAuth
+        logoutStaff,
+        getCurrentStaff
     };
 
     return (

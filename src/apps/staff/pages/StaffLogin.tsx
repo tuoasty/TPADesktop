@@ -7,9 +7,9 @@ import {useStaffAuth} from "@/context/StaffAuthProvider.tsx";
 import {toast} from "sonner";
 
 export default function StaffLogin() {
-    const {checkAuth} = useStaffAuth();
+    const {getCurrentStaff} = useStaffAuth();
     const [formData, setFormData] = useState({
-        username:"",
+        name:"",
         password:"",
     })
     const navigate = useNavigate()
@@ -18,14 +18,14 @@ export default function StaffLogin() {
         setFormData({...formData, [e.target.name]: e.target.value});
     }
 
-    async function handleLogin(event: React.FormEvent){
+    async function loginStaff(event: React.FormEvent){
         event.preventDefault()
         try {
             await invoke("login_staff", {
-                username:formData.username,
-                inputPassword:formData.password
+                name:formData.name,
+                password:formData.password
             })
-            await checkAuth();
+            await getCurrentStaff();
             toast.success("Successfull login!")
             navigate("/staff/")
         } catch {
@@ -36,9 +36,9 @@ export default function StaffLogin() {
     return (
         <main className={"w-full h-full flex flex-col items-center justify-center bg-purple-200"}>
             <form className={"w-96 h-96 flex flex-col items-center justify-center bg-white gap-3 p-10 rounded-2xl"}
-            onSubmit={handleLogin}>
+            onSubmit={loginStaff}>
                 <h1 className={"text-black font-bold text-3xl"}>Staff Login</h1>
-                <Input type={"text"} placeholder={"Username"} name="username" value={formData.username}
+                <Input type={"text"} placeholder={"Username"} name="name" value={formData.name}
                 onChange={handleInputChange}/>
                 <Input type={"password"} placeholder={"Password"} name="password" value={formData.password}
                 onChange={handleInputChange}/>

@@ -6,7 +6,7 @@ import {toast} from "sonner";
 
 export default function CreateStaffAccount(){
     const [formData, setFormData] = useState({
-        username:"",
+        name:"",
         password:"",
         role:"",
     })
@@ -17,10 +17,10 @@ export default function CreateStaffAccount(){
     async function createStaff(e: React.FormEvent){
         e.preventDefault();
 
-        await invoke("register_staff", {
-            username:formData.username,
-            inputPassword:formData.password,
-            userRole:formData.role
+        await invoke("create_staff", {
+            name:formData.name,
+            password:formData.password,
+            role:formData.role
         })
 
         toast("Successfully created account");
@@ -31,7 +31,7 @@ export default function CreateStaffAccount(){
             <form className="bg-white w-[30%] h-[75%] flex flex-col justify-center items-center p-5 gap-5 rounded-2xl"
             onSubmit={createStaff}>
                 <label className="text-3xl font-bold">Create Staff Account</label>
-                <Input type="text" placeholder="Username" name="username" value={formData.username}
+                <Input type="text" placeholder="Username" name="name" value={formData.name}
                        onChange={handleInputChange}/>
                 <Input type="password" placeholder="Password" name="password" value={formData.password}
                        onChange={handleInputChange}/>

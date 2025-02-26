@@ -6,6 +6,7 @@ import StaffDashboard from "@/apps/staff/pages/StaffDashboard.tsx";
 import StaffNavbar from "@/apps/staff/components/navbar/StaffNavbar.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
 import AddNewMenu from "@/apps/staff/pages/fbsupervisor/AddNewMenu.tsx";
+import ViewAllRestaurant from "@/apps/staff/pages/fbsupervisor/ViewAllRestaurant.tsx";
 
 export default function StaffApp() {
     return (
@@ -19,6 +20,7 @@ export default function StaffApp() {
                                 <Route path="login" element={<StaffLogin/>}/>
                                 <Route path="create-account" element={<ProtectedRoute allowedRoles={["COO"]}><CreateStaffAccount/></ProtectedRoute>}/>
                                 <Route path="add-new-menu" element={<ProtectedRoute allowedRoles={["F&B Supervisor"]}><AddNewMenu/></ProtectedRoute>}/>
+                                <Route path="view-all-restaurant" element={<ProtectedRoute allowedRoles={["F&B Supervisor"]}><ViewAllRestaurant/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>
                         </Routes>

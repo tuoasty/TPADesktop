@@ -1,8 +1,7 @@
-use std::path::Path;
 use diesel::RunQueryDsl;
 use tauri::State;
 use crate::{get_conn, DbPool};
-use crate::models::{Image, NewImage};
+use crate::models::{NewImage};
 use crate::schema::images::dsl::images;
 
 pub fn create_image(state: State<DbPool>, image:Vec<u8>, mime:String, name: String) -> Result<i32, String> {
@@ -21,4 +20,6 @@ pub fn create_image(state: State<DbPool>, image:Vec<u8>, mime:String, name: Stri
         .get_result(conn)
         .map_err(|e| e.to_string())
 }
+
+
 
