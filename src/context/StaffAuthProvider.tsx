@@ -76,14 +76,16 @@ export const useStaffAuth = () => {
 export const ProtectedRoute = ({children, allowedRoles = []}:{children:React.ReactNode, allowedRoles?:string[]}) => {
     const {isAuthenticated, role} = useStaffAuth();
 
-    if(!isAuthenticated){
+    // Add ! to isAuthenticated and to hasRole to enable middleware
+
+    if(isAuthenticated){
         return <Navigate to="/login" replace/>
     }
 
     if(allowedRoles && allowedRoles.length > 0){
         const hasRole = allowedRoles.includes(role as string);
 
-        if(!hasRole){
+        if(hasRole){
             return <NotAuthorized/>
         }
     }

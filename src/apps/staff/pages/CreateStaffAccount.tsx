@@ -2,7 +2,6 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
-import {Link} from "react-router-dom";
 
 export default function CreateStaffAccount(){
     const [formData, setFormData] = useState({
@@ -29,22 +28,19 @@ export default function CreateStaffAccount(){
     }
 
     return (
-        <main className="h-full w-full flex justify-center items-center">
-            <form className="bg-gray-400 w-[30%] h-[75%] flex flex-col justify-center items-center p-5 gap-5"
+        <main className="h-full w-full bg-purple-200 flex justify-center items-center">
+            <form className="bg-white w-[30%] h-[75%] flex flex-col justify-center items-center p-5 gap-5 rounded-2xl"
             onSubmit={handleRegister}>
-                <label className="text-3xl font-bold">Register</label>
+                <label className="text-3xl font-bold">Create Staff Account</label>
                 <Input type="text" placeholder="Username" name="username" value={formData.username}
                        onChange={handleInputChange}/>
                 <Input type="password" placeholder="Password" name="password" value={formData.password}
                        onChange={handleInputChange}/>
                 <Input type="text" placeholder="Role" name="role" value={formData.role}
                        onChange={handleInputChange}/>
-                <Link to="/login">
-                    <label>Have an account? Login</label>
-                </Link>
-                <Button className="w-full">Register</Button>
+                <Button className="w-full bg-purple-500 text-white bold ">Register</Button>
+                <label>{responseMessage}</label>
             </form>
-            <label>{responseMessage}</label>
         </main>
     )
 }

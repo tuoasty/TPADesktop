@@ -12,17 +12,19 @@ export default function StaffApp() {
                     <StaffNavbar/>
                     <div className="pt-20 h-screen w-screen">
                         <Routes>
-                            <Route path="/login" element={<StaffLogin/>}/>
-                            <Route path="/create-staff-account" element={
-                                <ProtectedRoute allowedRoles={["COO"]}>
-                                    <CreateStaffAccount/>
-                                </ProtectedRoute>
-                            }/>
-                            <Route path="/*" element={
-                                <ProtectedRoute>
-                                    <StaffDashboard/>
-                                </ProtectedRoute>
-                            }/>
+                            <Route path="/staff">
+                                <Route path="login" element={<StaffLogin/>}/>
+                                <Route path="create-account" element={
+                                    <ProtectedRoute allowedRoles={["COO"]}>
+                                        <CreateStaffAccount/>
+                                    </ProtectedRoute>
+                                }/>
+                                <Route path="*" element={
+                                    <ProtectedRoute>
+                                        <StaffDashboard/>
+                                    </ProtectedRoute>
+                                }/>
+                            </Route>
                         </Routes>
                     </div>
                 </StaffAuthProvider>

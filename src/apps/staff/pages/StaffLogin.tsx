@@ -34,7 +34,7 @@ export default function StaffLogin() {
     }
 
     return (
-        <main className={"w-full h-full flex flex-col items-center justify-center bg-blue-300"}>
+        <main className={"w-full h-full flex flex-col items-center justify-center bg-purple-200"}>
             <form className={"w-96 h-96 flex flex-col items-center justify-center bg-white gap-3 p-10 rounded-2xl"}
             onSubmit={handleLogin}>
                 <h1 className={"text-black font-bold text-3xl"}>Staff Login</h1>
@@ -42,7 +42,7 @@ export default function StaffLogin() {
                 onChange={handleInputChange}/>
                 <Input type={"password"} placeholder={"Password"} name="password" value={formData.password}
                 onChange={handleInputChange}/>
-                <Button className={"w-full bg-blue-500 text-white"}>Login</Button>
+                <Button className={"w-full bg-purple-500 text-white"}>Login</Button>
                 <label className="text-red-700">{message}</label>
             </form>
         </main>
