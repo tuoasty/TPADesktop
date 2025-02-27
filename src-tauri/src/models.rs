@@ -93,6 +93,14 @@ pub struct NewMenuDetail {
 }
 
 #[derive(Serialize)]
+pub struct MenuDetail {
+    pub id:i32,
+    pub name: String,
+    pub price: i32,
+    pub image_data: String
+}
+
+#[derive(Serialize)]
 pub struct RestaurantDetail {
     pub id: i32,
     pub name: String,
@@ -100,6 +108,7 @@ pub struct RestaurantDetail {
     pub close_time: String,
     pub cuisine: String,
     pub image_data: String,
+    pub menus: Vec<MenuDetail>
 }
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::stores)]

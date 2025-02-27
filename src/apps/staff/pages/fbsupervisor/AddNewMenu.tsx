@@ -74,7 +74,7 @@ export default function AddNewMenu() {
         setFormData({...formData, [e.target.name]: e.target.value});
     }
 
-    async function addNewMenu(e:React.FormEvent) {
+    async function createMenu(e:React.FormEvent) {
         e.preventDefault();
 
         const menuData = {
@@ -88,7 +88,7 @@ export default function AddNewMenu() {
         };
 
         try {
-            await invoke("add_new_menu", {menu:menuData});
+            await invoke("create_menu", {menu:menuData});
             toast.success("Successfully inserted new menu")
         } catch (error) {
             toast.error(`${error}`)
@@ -99,7 +99,7 @@ export default function AddNewMenu() {
         <div className="h-full w-full bg-purple-200 flex justify-center place-items-center">
             <form
                 className="bg-white h-auto w-[25%] flex flex-col justify-center place-items-center gap-5 p-12 rounded-2xl"
-                onSubmit={addNewMenu}>
+                onSubmit={createMenu}>
                 <h1 className="font-bold text-2xl">Add New Menu</h1>
                 <Input type="text" placeholder="Menu Name" name="name" value={formData.name}
                        onChange={handleInputChange}/>
