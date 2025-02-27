@@ -14,7 +14,7 @@ export default function ViewAllRestaurant(){
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
             {restaurants.length > 0 && (
                 restaurants.map((restaurant:Restaurant) => (
-                    <div key={restaurant.id} className="w-full bg-white h-72 rounded-2xl shrink-0 flex">
+                    <div key={restaurant.id} className="w-full bg-white h-min-72 rounded-2xl shrink-0 flex">
                         <div className="w-2xl h-full p-8 overflow-hidden">
                             <img className="object-cover w-full h-full rounded-lg" src={restaurant.image_data} alt={restaurant.name}/>
                         </div>

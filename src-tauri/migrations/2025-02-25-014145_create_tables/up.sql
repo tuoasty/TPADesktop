@@ -33,3 +33,19 @@ CREATE TABLE menus (
     name VARCHAR NOT NULL,
     price INTEGER NOT NULL
 );
+
+CREATE TABLE stores (
+    id SERIAL PRIMARY KEY,
+    image_id INTEGER NOT NULL REFERENCES images(id),
+    name VARCHAR NOT NULL,
+    open_time TIME NOT NULL,
+    close_time TIME NOT NULL
+);
+
+CREATE TABLE souvenirs (
+    id SERIAL PRIMARY KEY,
+    store_id INTEGER NOT NULL REFERENCES stores(id) ON DELETE CASCADE,
+    name VARCHAR NOT NULL,
+    price INTEGER NOT NULL,
+    description VARCHAR NOT NULL
+)

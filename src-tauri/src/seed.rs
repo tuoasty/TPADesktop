@@ -1,5 +1,5 @@
 use crate::handler::image_handler::create_image;
-use crate::models::{NewRestaurant, NewStaff};
+use crate::models::{NewMenu, NewRestaurant, NewSouvenir, NewStaff, NewStore};
 use crate::{DbConnect, DbPool};
 use bcrypt::{hash, DEFAULT_COST};
 use chrono::NaiveTime;
@@ -7,6 +7,9 @@ use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
 use std::fs;
 use std::path::Path;
+use crate::schema::menus::dsl::menus;
+use crate::schema::souvenirs::dsl::souvenirs;
+use crate::schema::stores::dsl::stores;
 
 pub fn seed_database(pool: &DbPool) {
     use crate::schema::restaurants::dsl::*;
@@ -136,6 +139,39 @@ pub fn seed_database(pool: &DbPool) {
             },
         ];
 
+        let seed_stores = vec![
+            NewStore {
+                name:"Walmart".to_string(),
+                image_id: seed_image(conn, "images/seed/walmart.png").unwrap(),
+                open_time: NaiveTime::from_hms(9, 0, 0),
+                close_time: NaiveTime::from_hms(22, 0, 0),
+            },
+            NewStore {
+                name:"Mito".to_string(),
+                image_id: seed_image(conn, "images/seed/mito.png").unwrap(),
+                open_time: NaiveTime::from_hms(7, 0, 0),
+                close_time: NaiveTime::from_hms(20, 0, 0),
+            },
+        ];
+
+        let seed_menus = vec![
+            NewMenu {
+                restaurant_id:1,
+                image_id: seed_image(conn, "images/seed/telordadar.png").unwrap(),
+                name:"Telor Dadar".to_string(),
+                price:500000
+            }
+        ];
+
+        let seed_souvenirs = vec![
+            NewSouvenir{
+                name:"Stuffed Dog".to_string(),
+                store_id:1,
+                price:300000,
+                description:"A stuffed dog".to_string()
+            }
+        ];
+
         diesel::insert_into(staffs)
             .values(&staff_members)
             .execute(conn)
@@ -144,6 +180,24 @@ pub fn seed_database(pool: &DbPool) {
 
         diesel::insert_into(restaurants)
             .values(&seed_restaurants)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(stores)
+            .values(&seed_stores)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(menus)
+            .values(&seed_menus)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(souvenirs)
+            .values(&seed_souvenirs)
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();

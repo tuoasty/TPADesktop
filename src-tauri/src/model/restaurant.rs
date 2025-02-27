@@ -12,6 +12,6 @@ impl Restaurant {
             .map_err(|e| e.to_string())
     }
     pub fn get_all_restaurant(conn: &mut DbConnect) -> Result<Vec<Self>, String> {
-        restaurants.load(conn).map_err(|e| e.to_string())
+        restaurants.select(Restaurant::as_select()).load(conn).map_err(|e| e.to_string())
     }
 }

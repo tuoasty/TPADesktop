@@ -2,6 +2,7 @@ pub mod image_handler;
 pub mod menu_handler;
 pub mod restaurant_handler;
 pub mod staff_handler;
+pub mod store_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -16,6 +17,7 @@ macro_rules! all_handlers {
             $crate::handler::restaurant_handler::find_restaurant,
             $crate::handler::restaurant_handler::find_all_restaurant,
             $crate::handler::menu_handler::add_new_menu,
+            $crate::handler::store_handler::find_all_store,
             // Add all other commands
         ]
     };

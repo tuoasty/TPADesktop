@@ -1,6 +1,7 @@
 use chrono::NaiveTime;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
+use crate::schema::souvenirs::dsl::souvenirs;
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::staffs)]
@@ -99,4 +100,55 @@ pub struct RestaurantDetail {
     pub close_time: String,
     pub cuisine: String,
     pub image_data: String,
+}
+#[derive(Queryable, Selectable)]
+#[diesel(table_name = crate::schema::stores)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct Store {
+    pub id: i32,
+    pub name: String,
+    pub image_id: i32,
+    pub open_time: NaiveTime,
+    pub close_time: NaiveTime,
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = crate::schema::stores)]
+pub struct NewStore {
+    pub name: String,
+    pub image_id: i32,
+    pub open_time: NaiveTime,
+    pub close_time: NaiveTime,
+}
+
+#[derive(Serialize)]
+pub struct StoreDetail {
+    pub id: i32,
+    pub name: String,
+    pub open_time: String,
+    pub close_time: String,
+    pub image_data: String,
+    pub souvenirs: Vec<Souvenir>
+}
+
+#[derive(Queryable, Selectable, Serialize)]
+#[diesel(belongs_to(Souvenir))]
+#[diesel(table_name = crate::schema::souvenirs)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct Souvenir {
+    pub id: i32,
+    pub name: String,
+    pub store_id: i32,
+    pub price: i32,
+    pub description: String
+}
+
+#[derive(Insertable)]
+#[diesel(belongs_to(Souvenir))]
+#[diesel(table_name = crate::schema::souvenirs)]
+pub struct NewSouvenir {
+    pub name: String,
+    pub store_id: i32,
+    pub price: i32,
+    pub description: String
 }
