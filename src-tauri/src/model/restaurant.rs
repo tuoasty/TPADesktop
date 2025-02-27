@@ -1,11 +1,11 @@
-use crate::DbConnect;
 use crate::models::Restaurant;
 use crate::schema::restaurants::dsl::restaurants;
+use crate::schema::restaurants::id;
+use crate::DbConnect;
 use diesel::prelude::*;
-use crate::schema::restaurants::{id};
 
 impl Restaurant {
-    pub fn get_restaurant(conn: &mut DbConnect, restaurant_id:i32) -> Result<Self, String> {
+    pub fn get_restaurant(conn: &mut DbConnect, restaurant_id: i32) -> Result<Self, String> {
         restaurants
             .filter(id.eq(&restaurant_id))
             .first(conn)

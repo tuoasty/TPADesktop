@@ -1,15 +1,16 @@
-use std::path::Path;
-use std::fs;
+use crate::handler::image_handler::create_image;
+use crate::models::{NewRestaurant, NewStaff};
+use crate::{DbConnect, DbPool};
 use bcrypt::{hash, DEFAULT_COST};
 use chrono::NaiveTime;
 use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
-use crate::{DbConnect, DbPool};
-use crate::models::{NewImage, NewRestaurant, NewStaff};
+use std::fs;
+use std::path::Path;
 
 pub fn seed_database(pool: &DbPool) {
-    use crate::schema::staffs::dsl::*;
     use crate::schema::restaurants::dsl::*;
+    use crate::schema::staffs::dsl::*;
     let conn = &mut pool.get().unwrap();
 
     let staff_count: i64 = staffs.count().get_result(conn).unwrap();
@@ -19,111 +20,139 @@ pub fn seed_database(pool: &DbPool) {
 
         let staff_members = vec![
             NewStaff {
-                name:"customerservice".to_string(),
-                password:hash("customerservice", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Customer Service".to_string()
+                name: "customerservice".to_string(),
+                password: hash("customerservice", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Customer Service".to_string(),
             },
             NewStaff {
-                name:"lostandfound".to_string(),
-                password:hash("lostandfound", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Lost and Found Staff".to_string()
+                name: "lostandfound".to_string(),
+                password: hash("lostandfound", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Lost and Found Staff".to_string(),
             },
             NewStaff {
-                name:"ridemanager".to_string(),
-                password:hash("ridemanager", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Ride Manager".to_string()
+                name: "ridemanager".to_string(),
+                password: hash("ridemanager", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Ride Manager".to_string(),
             },
             NewStaff {
-                name:"ridestaff".to_string(),
-                password:hash("ridestaff", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Ride Staff".to_string()
+                name: "ridestaff".to_string(),
+                password: hash("ridestaff", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Ride Staff".to_string(),
             },
             NewStaff {
-                name:"fbsupervisor".to_string(),
-                password:hash("fbsupervisor", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"F&B Supervisor".to_string()
+                name: "fbsupervisor".to_string(),
+                password: hash("fbsupervisor", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "F&B Supervisor".to_string(),
             },
             NewStaff {
-                name:"chef".to_string(),
-                password:hash("chef", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Chef".to_string()
+                name: "chef".to_string(),
+                password: hash("chef", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Chef".to_string(),
             },
             NewStaff {
-                name:"waiter".to_string(),
-                password:hash("waiter", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Waiter".to_string()
+                name: "waiter".to_string(),
+                password: hash("waiter", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Waiter".to_string(),
             },
             NewStaff {
-                name:"maintenancemanager".to_string(),
-                password:hash("maintenancemanager", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Maintenance Manager".to_string()
+                name: "maintenancemanager".to_string(),
+                password: hash("maintenancemanager", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Maintenance Manager".to_string(),
             },
             NewStaff {
-                name:"maintenancestaff".to_string(),
-                password:hash("maintenancestaff", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Maintenance Staff".to_string()
+                name: "maintenancestaff".to_string(),
+                password: hash("maintenancestaff", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Maintenance Staff".to_string(),
             },
             NewStaff {
-                name:"retailmanager".to_string(),
-                password:hash("retailmanager", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Retail Manager".to_string()
+                name: "retailmanager".to_string(),
+                password: hash("retailmanager", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Retail Manager".to_string(),
             },
             NewStaff {
-                name:"salesassociate".to_string(),
-                password:hash("salesassociate", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"Sales Associate".to_string()
+                name: "salesassociate".to_string(),
+                password: hash("salesassociate", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "Sales Associate".to_string(),
             },
             NewStaff {
-                name:"ceo".to_string(),
-                password:hash("ceo", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"CEO".to_string()
+                name: "ceo".to_string(),
+                password: hash("ceo", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "CEO".to_string(),
             },
             NewStaff {
-                name:"cfo".to_string(),
-                password:hash("cfo", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"CFO".to_string()
+                name: "cfo".to_string(),
+                password: hash("cfo", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "CFO".to_string(),
             },
             NewStaff {
-                name:"coo".to_string(),
-                password:hash("coo", DEFAULT_COST).map_err(|_| "failed to hash".to_string()).unwrap(),
-                role:"COO".to_string()
+                name: "coo".to_string(),
+                password: hash("coo", DEFAULT_COST)
+                    .map_err(|_| "failed to hash".to_string())
+                    .unwrap(),
+                role: "COO".to_string(),
             },
         ];
-
 
         let seed_restaurants = vec![
             NewRestaurant {
                 name: "Kemuning".to_string(),
                 image_id: seed_image(conn, "images/seed/kemuning.png").unwrap(),
-                open_time: NaiveTime::from_hms(9,0,0),
-                close_time:NaiveTime::from_hms(18,0,0),
-                cuisine: "Warteg".to_string()
+                open_time: NaiveTime::from_hms(9, 0, 0),
+                close_time: NaiveTime::from_hms(18, 0, 0),
+                cuisine: "Warteg".to_string(),
             },
             NewRestaurant {
                 name: "Gyukaku".to_string(),
                 image_id: seed_image(conn, "images/seed/gyukaku.png").unwrap(),
-                open_time: NaiveTime::from_hms(8,0,0),
-                close_time:NaiveTime::from_hms(23,0,0),
-                cuisine: "Japanese".to_string()
-            }
+                open_time: NaiveTime::from_hms(8, 0, 0),
+                close_time: NaiveTime::from_hms(23, 0, 0),
+                cuisine: "Japanese".to_string(),
+            },
         ];
 
         diesel::insert_into(staffs)
             .values(&staff_members)
             .execute(conn)
-            .map_err(|e| e.to_string()).unwrap();
+            .map_err(|e| e.to_string())
+            .unwrap();
 
         diesel::insert_into(restaurants)
             .values(&seed_restaurants)
             .execute(conn)
-            .map_err(|e| e.to_string()).unwrap();
+            .map_err(|e| e.to_string())
+            .unwrap();
     }
 }
 
 pub fn seed_image(conn: &mut DbConnect, file_path: &str) -> Result<i32, String> {
     let path = Path::new(file_path);
     let image_data = fs::read(&path).map_err(|e| e.to_string())?;
-
 
     let mime_type = from_path(&path)
         .first()
@@ -138,20 +167,3 @@ pub fn seed_image(conn: &mut DbConnect, file_path: &str) -> Result<i32, String> 
 
     create_image(conn, image_data, mime_type, filename)
 }
-
-pub fn create_image(conn: &mut DbConnect, image:Vec<u8>, mime:String, name: String) -> Result<i32, String> {
-    use crate::schema::images::dsl::*;
-
-    let new_image = NewImage {
-        image_data:image,
-        mime_type:mime,
-        filename:name,
-    };
-
-    diesel::insert_into(images)
-        .values(&new_image)
-        .returning(id)
-        .get_result(conn)
-        .map_err(|e| e.to_string())
-}
-

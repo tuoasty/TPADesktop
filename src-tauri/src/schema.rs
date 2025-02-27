@@ -43,9 +43,4 @@ diesel::joinable!(menus -> images (image_id));
 diesel::joinable!(menus -> restaurants (restaurant_id));
 diesel::joinable!(restaurants -> images (image_id));
 
-diesel::allow_tables_to_appear_in_same_query!(
-    images,
-    menus,
-    restaurants,
-    staffs,
-);
+diesel::allow_tables_to_appear_in_same_query!(images, menus, restaurants, staffs,);

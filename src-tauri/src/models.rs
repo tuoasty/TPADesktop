@@ -1,15 +1,15 @@
-use diesel::prelude::*;
 use chrono::NaiveTime;
-use serde::Serialize;
+use diesel::prelude::*;
+use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::staffs)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Staff {
-    pub id : i32,
-    pub name : String,
-    pub password : String,
-    pub role : String
+    pub id: i32,
+    pub name: String,
+    pub password: String,
+    pub role: String,
 }
 
 #[derive(Insertable)]
@@ -29,7 +29,6 @@ pub struct Image {
     pub mime_type: String,
     pub filename: String,
 }
-
 #[derive(Insertable)]
 #[diesel(table_name = crate::schema::images)]
 pub struct NewImage {
@@ -70,6 +69,16 @@ pub struct Menu {
     pub image_id: i32,
     pub name: String,
     pub price: i32,
+}
+
+#[derive(Deserialize)]
+pub struct NewMenuDetail {
+    pub name: String,
+    pub restaurant_id: i32,
+    pub price: i32,
+    pub image_data: String,
+    pub mime_type: String,
+    pub image_name: String,
 }
 
 #[derive(Serialize)]
