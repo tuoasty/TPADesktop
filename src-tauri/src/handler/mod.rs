@@ -7,6 +7,8 @@ macro_rules! all_handlers {
     () => {
         tauri::generate_handler![
             $crate::handler::staff_handler::create_staff,
+            $crate::handler::staff_handler::verify_authentication,
+            $crate::handler::staff_handler::verify_login,
             $crate::handler::staff_handler::login_staff,
             $crate::handler::staff_handler::logout_staff,
             $crate::handler::staff_handler::get_current_staff,

@@ -4449,6 +4449,7 @@ dependencies = [
  "diesel",
  "dotenvy",
  "engine",
+ "log",
  "mime_guess",
  "r2d2",
  "serde",

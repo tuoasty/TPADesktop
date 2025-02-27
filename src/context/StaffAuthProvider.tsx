@@ -1,6 +1,6 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import NotAuthorized from "@/NotAuthorized.tsx";
 
 const StaffAuthContext = createContext<StaffAuthContextType | null>(null)
@@ -9,7 +9,9 @@ type StaffAuthContextType = {
     staffId:number | null;
     username: string | null;
     role: string | null;
-    isAuthenticated: boolean;
+    isAuthenticated:boolean;
+    hasPermission : (allowedRoles:string[]) => Promise<boolean>;
+    isLoggedIn: () => Promise<boolean>;
     logoutStaff: () => Promise<void>;
     getCurrentStaff: () => Promise<void>;
 }
@@ -22,6 +24,24 @@ export const StaffAuthProvider = ({children} : {children:React.ReactNode}) => {
     useEffect(() => {
         getCurrentStaff();
     }, []);
+
+    const hasPermission = async (allowedRoles:string[] = []):Promise<boolean> => {
+        try {
+            return await invoke<boolean>("verify_authentication", {allowedRoles});
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
+
+    const isLoggedIn = async ():Promise<boolean> => {
+        try {
+            return await invoke<boolean>("verify_login");
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
 
     const getCurrentStaff = async () => {
         try {
@@ -55,6 +75,8 @@ export const StaffAuthProvider = ({children} : {children:React.ReactNode}) => {
         username,
         role,
         isAuthenticated: staffId != null,
+        hasPermission,
+        isLoggedIn,
         logoutStaff,
         getCurrentStaff
     };
@@ -75,22 +97,42 @@ export const useStaffAuth = () => {
 }
 
 export const ProtectedRoute = ({children, allowedRoles = []}:{children:React.ReactNode, allowedRoles?:string[]}) => {
-    const {isAuthenticated, role} = useStaffAuth();
+    const {hasPermission, isLoggedIn} = useStaffAuth();
+    let navigate = useNavigate();
+    const [authorized, setAuthorized] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    // remove && false to enable middlware
 
-    if(!isAuthenticated && false){
-        return <Navigate to="/login" replace/>
-    }
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const loggedIn = await isLoggedIn();
+                if(!loggedIn){
+                    navigate("/login", {replace:true});
+                    return;
+                }
 
-    if(allowedRoles && allowedRoles.length > 0){
-        const hasRole = allowedRoles.includes(role as string);
-
-        if(!hasRole && false){
-            return <NotAuthorized/>
+                const isAuth = await hasPermission(allowedRoles);
+                setAuthorized(isAuth);
+            } catch (e) {
+                navigate("/login", {replace:true});
+            } finally {
+                setLoading(false);
+            }
         }
-    }
 
+        // Uncomment checkAuth too
+        // checkAuth();
+    }, [isLoggedIn, hasPermission, allowedRoles, navigate]);
+
+    // Uncomment to enable middleware
+    // if(loading){
+    //     return <h1>Loading...</h1>
+    // }
+    //
+    // if(!authorized){
+    //     return <NotAuthorized/>
+    // }
     return <>{children}</>
 }
 

@@ -1,6 +1,8 @@
+use std::thread::current;
 use bcrypt::{hash, verify, DEFAULT_COST};
 use diesel::prelude::*;
 use tauri::{command, State};
+use log::log;
 use crate::{get_conn, CurrentStaff, DbPool};
 use crate::models::{NewStaff, Staff};
 
@@ -42,6 +44,32 @@ pub fn login_staff(state: State<DbPool>, current_staff:State<CurrentStaff>, name
    } else {
       Err("Incorrect credentials".to_string())
    }
+}
+
+#[command]
+pub async fn verify_authentication(current_staff:State<'_,CurrentStaff>, allowed_roles:Vec<String>) -> Result<bool, String> {
+   let current_staff = current_staff.0.lock().unwrap();
+
+   if current_staff.is_none(){
+      return Ok(false);
+   };
+
+   if allowed_roles.is_empty(){
+      return Ok(true);
+   };
+
+
+   let(_,_, role) = current_staff.as_ref().unwrap();
+
+   let is_allowed = allowed_roles.contains(&role);
+
+   Ok(is_allowed)
+}
+
+#[command]
+pub async fn verify_login(current_staff:State<'_,CurrentStaff>) -> Result<bool, String>{
+   let current_staff = !current_staff.0.lock().unwrap().is_none();
+   Ok(current_staff)
 }
 
 #[command]
