@@ -3,6 +3,7 @@ pub mod restaurant_handler;
 pub mod staff_handler;
 pub mod store_handler;
 pub mod menu_handler;
+pub mod souvenir_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -14,9 +15,8 @@ macro_rules! all_handlers {
             $crate::handler::staff_handler::login_staff,
             $crate::handler::staff_handler::logout_staff,
             $crate::handler::staff_handler::get_current_staff,
-            //$crate::handler::restaurant_handler::find_restaurant,
             $crate::handler::restaurant_handler::find_all_restaurant,
-            $crate::handler::restaurant_handler::create_menu,
+            $crate::handler::menu_handler::create_menu,
             $crate::handler::store_handler::find_all_store,
             $crate::handler::store_handler::remove_souvenir,
             // Add all other commands
