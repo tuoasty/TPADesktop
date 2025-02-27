@@ -5,11 +5,12 @@ import React, {useEffect, useState} from "react";
 import {Restaurant} from "@/ types/restaurant.ts";
 import {invoke} from "@tauri-apps/api/core";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {toast} from "sonner";
 
 interface MenuFormData {
     name: string;
     price: number;
-    restaurantId: number | null;
+    restaurantId: number;
     imageData:string,
     imageName:string,
     mimeType:string
@@ -20,7 +21,7 @@ export default function AddNewMenu() {
     const [formData, setFormData] = useState<MenuFormData>({
         name: "",
         price: 0,
-        restaurantId: null,
+        restaurantId: 0,
         imageData: "",
         imageName:"",
         mimeType:""
@@ -55,7 +56,6 @@ export default function AddNewMenu() {
         const arrayBuffer = await file.arrayBuffer();
         const uint8Array = new Uint8Array(arrayBuffer);
 
-        // Convert to base64
         const base64String = btoa(
             Array.from(uint8Array)
                 .map(byte => String.fromCharCode(byte))
@@ -89,10 +89,9 @@ export default function AddNewMenu() {
 
         try {
             await invoke("add_new_menu", {menu:menuData});
-
-            console.log("success")
+            toast.success("Successfully inserted new menu")
         } catch (error) {
-            console.log(error)
+            toast.error(`${error}`)
         }
     }
 

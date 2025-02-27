@@ -1,5 +1,4 @@
 use crate::models::NewImage;
-use crate::schema::images::dsl::images;
 use crate::DbConnect;
 use diesel::RunQueryDsl;
 

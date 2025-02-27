@@ -71,6 +71,16 @@ pub struct Menu {
     pub price: i32,
 }
 
+#[derive(Insertable)]
+#[diesel(belongs_to(Restaurant))]
+#[diesel(table_name = crate::schema::menus)]
+pub struct NewMenu {
+    pub restaurant_id: i32,
+    pub image_id: i32,
+    pub name: String,
+    pub price: i32,
+}
+
 #[derive(Deserialize)]
 pub struct NewMenuDetail {
     pub name: String,
