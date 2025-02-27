@@ -1,7 +1,10 @@
 use base64::encode;
+use diesel::RunQueryDsl;
 use tauri::{command, State};
 use crate::{get_conn, DbPool};
 use crate::models::{Image, Souvenir, Store, StoreDetail};
+use crate::schema::souvenirs::dsl::souvenirs;
+use diesel::prelude::*;
 
 #[command]
 pub fn find_all_store(state: State<DbPool>) -> Result<Vec<StoreDetail>, String> {
@@ -34,4 +37,16 @@ pub fn find_all_store(state: State<DbPool>) -> Result<Vec<StoreDetail>, String> 
         .collect();
 
     Ok(store_details)
+}
+
+#[command]
+pub fn remove_souvenir(state:State<DbPool>, souvenir_id:i32) -> Result<(), String> {
+    use crate::schema::souvenirs::dsl::*;
+    let conn = &mut get_conn(&state)?;
+
+    diesel::delete(souvenirs.filter(id.eq(souvenir_id)))
+        .execute(conn)
+        .map_err(|e| format!("Failed to delete souvenir: {}", e))?;
+
+    Ok(())
 }
