@@ -129,7 +129,7 @@ pub fn seed_database(pool: &DbPool) {
                 image_id: seed_image(conn, "images/seed/kemuning.png").unwrap(),
                 open_time: NaiveTime::from_hms_opt(9, 0, 0).unwrap(),
                 close_time: NaiveTime::from_hms_opt(18, 0, 0).unwrap(),
-                cuisine: "Warteg".to_string(),
+                cuisine: "Warteg Kehidupan".to_string(),
             },
             NewRestaurant {
                 name: "Gyukaku".to_string(),
@@ -158,7 +158,7 @@ pub fn seed_database(pool: &DbPool) {
         let seed_rides = vec![
             NewRide {
                 image_id: seed_image(conn, "images/seed/ride1.png").unwrap(),
-                name:"Ride of Immediate Death".to_string(),
+                name:"Rollercoaster Buatan Lord VK".to_string(),
                 open_time: NaiveTime::from_hms_opt(9,0,0).unwrap(),
                 close_time:NaiveTime::from_hms_opt(19,0,0).unwrap(),
                 price:50000,
@@ -170,7 +170,15 @@ pub fn seed_database(pool: &DbPool) {
                 open_time: NaiveTime::from_hms_opt(8,0,0).unwrap(),
                 close_time:NaiveTime::from_hms_opt(18,0,0).unwrap(),
                 price:60000,
-                status:"Closed".to_string()
+                status:"Maintenance in Progress".to_string()
+            },
+            NewRide {
+                image_id: seed_image(conn, "images/seed/ride3.png").unwrap(),
+                name:"Rumah Maklo".to_string(),
+                open_time: NaiveTime::from_hms_opt(10,0,0).unwrap(),
+                close_time:NaiveTime::from_hms_opt(22,0,0).unwrap(),
+                price:30000,
+                status:"Open".to_string()
             },
         ];
 
