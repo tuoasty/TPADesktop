@@ -19,7 +19,8 @@ impl Ride {
                     open_time:ride.open_time.to_string(),
                     close_time:ride.close_time.to_string(),
                     price:ride.price,
-                    image_data:base64_image.unwrap()
+                    image_data:base64_image.unwrap(),
+                    status:ride.status,
                 }
             })
             .collect();

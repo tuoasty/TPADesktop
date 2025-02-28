@@ -55,6 +55,7 @@ diesel::table! {
         open_time -> Time,
         close_time -> Time,
         price -> Int4,
+        status -> Varchar,
     }
 }
 

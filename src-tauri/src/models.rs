@@ -181,7 +181,8 @@ pub struct Ride {
     pub name:String,
     pub open_time:NaiveTime,
     pub close_time:NaiveTime,
-    pub price:i32
+    pub price:i32,
+    pub status:String
 }
 
 #[derive(Insertable)]
@@ -191,7 +192,8 @@ pub struct NewRide {
     pub name:String,
     pub open_time:NaiveTime,
     pub close_time:NaiveTime,
-    pub price:i32
+    pub price:i32,
+    pub status:String
 }
 
 #[derive(Serialize)]
@@ -201,5 +203,6 @@ pub struct RideDetail {
     pub open_time: String,
     pub close_time: String,
     pub price: i32,
-    pub image_data: String
+    pub image_data: String,
+    pub status:String
 }

@@ -5,4 +5,5 @@ export interface Ride {
     close_time: string;
     price: number;
     image_data: string;
+    status:string;
 }

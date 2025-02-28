@@ -15,8 +15,9 @@ export default function ViewAllRestaurant(){
             {restaurants.length > 0 && (
                 restaurants.map((restaurant:Restaurant) => (
                     <div key={restaurant.id} className="w-full bg-white h-min-72 rounded-2xl shrink-0 flex">
-                        <div className="w-2xl h-full p-8 overflow-hidden">
-                            <img className="object-cover w-full h-full rounded-lg" src={restaurant.image_data} alt={restaurant.name}/>
+                        <div className="w-96 h-auto p-8 overflow-hidden">
+                            <img className="object-contain w-full h-full rounded-lg" src={restaurant.image_data}
+                                 alt={restaurant.name}/>
                         </div>
                         <div className="w-full h-full flex flex-col p-8 gap-2">
                             <h1 className="font-bold text-4xl">{restaurant.name}</h1>

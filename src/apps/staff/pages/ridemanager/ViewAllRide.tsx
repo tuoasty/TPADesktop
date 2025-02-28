@@ -18,13 +18,15 @@ export default function ViewAllRide(){
             {rides.length > 0 && (
                 rides.map((ride:Ride) => (
                     <div key={ride.id} className="w-full bg-white h-min-72 rounded-2xl shrink-0 flex">
-                        <div className="w-2xl h-full p-8 overflow-hidden">
-                            <img className="object-cover w-full h-full rounded-lg" src={ride.image_data} alt={ride.name}/>
+                        <div className="w-96 h-auto p-8 overflow-hidden">
+                            <img className="object-contain w-full h-full rounded-lg" src={ride.image_data}
+                                 alt={ride.name}/>
                         </div>
                         <div className="w-full h-full flex flex-col p-8 gap-2">
                             <h1 className="font-bold text-4xl">{ride.name}</h1>
                             <h2 className="text-2xl">Price : {ride.price}</h2>
                             <h4>{ride.open_time} - {ride.close_time}</h4>
+                            <h3>Status : {ride.status}</h3>
                         </div>
                     </div>
                 ))

@@ -66,7 +66,8 @@ CREATE TABLE rides(
     name VARCHAR NOT NULL,
     open_time  TIME    NOT NULL,
     close_time TIME    NOT NULL,
-    price INTEGER NOT NULL
+    price INTEGER NOT NULL,
+    status VARCHAR NOT NULL
 );
 
 CREATE TABLE ride_queues(

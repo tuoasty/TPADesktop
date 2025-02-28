@@ -161,14 +161,16 @@ pub fn seed_database(pool: &DbPool) {
                 name:"Ride of Immediate Death".to_string(),
                 open_time: NaiveTime::from_hms_opt(9,0,0).unwrap(),
                 close_time:NaiveTime::from_hms_opt(19,0,0).unwrap(),
-                price:50000
+                price:50000,
+                status:"Closed".to_string()
             },
             NewRide {
                 image_id: seed_image(conn, "images/seed/ride2.png").unwrap(),
                 name:"Perosotan Kematian".to_string(),
                 open_time: NaiveTime::from_hms_opt(8,0,0).unwrap(),
                 close_time:NaiveTime::from_hms_opt(18,0,0).unwrap(),
-                price:60000
+                price:60000,
+                status:"Closed".to_string()
             },
         ];
 
