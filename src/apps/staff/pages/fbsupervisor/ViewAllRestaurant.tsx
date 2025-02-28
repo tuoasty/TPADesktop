@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
 import {Restaurant} from "@/ types/restaurant.ts";
+import {Menu} from "@/ types/menu.ts";
 
 export default function ViewAllRestaurant(){
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -21,8 +22,27 @@ export default function ViewAllRestaurant(){
                         </div>
                         <div className="w-full h-full flex flex-col p-8 gap-2">
                             <h1 className="font-bold text-4xl">{restaurant.name}</h1>
-                            <h2 className="text-2xl">{restaurant.cuisine}</h2>
-                            <h4>{restaurant.open_time} - {restaurant.close_time}</h4>
+                            <h2 className="text-2xl">Cuisine : {restaurant.cuisine}</h2>
+                            <h4>Open Time : {restaurant.open_time} - {restaurant.close_time}</h4>
+                            {restaurant.menus.length > 0 && (
+                                restaurant.menus.map((menu: Menu) => (
+                                    <div className="bg-purple-200 rounded-2xl p-2 flex justify-between">
+                                        <div className="flex flex-row">
+                                            <div className="h-28 w-28 mr-4 overflow-hidden">
+                                                <img className="object-cover w-full h-full rounded-lg"
+                                                     src={menu.image_data}
+                                                     alt={menu.name}/>
+                                            </div>
+                                            <div className="flex justify-center flex-col">
+                                                <h4 className="font-bold">{menu.name}</h4>
+                                                <h4>Price : {menu.price}</h4>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-center place-items-center mr-6">
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
                     </div>
                 ))

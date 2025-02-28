@@ -103,11 +103,14 @@ export default function AddNewMenu() {
                 <h1 className="font-bold text-2xl">Add New Menu</h1>
                 <Input type="text" placeholder="Menu Name" name="name" value={formData.name}
                        onChange={handleInputChange}/>
-                <Input type="number" placeholder="Menu Price" name="price" value={formData.price}
-                       onChange={handleInputChange}/>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label htmlFor="price">Price</Label>
+                    <Input type="number" name="price" id="price" value={formData.price}
+                           onChange={handleInputChange}/>
+                </div>
                 <Select onValueChange={(value) => setFormData({...formData, restaurantId:parseInt(value)})}>
                     <SelectTrigger>
-                        <SelectValue placeholder="aceh"/>
+                        <SelectValue placeholder="Restaurant"/>
                     </SelectTrigger>
                     <SelectContent>
                         {restaurants.length > 0 && (
