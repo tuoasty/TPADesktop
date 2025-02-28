@@ -4,4 +4,5 @@ export interface Souvenir {
     store_id:number;
     price:number;
     description:string;
+    image_data:string;
 }

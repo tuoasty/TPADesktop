@@ -1,10 +1,10 @@
 use diesel::RunQueryDsl;
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
-use crate::models::{Souvenir};
+use crate::models::{Souvenir, SouvenirDetail};
 use diesel::prelude::*;
 use crate::schema::souvenirs::dsl::*;
-pub fn find_store_souvenir(conn: &mut DbConnect,selected_id:i32) -> Result<Vec<Souvenir>, String> {
+pub fn find_store_souvenir(conn: &mut DbConnect,selected_id:i32) -> Result<Vec<SouvenirDetail>, String> {
     let store_souvenirs = Souvenir::get_souvenir_of_store(conn, selected_id)?;
 
     Ok(store_souvenirs)

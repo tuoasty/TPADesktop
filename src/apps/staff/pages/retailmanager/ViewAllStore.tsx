@@ -25,7 +25,7 @@ export default function ViewAllStore() {
 
     const removeSouvenir = async (id: number) => {
         try {
-            await invoke("remove_souvenir", {selectedId:id});
+            await invoke("remove_souvenir", {selectedId: id});
             toast.success("Successfully removed")
             await fetchStores();
         } catch (error) {
@@ -38,8 +38,8 @@ export default function ViewAllStore() {
             {stores.length > 0 && (
                 stores.map((store: Store) => (
                     <div key={store.id} className="w-full bg-white h-min-72 rounded-2xl shrink-0 flex">
-                        <div className="w-2xl h-full p-8 overflow-hidden">
-                            <img className="object-cover w-full h-full rounded-lg" src={store.image_data}
+                        <div className="w-96 h-auto p-8 overflow-hidden">
+                            <img className="object-contain w-full h-full rounded-lg" src={store.image_data}
                                  alt={store.name}/>
                         </div>
                         <div className="w-full h-full flex flex-col p-8 gap-2">
@@ -49,10 +49,17 @@ export default function ViewAllStore() {
                             {store.souvenirs.length > 0 && (
                                 store.souvenirs.map((souvenir: Souvenir) => (
                                     <div className="bg-purple-200 rounded-2xl p-2 flex justify-between">
-                                        <div className="flex justify-center place-items-center flex-col">
-                                            <h4 className="font-bold">{souvenir.name}</h4>
-                                            <h4>Price : {souvenir.price}</h4>
-                                            <h4>{souvenir.description}</h4>
+                                        <div className="flex flex-row">
+                                            <div className="h-28 w-28 mr-4 overflow-hidden">
+                                                <img className="object-cover w-full h-full rounded-lg"
+                                                     src={souvenir.image_data}
+                                                     alt={souvenir.name}/>
+                                            </div>
+                                            <div className="flex justify-center flex-col">
+                                                <h4 className="font-bold">{souvenir.name}</h4>
+                                                <h4>Price : {souvenir.price}</h4>
+                                                <h4>{souvenir.description}</h4>
+                                            </div>
                                         </div>
                                         <div className="flex justify-center place-items-center mr-6">
                                             <AlertDialog>

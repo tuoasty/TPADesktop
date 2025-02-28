@@ -45,6 +45,7 @@ CREATE TABLE stores (
 CREATE TABLE souvenirs (
     id SERIAL PRIMARY KEY,
     store_id INTEGER NOT NULL REFERENCES stores(id) ON DELETE CASCADE,
+    image_id INTEGER NOT NULL REFERENCES images(id),
     name VARCHAR NOT NULL,
     price INTEGER NOT NULL,
     description VARCHAR NOT NULL

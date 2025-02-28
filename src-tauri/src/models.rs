@@ -136,7 +136,7 @@ pub struct StoreDetail {
     pub open_time: String,
     pub close_time: String,
     pub image_data: String,
-    pub souvenirs: Vec<Souvenir>
+    pub souvenirs: Vec<SouvenirDetail>
 }
 
 #[derive(Queryable, Selectable, Serialize)]
@@ -147,6 +147,7 @@ pub struct Souvenir {
     pub id: i32,
     pub name: String,
     pub store_id: i32,
+    pub image_id: i32,
     pub price: i32,
     pub description: String
 }
@@ -157,6 +158,16 @@ pub struct Souvenir {
 pub struct NewSouvenir {
     pub name: String,
     pub store_id: i32,
+    pub image_id: i32,
     pub price: i32,
     pub description: String
+}
+
+#[derive(Serialize)]
+pub struct SouvenirDetail {
+    pub id: i32,
+    pub name: String,
+    pub price: i32,
+    pub description: String,
+    pub image_data: String
 }

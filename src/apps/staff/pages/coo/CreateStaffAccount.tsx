@@ -28,9 +28,9 @@ export default function CreateStaffAccount(){
 
     return (
         <main className="h-full w-full bg-purple-200 flex justify-center items-center">
-            <form className="bg-white w-[30%] h-[75%] flex flex-col justify-center items-center p-5 gap-5 rounded-2xl"
+            <form className="bg-white w-[25%] h-auto flex flex-col justify-center items-center p-12 gap-5 rounded-2xl"
             onSubmit={createStaff}>
-                <label className="text-3xl font-bold">Create Staff Account</label>
+                <label className="text-2xl font-bold">Create Staff Account</label>
                 <Input type="text" placeholder="Username" name="name" value={formData.name}
                        onChange={handleInputChange}/>
                 <Input type="password" placeholder="Password" name="password" value={formData.password}

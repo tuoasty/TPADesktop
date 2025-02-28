@@ -1,5 +1,5 @@
 use crate::DbConnect;
-use crate::models::{Souvenir, Store, StoreDetail};
+use crate::models::{Souvenir, SouvenirDetail, Store, StoreDetail};
 use crate::schema::stores::dsl::stores;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
@@ -13,7 +13,7 @@ impl Store {
             .into_iter()
             .map(|store| {
                 let base64_image = get_image_data(conn, store.image_id).unwrap();
-                let souvenir_list: Vec<Souvenir> = find_store_souvenir(conn, store.id).unwrap();
+                let souvenir_list: Vec<SouvenirDetail> = find_store_souvenir(conn, store.id).unwrap();
 
                 StoreDetail {
                     id: store.id,

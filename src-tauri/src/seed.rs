@@ -167,8 +167,16 @@ pub fn seed_database(pool: &DbPool) {
             NewSouvenir{
                 name:"Stuffed Dog".to_string(),
                 store_id:1,
+                image_id: seed_image(conn, "images/seed/telordadar.png").unwrap(),
                 price:300000,
                 description:"A stuffed dog".to_string()
+            },
+            NewSouvenir{
+                name:"Egg Stuffed Doll".to_string(),
+                store_id:1,
+                image_id: seed_image(conn, "images/seed/telordadar.png").unwrap(),
+                price:500000,
+                description:"An Egg".to_string()
             }
         ];
 

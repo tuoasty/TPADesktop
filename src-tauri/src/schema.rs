@@ -34,6 +34,7 @@ diesel::table! {
     souvenirs (id) {
         id -> Int4,
         store_id -> Int4,
+        image_id -> Int4,
         name -> Varchar,
         price -> Int4,
         description -> Varchar,
@@ -62,6 +63,7 @@ diesel::table! {
 diesel::joinable!(menus -> images (image_id));
 diesel::joinable!(menus -> restaurants (restaurant_id));
 diesel::joinable!(restaurants -> images (image_id));
+diesel::joinable!(souvenirs -> images (image_id));
 diesel::joinable!(souvenirs -> stores (store_id));
 diesel::joinable!(stores -> images (image_id));
 
