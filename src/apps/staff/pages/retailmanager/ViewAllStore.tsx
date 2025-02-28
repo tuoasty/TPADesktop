@@ -14,20 +14,20 @@ import {toast} from "sonner";
 export default function ViewAllStore() {
     const [stores, setStores] = useState<Store[]>([]);
 
-    const refreshPage = () => {
-        window.location.reload();
-    };
-
-    useEffect(() => {
+    const fetchStores = async () => {
         invoke<Store[]>("find_all_store")
             .then(setStores)
+    }
+
+    useEffect(() => {
+        fetchStores();
     }, []);
 
     const removeSouvenir = async (id: number) => {
         try {
-            await invoke("remove_souvenir", {souvenirId:id});
+            await invoke("remove_souvenir", {selectedId:id});
             toast.success("Successfully removed")
-            refreshPage()
+            await fetchStores();
         } catch (error) {
             toast.error(`${error}`)
         }

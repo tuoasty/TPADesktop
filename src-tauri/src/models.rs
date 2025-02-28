@@ -1,7 +1,6 @@
 use chrono::NaiveTime;
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};
-use crate::schema::souvenirs::dsl::souvenirs;
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::staffs)]

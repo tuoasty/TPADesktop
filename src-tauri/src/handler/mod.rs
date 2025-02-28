@@ -18,7 +18,7 @@ macro_rules! all_handlers {
             $crate::handler::restaurant_handler::find_all_restaurant,
             $crate::handler::menu_handler::create_menu,
             $crate::handler::store_handler::find_all_store,
-            $crate::handler::store_handler::remove_souvenir,
+            $crate::handler::souvenir_handler::remove_souvenir,
             // Add all other commands
         ]
     };

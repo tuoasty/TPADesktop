@@ -8,6 +8,7 @@ import {Toaster} from "@/components/ui/sonner.tsx";
 import AddNewMenu from "@/apps/staff/pages/fbsupervisor/AddNewMenu.tsx";
 import ViewAllRestaurant from "@/apps/staff/pages/fbsupervisor/ViewAllRestaurant.tsx";
 import ViewAllStore from "@/apps/staff/pages/retailmanager/ViewAllStore.tsx";
+import ViewAllRide from "@/apps/staff/pages/ridemanager/ViewAllRide.tsx";
 
 export default function StaffApp() {
     return (
@@ -27,6 +28,8 @@ export default function StaffApp() {
                                 allowedRoles={["F&B Supervisor"]}><ViewAllRestaurant/></ProtectedRoute>}/>
                             <Route path="view-all-store" element={<ProtectedRoute
                                 allowedRoles={["Retail Manager"]}><ViewAllStore/></ProtectedRoute>}/>
+                            <Route path="view-all-ride" element={<ProtectedRoute
+                                allowedRoles={["Ride Manager"]}><ViewAllRide/></ProtectedRoute>}/>
                             <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                         </Route>
                     </Routes>
