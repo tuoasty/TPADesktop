@@ -1,4 +1,4 @@
-use base64::encode;
+use base64::{Engine as _, engine::general_purpose::STANDARD};
 use crate::models::{Image, NewImage};
 use crate::DbConnect;
 use diesel::RunQueryDsl;
@@ -29,7 +29,7 @@ pub fn get_image_data(conn: &mut DbConnect, id:i32) -> Result<String, String> {
     let base64_image = format!(
         "data:{};base64,{}",
         image.mime_type,
-        encode(&image.image_data)
+        STANDARD.encode(&image.image_data)
     );
 
     Ok(base64_image)

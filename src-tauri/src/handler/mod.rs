@@ -4,6 +4,7 @@ pub mod staff_handler;
 pub mod store_handler;
 pub mod menu_handler;
 pub mod souvenir_handler;
+pub mod ride_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -19,6 +20,7 @@ macro_rules! all_handlers {
             $crate::handler::menu_handler::create_menu,
             $crate::handler::store_handler::find_all_store,
             $crate::handler::souvenir_handler::remove_souvenir,
+            $crate::handler::ride_handler::find_all_ride,
             // Add all other commands
         ]
     };

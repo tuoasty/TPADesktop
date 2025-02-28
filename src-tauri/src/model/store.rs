@@ -1,5 +1,5 @@
 use crate::DbConnect;
-use crate::models::{Souvenir, SouvenirDetail, Store, StoreDetail};
+use crate::models::{SouvenirDetail, Store, StoreDetail};
 use crate::schema::stores::dsl::stores;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;

@@ -1,5 +1,5 @@
 use crate::handler::image_handler::create_image;
-use crate::models::{NewMenu, NewRestaurant, NewSouvenir, NewStaff, NewStore};
+use crate::models::{NewMenu, NewRestaurant, NewRide, NewSouvenir, NewStaff, NewStore};
 use crate::{DbConnect, DbPool};
 use bcrypt::{hash, DEFAULT_COST};
 use chrono::NaiveTime;
@@ -8,6 +8,7 @@ use mime_guess::from_path;
 use std::fs;
 use std::path::Path;
 use crate::schema::menus::dsl::menus;
+use crate::schema::rides::dsl::rides;
 use crate::schema::souvenirs::dsl::souvenirs;
 use crate::schema::stores::dsl::stores;
 
@@ -126,15 +127,15 @@ pub fn seed_database(pool: &DbPool) {
             NewRestaurant {
                 name: "Kemuning".to_string(),
                 image_id: seed_image(conn, "images/seed/kemuning.png").unwrap(),
-                open_time: NaiveTime::from_hms(9, 0, 0),
-                close_time: NaiveTime::from_hms(18, 0, 0),
+                open_time: NaiveTime::from_hms_opt(9, 0, 0).unwrap(),
+                close_time: NaiveTime::from_hms_opt(18, 0, 0).unwrap(),
                 cuisine: "Warteg".to_string(),
             },
             NewRestaurant {
                 name: "Gyukaku".to_string(),
                 image_id: seed_image(conn, "images/seed/gyukaku.png").unwrap(),
-                open_time: NaiveTime::from_hms(8, 0, 0),
-                close_time: NaiveTime::from_hms(23, 0, 0),
+                open_time: NaiveTime::from_hms_opt(8, 0, 0).unwrap(),
+                close_time: NaiveTime::from_hms_opt(23, 0, 0).unwrap(),
                 cuisine: "Japanese".to_string(),
             },
         ];
@@ -143,14 +144,31 @@ pub fn seed_database(pool: &DbPool) {
             NewStore {
                 name:"Walmart".to_string(),
                 image_id: seed_image(conn, "images/seed/walmart.png").unwrap(),
-                open_time: NaiveTime::from_hms(9, 0, 0),
-                close_time: NaiveTime::from_hms(22, 0, 0),
+                open_time: NaiveTime::from_hms_opt(9, 0, 0).unwrap(),
+                close_time: NaiveTime::from_hms_opt(22, 0, 0).unwrap(),
             },
             NewStore {
                 name:"Mito".to_string(),
                 image_id: seed_image(conn, "images/seed/mito.png").unwrap(),
-                open_time: NaiveTime::from_hms(7, 0, 0),
-                close_time: NaiveTime::from_hms(20, 0, 0),
+                open_time: NaiveTime::from_hms_opt(7, 0, 0).unwrap(),
+                close_time: NaiveTime::from_hms_opt(20, 0, 0).unwrap(),
+            },
+        ];
+
+        let seed_rides = vec![
+            NewRide {
+                image_id: seed_image(conn, "images/seed/ride1.png").unwrap(),
+                name:"Ride of Immediate Death".to_string(),
+                open_time: NaiveTime::from_hms_opt(9,0,0).unwrap(),
+                close_time:NaiveTime::from_hms_opt(19,0,0).unwrap(),
+                price:50000
+            },
+            NewRide {
+                image_id: seed_image(conn, "images/seed/ride2.png").unwrap(),
+                name:"Perosotan Kematian".to_string(),
+                open_time: NaiveTime::from_hms_opt(8,0,0).unwrap(),
+                close_time:NaiveTime::from_hms_opt(18,0,0).unwrap(),
+                price:60000
             },
         ];
 
@@ -206,6 +224,12 @@ pub fn seed_database(pool: &DbPool) {
 
         diesel::insert_into(souvenirs)
             .values(&seed_souvenirs)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(rides)
+            .values(&seed_rides)
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();

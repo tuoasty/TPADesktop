@@ -9,44 +9,70 @@ CREATE TABLE staffs
     role     VARCHAR NOT NULL
 );
 
-CREATE TABLE images(
+CREATE TABLE customers(
     id SERIAL PRIMARY KEY,
-    image_data BYTEA NOT NULL,
-    mime_type VARCHAR NOT NULL,
-    filename VARCHAR NOT NULL
+    name VARCHAR NOT NULL
+);
+
+CREATE TABLE images
+(
+    id         SERIAL PRIMARY KEY,
+    image_data BYTEA   NOT NULL,
+    mime_type  VARCHAR NOT NULL,
+    filename   VARCHAR NOT NULL
 );
 
 CREATE TABLE restaurants
 (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL,
-    image_id INTEGER NOT NULL REFERENCES images(id),
-    open_time TIME NOT NULL,
-    close_time TIME NOT NULL,
-    cuisine VARCHAR NOT NULL
+    id         SERIAL PRIMARY KEY,
+    name       VARCHAR NOT NULL,
+    image_id   INTEGER NOT NULL REFERENCES images (id),
+    open_time  TIME    NOT NULL,
+    close_time TIME    NOT NULL,
+    cuisine    VARCHAR NOT NULL
 );
 
-CREATE TABLE menus (
+CREATE TABLE menus
+(
+    id            SERIAL PRIMARY KEY,
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants (id) ON DELETE CASCADE,
+    image_id      INTEGER NOT NULL REFERENCES images (id),
+    name          VARCHAR NOT NULL,
+    price         INTEGER NOT NULL
+);
+
+CREATE TABLE stores
+(
+    id         SERIAL PRIMARY KEY,
+    image_id   INTEGER NOT NULL REFERENCES images (id),
+    name       VARCHAR NOT NULL,
+    open_time  TIME    NOT NULL,
+    close_time TIME    NOT NULL
+);
+
+CREATE TABLE souvenirs
+(
+    id          SERIAL PRIMARY KEY,
+    store_id    INTEGER NOT NULL REFERENCES stores (id) ON DELETE CASCADE,
+    image_id    INTEGER NOT NULL REFERENCES images (id),
+    name        VARCHAR NOT NULL,
+    price       INTEGER NOT NULL,
+    description VARCHAR NOT NULL
+);
+
+CREATE TABLE rides(
     id SERIAL PRIMARY KEY,
-    restaurant_id INTEGER NOT NULL REFERENCES restaurants(id) ON DELETE CASCADE,
-    image_id INTEGER NOT NULL REFERENCES images(id),
+    image_id INTEGER NOT NULL REFERENCES images (id),
     name VARCHAR NOT NULL,
+    open_time  TIME    NOT NULL,
+    close_time TIME    NOT NULL,
     price INTEGER NOT NULL
 );
 
-CREATE TABLE stores (
+CREATE TABLE ride_queues(
     id SERIAL PRIMARY KEY,
-    image_id INTEGER NOT NULL REFERENCES images(id),
-    name VARCHAR NOT NULL,
-    open_time TIME NOT NULL,
-    close_time TIME NOT NULL
+    ride_id INTEGER NOT NULL REFERENCES rides (id),
+    customer_id INTEGER NOT NULL REFERENCES customers (id),
+    time_joined TIME NOT NULL,
+    status VARCHAR NOT NULL
 );
-
-CREATE TABLE souvenirs (
-    id SERIAL PRIMARY KEY,
-    store_id INTEGER NOT NULL REFERENCES stores(id) ON DELETE CASCADE,
-    image_id INTEGER NOT NULL REFERENCES images(id),
-    name VARCHAR NOT NULL,
-    price INTEGER NOT NULL,
-    description VARCHAR NOT NULL
-)

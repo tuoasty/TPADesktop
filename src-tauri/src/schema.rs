@@ -1,6 +1,13 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
+    customers (id) {
+        id -> Int4,
+        name -> Varchar,
+    }
+}
+
+diesel::table! {
     images (id) {
         id -> Int4,
         image_data -> Bytea,
@@ -27,6 +34,27 @@ diesel::table! {
         open_time -> Time,
         close_time -> Time,
         cuisine -> Varchar,
+    }
+}
+
+diesel::table! {
+    ride_queues (id) {
+        id -> Int4,
+        ride_id -> Int4,
+        customer_id -> Int4,
+        time_joined -> Time,
+        status -> Varchar,
+    }
+}
+
+diesel::table! {
+    rides (id) {
+        id -> Int4,
+        image_id -> Int4,
+        name -> Varchar,
+        open_time -> Time,
+        close_time -> Time,
+        price -> Int4,
     }
 }
 
@@ -63,14 +91,20 @@ diesel::table! {
 diesel::joinable!(menus -> images (image_id));
 diesel::joinable!(menus -> restaurants (restaurant_id));
 diesel::joinable!(restaurants -> images (image_id));
+diesel::joinable!(ride_queues -> customers (customer_id));
+diesel::joinable!(ride_queues -> rides (ride_id));
+diesel::joinable!(rides -> images (image_id));
 diesel::joinable!(souvenirs -> images (image_id));
 diesel::joinable!(souvenirs -> stores (store_id));
 diesel::joinable!(stores -> images (image_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
+    customers,
     images,
     menus,
     restaurants,
+    ride_queues,
+    rides,
     souvenirs,
     staffs,
     stores,

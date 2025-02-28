@@ -1,4 +1,4 @@
-use base64::decode;
+use base64::{Engine as _, engine::general_purpose::STANDARD};
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
 use crate::handler::image_handler::{create_image};
@@ -22,7 +22,7 @@ pub fn create_menu(state: State<DbPool>, menu: NewMenuDetail) -> Result<(), Stri
     }
 
     let conn = &mut get_conn(&state)?;
-    let image_data = decode(&menu.image_data).map_err(|_| "Invalid Base encoding".to_string())?;
+    let image_data = STANDARD.decode(&menu.image_data).map_err(|_| "Invalid Base encoding".to_string())?;
 
     let id = create_image(conn, image_data, menu.mime_type, menu.image_name)?;
     let new_menu = NewMenu {
