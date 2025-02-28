@@ -1,6 +1,6 @@
 use diesel::{ExpressionMethods, RunQueryDsl};
 use tauri::{command, State};
-use crate::{get_conn, DbPool};
+use crate::{get_conn, DbConnect, DbPool};
 use crate::models::{Ride, RideDetail};
 use crate::schema::rides::dsl::rides;
 use crate::schema::rides::{id, status};
@@ -24,4 +24,8 @@ pub fn change_ride_status(state:State<DbPool>, ride_id:i32, ride_status:String) 
     };
 
     Ok(())
+}
+
+pub fn find_ride(conn:&mut DbConnect, ride_id:i32) -> Result<Ride, String> {
+    Ride::get_ride(conn, ride_id)
 }

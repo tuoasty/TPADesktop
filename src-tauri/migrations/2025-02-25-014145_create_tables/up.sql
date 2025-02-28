@@ -9,8 +9,9 @@ CREATE TABLE staffs
     role     VARCHAR NOT NULL
 );
 
-CREATE TABLE customers(
-    id SERIAL PRIMARY KEY,
+CREATE TABLE customers
+(
+    id   SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL
 );
 
@@ -60,20 +61,31 @@ CREATE TABLE souvenirs
     description VARCHAR NOT NULL
 );
 
-CREATE TABLE rides(
-    id SERIAL PRIMARY KEY,
-    image_id INTEGER NOT NULL REFERENCES images (id),
-    name VARCHAR NOT NULL,
+CREATE TABLE rides
+(
+    id         SERIAL PRIMARY KEY,
+    image_id   INTEGER NOT NULL REFERENCES images (id),
+    name       VARCHAR NOT NULL,
     open_time  TIME    NOT NULL,
     close_time TIME    NOT NULL,
-    price INTEGER NOT NULL,
-    status VARCHAR NOT NULL
+    price      INTEGER NOT NULL,
+    status     VARCHAR NOT NULL
 );
 
-CREATE TABLE ride_queues(
+CREATE TABLE ride_queues
+(
+    id          SERIAL PRIMARY KEY,
+    ride_id     INTEGER NOT NULL REFERENCES rides (id),
+    customer_id INTEGER NOT NULL REFERENCES customers (id),
+    time_joined TIME    NOT NULL,
+    status      VARCHAR NOT NULL
+);
+
+CREATE TABLE maintenance_reports
+(
     id SERIAL PRIMARY KEY,
     ride_id INTEGER NOT NULL REFERENCES rides (id),
-    customer_id INTEGER NOT NULL REFERENCES customers (id),
-    time_joined TIME NOT NULL,
+    staff_id INTEGER REFERENCES staffs (id),
+    description VARCHAR NOT NULL,
     status VARCHAR NOT NULL
-);
+)

@@ -1,5 +1,5 @@
 use crate::handler::image_handler::create_image;
-use crate::models::{NewMenu, NewRestaurant, NewRide, NewSouvenir, NewStaff, NewStore};
+use crate::models::{NewMaintenanceReport, NewMenu, NewRestaurant, NewRide, NewSouvenir, NewStaff, NewStore};
 use crate::{DbConnect, DbPool};
 use bcrypt::{hash, DEFAULT_COST};
 use chrono::NaiveTime;
@@ -7,6 +7,7 @@ use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
 use std::fs;
 use std::path::Path;
+use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use crate::schema::menus::dsl::menus;
 use crate::schema::rides::dsl::rides;
 use crate::schema::souvenirs::dsl::souvenirs;
@@ -170,7 +171,7 @@ pub fn seed_database(pool: &DbPool) {
                 open_time: NaiveTime::from_hms_opt(8,0,0).unwrap(),
                 close_time:NaiveTime::from_hms_opt(18,0,0).unwrap(),
                 price:60000,
-                status:"Maintenance in Progress".to_string()
+                status:"Pending Maintenance".to_string()
             },
             NewRide {
                 image_id: seed_image(conn, "images/seed/ride3.png").unwrap(),
@@ -180,6 +181,15 @@ pub fn seed_database(pool: &DbPool) {
                 price:30000,
                 status:"Open".to_string()
             },
+        ];
+
+        let seed_maintenance_report = vec![
+            NewMaintenanceReport {
+                ride_id: 2,
+                staff_id: None,
+                description: "Ada orang patah kaki".to_string(),
+                status:"In Progress".to_string(),
+            }
         ];
 
         let seed_menus = vec![
@@ -243,6 +253,13 @@ pub fn seed_database(pool: &DbPool) {
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();
+
+        diesel::insert_into(maintenance_reports)
+            .values(&seed_maintenance_report)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
     }
 }
 

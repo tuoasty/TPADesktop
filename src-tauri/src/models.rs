@@ -39,6 +39,7 @@ pub struct NewImage {
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::restaurants)]
+#[diesel(belongs_to(Image, foreign_key = image_id))]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Restaurant {
     pub id: i32,
@@ -60,7 +61,8 @@ pub struct NewRestaurant {
 }
 
 #[derive(Queryable, Selectable)]
-#[diesel(belongs_to(Restaurant))]
+#[diesel(belongs_to(Restaurant, foreign_key = restaurant_id))]
+#[diesel(belongs_to(Image, foreign_key = image_id))]
 #[diesel(table_name = crate::schema::menus)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Menu {
@@ -72,7 +74,6 @@ pub struct Menu {
 }
 
 #[derive(Insertable)]
-#[diesel(belongs_to(Restaurant))]
 #[diesel(table_name = crate::schema::menus)]
 pub struct NewMenu {
     pub restaurant_id: i32,
@@ -111,6 +112,7 @@ pub struct RestaurantDetail {
 }
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::stores)]
+#[diesel(belongs_to(Image, foreign_key = image_id))]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Store {
     pub id: i32,
@@ -140,7 +142,8 @@ pub struct StoreDetail {
 }
 
 #[derive(Queryable, Selectable, Serialize)]
-#[diesel(belongs_to(Souvenir))]
+#[diesel(belongs_to(Store, foreign_key = store_id))]
+#[diesel(belongs_to(Image, foreign_key = image_id))]
 #[diesel(table_name = crate::schema::souvenirs)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Souvenir {
@@ -153,7 +156,6 @@ pub struct Souvenir {
 }
 
 #[derive(Insertable)]
-#[diesel(belongs_to(Souvenir))]
 #[diesel(table_name = crate::schema::souvenirs)]
 pub struct NewSouvenir {
     pub name: String,
@@ -174,6 +176,7 @@ pub struct SouvenirDetail {
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::rides)]
+#[diesel(belongs_to(Store, foreign_key = image_id))]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Ride {
     pub id: i32,
@@ -205,4 +208,37 @@ pub struct RideDetail {
     pub price: i32,
     pub image_data: String,
     pub status:String
+}
+
+#[derive(Queryable, Selectable, Serialize)]
+#[diesel(belongs_to(Ride, foreign_key = ride_id))]
+#[diesel(belongs_to(Staff, foreign_key = staff_id))]
+#[diesel(table_name = crate::schema::maintenance_reports)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct MaintenanceReport {
+    pub id: i32,
+    pub ride_id: i32,
+    pub staff_id: Option<i32>,
+    pub description: String,
+    pub status: String
+}
+
+#[derive(Insertable, Deserialize)]
+#[diesel(table_name = crate::schema::maintenance_reports)]
+pub struct NewMaintenanceReport {
+    pub ride_id: i32,
+    pub staff_id: Option<i32>,
+    pub description: String,
+    pub status: String
+}
+
+#[derive(Serialize)]
+pub struct MaintenanceReportDetail {
+    pub id: i32,
+    pub ride_id: i32,
+    pub ride_name: String,
+    pub staff_id: Option<i32>,
+    pub staff_name: Option<String>,
+    pub description: String,
+    pub status: String
 }

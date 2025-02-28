@@ -5,3 +5,4 @@ mod store;
 mod menu;
 mod souvenir;
 mod ride;
+mod maintenance_report;

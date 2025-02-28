@@ -5,6 +5,7 @@ pub mod store_handler;
 pub mod menu_handler;
 pub mod souvenir_handler;
 pub mod ride_handler;
+pub mod maintenance_report_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
