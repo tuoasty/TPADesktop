@@ -30,7 +30,7 @@ export default function ViewAllRestaurant(){
                             <h4>Open Time : {restaurant.open_time} - {restaurant.close_time}</h4>
                             {restaurant.menus.length > 0 && (
                                 restaurant.menus.map((menu: Menu) => (
-                                    <div className="bg-purple-200 rounded-2xl p-2 flex justify-between">
+                                    <div key={menu.id} className="bg-purple-200 rounded-2xl p-2 flex justify-between">
                                         <div className="flex flex-row">
                                             <div className="h-28 w-28 mr-4 overflow-hidden">
                                                 <img className="object-cover w-full h-full rounded-lg"

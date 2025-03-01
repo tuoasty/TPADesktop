@@ -1,8 +1,9 @@
-mod image;
-mod restaurant;
-mod staff;
-mod store;
-mod menu;
-mod souvenir;
-mod ride;
-mod maintenance_report;
+pub mod image_model;
+pub mod maintenance_report_model;
+pub mod maintenance_assignment_model;
+pub mod menu_model;
+pub mod restaurant_model;
+pub mod ride_model;
+pub mod souvenir_model;
+pub mod staff_model;
+pub mod store_model;

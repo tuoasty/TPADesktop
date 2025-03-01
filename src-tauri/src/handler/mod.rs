@@ -6,6 +6,7 @@ pub mod menu_handler;
 pub mod souvenir_handler;
 pub mod ride_handler;
 pub mod maintenance_report_handler;
+pub mod maintenance_assignment_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -26,6 +27,8 @@ macro_rules! all_handlers {
             $crate::handler::ride_handler::change_ride_status,
             $crate::handler::maintenance_report_handler::find_all_maintenance_report,
             $crate::handler::maintenance_report_handler::find_all_maintenance_staff,
+            $crate::handler::maintenance_report_handler::accept_request,
+            $crate::handler::maintenance_report_handler::reject_request,
             // Add all other commands
         ]
     };

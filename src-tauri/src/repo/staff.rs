@@ -1,4 +1,4 @@
-use crate::models::{NewStaff, Staff, StaffDetail};
+use crate::model::staff_model::{NewStaff, Staff, StaffDetail};
 use crate::schema::staffs::dsl::staffs;
 use crate::schema::staffs::{name, role};
 use crate::DbConnect;

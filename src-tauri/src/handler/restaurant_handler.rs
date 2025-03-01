@@ -1,4 +1,4 @@
-use crate::models::{Restaurant, RestaurantDetail};
+use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
 use crate::{get_conn, DbPool};
 use tauri::{command, State};
 #[command]

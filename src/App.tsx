@@ -7,9 +7,13 @@ export default function App() {
     const [appId, setAppId] = useState("1");
     useEffect(() => {
         const fetchAppId = async () => {
-            const id: string = await invoke("get_app_id");
-            console.log(id);
-            setAppId(id);
+            try {
+                const id: string = await invoke("get_app_id");
+                console.log(id);
+                setAppId(id);
+            } catch {
+                setAppId("2")
+            }
         }
 
         fetchAppId();

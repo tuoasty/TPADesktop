@@ -1,6 +1,6 @@
 use crate::DbConnect;
 use crate::handler::image_handler::get_image_data;
-use crate::models::{Ride, RideDetail};
+use crate::model::ride_model::{Ride, RideDetail};
 use diesel::prelude::*;
 use crate::schema::rides::dsl::rides;
 use crate::schema::rides::{id, status};

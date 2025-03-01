@@ -83,9 +83,17 @@ CREATE TABLE ride_queues
 
 CREATE TABLE maintenance_reports
 (
-    id SERIAL PRIMARY KEY,
-    ride_id INTEGER NOT NULL REFERENCES rides (id),
-    staff_id INTEGER REFERENCES staffs (id),
+    id          SERIAL PRIMARY KEY,
+    ride_id     INTEGER NOT NULL REFERENCES rides (id),
     description VARCHAR NOT NULL,
-    status VARCHAR NOT NULL
+    status      VARCHAR NOT NULL
+);
+
+CREATE TABLE maintenance_assignments
+(
+    id                    SERIAL PRIMARY KEY,
+    staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
+    maintenance_report_id INTEGER NOT NULL REFERENCES maintenance_reports (id) ON DELETE CASCADE,
+    assignment_date       TIMESTAMP WITHOUT TIME ZONE    NOT NULL,
+    status                VARCHAR NOT NULL
 )

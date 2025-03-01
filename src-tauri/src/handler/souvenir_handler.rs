@@ -1,6 +1,6 @@
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
-use crate::models::{Souvenir, SouvenirDetail};
+use crate::model::souvenir_model::{Souvenir, SouvenirDetail};
 pub fn find_store_souvenir(conn: &mut DbConnect,selected_id:i32) -> Result<Vec<SouvenirDetail>, String> {
     let store_souvenirs = Souvenir::get_souvenir_of_store(conn, selected_id)?;
 

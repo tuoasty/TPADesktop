@@ -56,7 +56,7 @@ export default function ViewAllRide(){
                             </div>
                             <div className="w-48 flex justify-center place-items-center mr-6 flex-col gap-4">
                                 <Dialog>
-                                    <DialogTrigger disabled={ride.status == "Maintenance in Progress" || ride.status == "Pending Maintenance"}>
+                                    <DialogTrigger asChild>
                                         <Button disabled={ride.status == "Maintenance in Progress" || ride.status == "Pending Maintenance"}
                                                 className="bg-purple-700 w-48 h-12">Request Maintenance</Button>
                                     </DialogTrigger>

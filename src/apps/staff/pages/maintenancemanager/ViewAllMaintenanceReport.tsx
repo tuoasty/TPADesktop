@@ -32,16 +32,24 @@ export default function ViewAllMaintenanceReport() {
         fetchMaintenanceStaffs();
     }, []);
 
-    const acceptRequest = async () => {
-        if(selectedId == null){
-            toast.error("Please select a staff")
-        } else {
-
+    const acceptRequest = async (maintenanceId:number) => {
+        try {
+            await invoke("accept_request", {selectedStaffId:selectedId, selectedMaintenanceId:maintenanceId});
+            toast.success("Successfully accepted request")
+            fetchMaintenanceReports();
+        } catch(e) {
+            toast.error(`${e}`)
         }
     }
 
-    const rejectRequest = async () => {
-
+    const rejectRequest = async (maintenanceId:number) => {
+        try {
+            await invoke("reject_request", {selectedMaintenanceId:maintenanceId})
+            toast.success("Successfully rejected request")
+            fetchMaintenanceReports();
+        } catch (e) {
+            toast.error(`${e}`);
+        }
     }
 
     return (
@@ -59,7 +67,7 @@ export default function ViewAllMaintenanceReport() {
                         </div>
                         <div className="flex flex-col gap-5 justify-center pr-8">
                             <AlertDialog>
-                                <AlertDialogTrigger disabled={report.status == "Completed" || report.status == "Rejected" || report.status == "In Progress"}>
+                                <AlertDialogTrigger asChild>
                                     <Button className="w-48 h-12 bg-green-500"
                                             disabled={report.status == "Completed" || report.status == "Rejected" || report.status == "In Progress"}>
                                         Accept Report
@@ -87,11 +95,11 @@ export default function ViewAllMaintenanceReport() {
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction
-                                            onClick={acceptRequest}>Confirm</AlertDialogAction>
+                                            onClick={() => {acceptRequest(report.id)}}>Confirm</AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>
-                            <Button onClick={rejectRequest} className="w-48 h-12 bg-red-500"
+                            <Button onClick={() => {rejectRequest(report.id)}} className="w-48 h-12 bg-red-500"
                                     disabled={report.status == "Completed" || report.status == "Rejected" || report.status == "In Progress"}>
                                 Decline Report
                             </Button>

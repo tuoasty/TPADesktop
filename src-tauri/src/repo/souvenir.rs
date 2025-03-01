@@ -1,5 +1,5 @@
 use crate::DbConnect;
-use crate::models::{Souvenir, SouvenirDetail};
+use crate::model::souvenir_model::{Souvenir, SouvenirDetail};
 use crate::schema::souvenirs::dsl::souvenirs;
 use diesel::prelude::*;
 use crate::handler::image_handler::{get_image_data, remove_image};

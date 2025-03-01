@@ -1,6 +1,6 @@
 use base64::{Engine as _, engine::general_purpose::STANDARD};
-use crate::models::{Image, NewImage};
 use crate::DbConnect;
+use crate::model::image_model::{Image, NewImage};
 
 pub fn create_image(
     conn: &mut DbConnect,

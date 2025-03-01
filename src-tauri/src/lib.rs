@@ -8,10 +8,10 @@ use tauri::command;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 mod handler;
-mod model;
-pub mod models;
+mod repo;
 pub mod schema;
 pub mod seed;
+mod model;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 pub type DbConnect = r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;

@@ -1,9 +1,10 @@
 use crate::DbConnect;
-use crate::models::{SouvenirDetail, Store, StoreDetail};
+use crate::model::store_model::{Store, StoreDetail};
 use crate::schema::stores::dsl::stores;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
 use crate::handler::souvenir_handler::find_store_souvenir;
+use crate::model::souvenir_model::SouvenirDetail;
 
 impl Store {
     pub fn get_all_stores(conn: &mut DbConnect) -> Result<Vec<StoreDetail>, String> {

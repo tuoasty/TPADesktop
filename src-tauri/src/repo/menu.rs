@@ -1,5 +1,5 @@
 use crate::DbConnect;
-use crate::models::{Menu, MenuDetail, NewMenu, NewMenuDetail};
+use crate::model::menu_model::{Menu, MenuDetail, NewMenu, NewMenuDetail};
 use crate::schema::menus::dsl::menus;
 use crate::schema::menus::restaurant_id;
 use diesel::prelude::*;

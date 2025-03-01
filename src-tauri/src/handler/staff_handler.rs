@@ -1,7 +1,7 @@
 use bcrypt::{hash, verify, DEFAULT_COST};
 use tauri::{command, State};
 use crate::{get_conn, CurrentStaff, DbConnect, DbPool};
-use crate::models::{NewStaff, Staff, StaffDetail};
+use crate::model::staff_model::{NewStaff, Staff, StaffDetail};
 
 #[command]
 pub fn create_staff(state: State<DbPool>, name:String, password:String, role:String) -> Result<String, String>{

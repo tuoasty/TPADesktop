@@ -1,5 +1,4 @@
 use crate::handler::image_handler::create_image;
-use crate::models::{NewMaintenanceReport, NewMenu, NewRestaurant, NewRide, NewSouvenir, NewStaff, NewStore};
 use crate::{DbConnect, DbPool};
 use bcrypt::{hash, DEFAULT_COST};
 use chrono::NaiveTime;
@@ -7,6 +6,13 @@ use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
 use std::fs;
 use std::path::Path;
+use crate::model::maintenance_report_model::NewMaintenanceReport;
+use crate::model::menu_model::NewMenu;
+use crate::model::restaurant_model::NewRestaurant;
+use crate::model::ride_model::NewRide;
+use crate::model::souvenir_model::NewSouvenir;
+use crate::model::staff_model::NewStaff;
+use crate::model::store_model::NewStore;
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use crate::schema::menus::dsl::menus;
 use crate::schema::rides::dsl::rides;
@@ -179,15 +185,19 @@ pub fn seed_database(pool: &DbPool) {
                 open_time: NaiveTime::from_hms_opt(10,0,0).unwrap(),
                 close_time:NaiveTime::from_hms_opt(22,0,0).unwrap(),
                 price:30000,
-                status:"Open".to_string()
+                status:"Pending Maintenance".to_string()
             },
         ];
 
         let seed_maintenance_report = vec![
             NewMaintenanceReport {
                 ride_id: 2,
-                staff_id: None,
                 description: "Ada orang patah kaki".to_string(),
+                status:"Pending".to_string(),
+            },
+            NewMaintenanceReport {
+                ride_id: 3,
+                description: "Maklo Ilang".to_string(),
                 status:"Pending".to_string(),
             }
         ];

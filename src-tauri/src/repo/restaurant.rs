@@ -1,4 +1,4 @@
-use crate::models::{Restaurant, RestaurantDetail};
+use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
 use crate::schema::restaurants::dsl::restaurants;
 use crate::schema::restaurants::id;
 use crate::DbConnect;

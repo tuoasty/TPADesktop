@@ -1,6 +1,6 @@
 use tauri::{command, State};
 use crate::{get_conn, DbPool};
-use crate::models::{Store, StoreDetail};
+use crate::model::store_model::{Store, StoreDetail};
 
 #[command]
 pub fn find_all_store(state: State<DbPool>) -> Result<Vec<StoreDetail>, String> {

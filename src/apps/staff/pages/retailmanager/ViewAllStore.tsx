@@ -49,7 +49,7 @@ export default function ViewAllStore() {
                             <h3 className="font-bold text-2xl">Souvenirs</h3>
                             {store.souvenirs.length > 0 && (
                                 store.souvenirs.map((souvenir: Souvenir) => (
-                                    <div className="bg-purple-200 rounded-2xl p-2 flex justify-between">
+                                    <div key={souvenir.id} className="bg-purple-200 rounded-2xl p-2 flex justify-between">
                                         <div className="flex flex-row">
                                             <div className="h-28 w-28 mr-4 overflow-hidden">
                                                 <img className="object-cover w-full h-full rounded-lg"
@@ -64,7 +64,7 @@ export default function ViewAllStore() {
                                         </div>
                                         <div className="flex justify-center place-items-center mr-4">
                                             <AlertDialog>
-                                                <AlertDialogTrigger>
+                                                <AlertDialogTrigger asChild>
                                                     <Button type="submit" className="bg-red-500">Remove Souvenir</Button>
                                                 </AlertDialogTrigger>
                                                 <AlertDialogContent>

@@ -1,7 +1,7 @@
 use base64::{Engine as _, engine::general_purpose::STANDARD};
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
-use crate::models::{Menu, MenuDetail, NewMenuDetail};
+use crate::model::menu_model::{Menu, MenuDetail, NewMenuDetail};
 
 pub fn find_restaurant_menu(conn: &mut DbConnect, id:i32) -> Result<Vec<MenuDetail>, String> {
     let restaurant_menus = Menu::get_restaurant_menu(conn, id)?;
