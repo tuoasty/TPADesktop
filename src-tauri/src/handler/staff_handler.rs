@@ -1,7 +1,7 @@
 use bcrypt::{hash, verify, DEFAULT_COST};
 use tauri::{command, State};
-use crate::{get_conn, CurrentStaff, DbPool};
-use crate::models::{NewStaff, Staff};
+use crate::{get_conn, CurrentStaff, DbConnect, DbPool};
+use crate::models::{NewStaff, Staff, StaffDetail};
 
 #[command]
 pub fn create_staff(state: State<DbPool>, name:String, password:String, role:String) -> Result<String, String>{
@@ -68,4 +68,8 @@ pub fn logout_staff(current_staff: State<CurrentStaff>) -> Result<String, String
     let mut lock = current_staff.0.lock().unwrap();
     *lock = None;
     Ok("Successfully logout".to_string())
+}
+
+pub fn find_staff_per_role(conn: &mut DbConnect, staff_role:String) -> Result<Vec<StaffDetail>, String> {
+    Staff::get_staff_per_role(conn, staff_role)
 }

@@ -171,7 +171,7 @@ pub fn seed_database(pool: &DbPool) {
                 open_time: NaiveTime::from_hms_opt(8,0,0).unwrap(),
                 close_time:NaiveTime::from_hms_opt(18,0,0).unwrap(),
                 price:60000,
-                status:"Maintenance in Progress".to_string()
+                status:"Pending Maintenance".to_string()
             },
             NewRide {
                 image_id: seed_image(conn, "images/seed/ride3.png").unwrap(),
@@ -188,7 +188,7 @@ pub fn seed_database(pool: &DbPool) {
                 ride_id: 2,
                 staff_id: None,
                 description: "Ada orang patah kaki".to_string(),
-                status:"In Progress".to_string(),
+                status:"Pending".to_string(),
             }
         ];
 

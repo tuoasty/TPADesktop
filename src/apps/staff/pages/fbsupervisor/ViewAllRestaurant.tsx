@@ -6,9 +6,13 @@ import {Menu} from "@/ types/menu.ts";
 export default function ViewAllRestaurant(){
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
-    useEffect(() => {
+    const fetchRestaurants = async () => {
         invoke<Restaurant[]>("find_all_restaurant")
             .then(setRestaurants)
+    }
+
+    useEffect(() => {
+        fetchRestaurants()
     }, []);
 
     return (

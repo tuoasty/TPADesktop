@@ -12,6 +12,13 @@ pub struct Staff {
     pub role: String,
 }
 
+#[derive(Clone, Serialize, Deserialize)]
+pub struct StaffDetail {
+    pub id: i32,
+    pub name: String,
+    pub role: String,
+}
+
 #[derive(Insertable)]
 #[diesel(table_name = crate::schema::staffs)]
 pub struct NewStaff {

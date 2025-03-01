@@ -25,6 +25,7 @@ macro_rules! all_handlers {
             $crate::handler::ride_handler::find_all_ride,
             $crate::handler::ride_handler::change_ride_status,
             $crate::handler::maintenance_report_handler::find_all_maintenance_report,
+            $crate::handler::maintenance_report_handler::find_all_maintenance_staff,
             // Add all other commands
         ]
     };

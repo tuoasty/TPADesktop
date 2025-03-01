@@ -4,7 +4,6 @@ use dotenvy::dotenv;
 use r2d2::{Pool, PooledConnection};
 use std::env;
 use std::sync::Mutex;
-use serde::{Deserialize, Serialize};
 use tauri::command;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
@@ -16,13 +15,6 @@ pub mod seed;
 
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 pub type DbConnect = r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;
-
-#[derive(Clone, Serialize, Deserialize)]
-pub struct StaffData {
-    pub id: i32,
-    pub name: String,
-    pub role: String,
-}
 pub struct CurrentStaff(pub Mutex<Option<(i32, String, String)>>);
 fn establish_connection() -> DbPool {
     dotenv().ok();
@@ -60,7 +52,6 @@ fn get_app_id() -> Result<String, String> {
             }
         })
         .unwrap_or_else(|| "2".to_string());
-    eprintln!("{}", id);
     Ok(id)
 }
 
