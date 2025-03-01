@@ -27,7 +27,7 @@ CREATE TABLE restaurants
 (
     id         SERIAL PRIMARY KEY,
     name       VARCHAR NOT NULL,
-    image_id   INTEGER NOT NULL REFERENCES images (id),
+    image_id   INTEGER NOT NULL REFERENCES images (id) ON DELETE CASCADE,
     open_time  TIME    NOT NULL,
     close_time TIME    NOT NULL,
     cuisine    VARCHAR NOT NULL

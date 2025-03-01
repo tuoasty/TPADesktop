@@ -1,7 +1,6 @@
 use base64::{Engine as _, engine::general_purpose::STANDARD};
 use crate::models::{Image, NewImage};
 use crate::DbConnect;
-use diesel::RunQueryDsl;
 
 pub fn create_image(
     conn: &mut DbConnect,
@@ -9,23 +8,17 @@ pub fn create_image(
     mime: String,
     name: String,
 ) -> Result<i32, String> {
-    use crate::schema::images::dsl::*;
-
     let new_image = NewImage {
         image_data: image,
         mime_type: mime,
         filename: name,
     };
 
-    diesel::insert_into(images)
-        .values(&new_image)
-        .returning(id)
-        .get_result(conn)
-        .map_err(|e| e.to_string())
+    Image::create_image(conn, new_image)
 }
 
-pub fn get_image_data(conn: &mut DbConnect, id:i32) -> Result<String, String> {
-    let image: Image = Image::get_image(conn, id)?;
+pub fn get_image_data(conn: &mut DbConnect, image_id:i32) -> Result<String, String> {
+    let image: Image = Image::get_image(conn, image_id)?;
     let base64_image = format!(
         "data:{};base64,{}",
         image.mime_type,
@@ -33,4 +26,8 @@ pub fn get_image_data(conn: &mut DbConnect, id:i32) -> Result<String, String> {
     );
 
     Ok(base64_image)
+}
+
+pub fn remove_image(conn: &mut DbConnect, image_id:i32) -> Result<(), String> {
+    Image::remove_image(conn, image_id)
 }

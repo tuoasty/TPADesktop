@@ -1,9 +1,6 @@
-use diesel::RunQueryDsl;
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
 use crate::models::{Souvenir, SouvenirDetail};
-use diesel::prelude::*;
-use crate::schema::souvenirs::dsl::*;
 pub fn find_store_souvenir(conn: &mut DbConnect,selected_id:i32) -> Result<Vec<SouvenirDetail>, String> {
     let store_souvenirs = Souvenir::get_souvenir_of_store(conn, selected_id)?;
 
@@ -12,12 +9,7 @@ pub fn find_store_souvenir(conn: &mut DbConnect,selected_id:i32) -> Result<Vec<S
 
 #[command]
 pub fn remove_souvenir(state:State<DbPool>, selected_id:i32) -> Result<(), String> {
-    use crate::schema::souvenirs::dsl::id;
     let conn = &mut get_conn(&state)?;
 
-    diesel::delete(souvenirs.filter(id.eq(selected_id)))
-        .execute(conn)
-        .map_err(|e| format!("Failed to delete souvenir: {}", e))?;
-
-    Ok(())
+    Souvenir::remove_souvenir_and_image(conn, selected_id)
 }

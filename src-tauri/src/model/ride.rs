@@ -3,7 +3,7 @@ use crate::handler::image_handler::get_image_data;
 use crate::models::{Ride, RideDetail};
 use diesel::prelude::*;
 use crate::schema::rides::dsl::rides;
-use crate::schema::rides::id;
+use crate::schema::rides::{id, status};
 
 impl Ride {
     pub fn get_all_ride(conn:&mut DbConnect) -> Result<Vec<RideDetail>, String> {
@@ -34,5 +34,14 @@ impl Ride {
             .filter(id.eq(&ride_id))
             .first(conn)
             .map_err(|e| e.to_string())
+    }
+
+    pub fn update_ride_status(conn:&mut DbConnect, ride_id:i32, new_status:String) -> Result<(), String>{
+        diesel::update(rides.filter(id.eq(ride_id)))
+            .set(status.eq(new_status))
+            .execute(conn)
+            .map_err(|e| format!("Error updating status: {}", e))?;
+
+        Ok(())
     }
 }

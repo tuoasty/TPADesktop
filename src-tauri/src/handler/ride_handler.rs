@@ -1,9 +1,6 @@
-use diesel::{ExpressionMethods, RunQueryDsl};
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
 use crate::models::{Ride, RideDetail};
-use crate::schema::rides::dsl::rides;
-use crate::schema::rides::{id, status};
 
 #[command]
 pub fn find_all_ride(state:State<DbPool>) -> Result<Vec<RideDetail>, String> {
@@ -17,13 +14,15 @@ pub fn find_all_ride(state:State<DbPool>) -> Result<Vec<RideDetail>, String> {
 pub fn change_ride_status(state:State<DbPool>, ride_id:i32, ride_status:String) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
 
-    if ride_status == "Open" {
-        diesel::update(rides).filter(id.eq(ride_id)).set(status.eq("Closed")).execute(conn).unwrap();
-    } else if ride_status == "Closed" {
-        diesel::update(rides).filter(id.eq(ride_id)).set(status.eq("Open")).execute(conn).unwrap();
-    };
+    let mut new_status = ride_status.clone();
 
-    Ok(())
+    if ride_status == "Open" {
+        new_status = "Closed".to_string();
+    } else if ride_status == "Closed" {
+        new_status = "Open".to_string();
+    }
+
+    Ride::update_ride_status(conn, ride_id, new_status)
 }
 
 pub fn find_ride(conn:&mut DbConnect, ride_id:i32) -> Result<Ride, String> {
