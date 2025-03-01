@@ -12,6 +12,7 @@ export default function StaffNavbar(){
         {text:"View All Restaurant", key:3, to:"/staff/view-all-restaurant", roles: ["F&B Supervisor"]},
         {text:"View All Store", key:4, to:"/staff/view-all-store", roles: ["Retail Manager"]},
         {text:"View All Ride", key:5, to:"/staff/view-all-ride", roles: ["Ride Manager"]},
+        {text:"View All Maintenance Report", key:6, to:"/staff/view-all-maintenance-report", roles: ["Maintenance Manager"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {

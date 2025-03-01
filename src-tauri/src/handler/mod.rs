@@ -23,6 +23,7 @@ macro_rules! all_handlers {
             $crate::handler::souvenir_handler::remove_souvenir,
             $crate::handler::ride_handler::find_all_ride,
             $crate::handler::ride_handler::change_ride_status,
+            $crate::handler::maintenance_report_handler::find_all_maintenance_report,
             // Add all other commands
         ]
     };

@@ -1,5 +1,4 @@
 use bcrypt::{hash, verify, DEFAULT_COST};
-use diesel::prelude::*;
 use tauri::{command, State};
 use crate::{get_conn, CurrentStaff, DbPool};
 use crate::models::{NewStaff, Staff};
