@@ -78,7 +78,7 @@ export default function ViewAllRide(){
                                         </DialogFooter>
                                     </DialogContent>
                                 </Dialog>
-                                <Button className="w-48 h-12 bg-purple-700"
+                                <Button className={`w-48 h-12  ${ride.status == "Closed" ? "bg-green-500" : ride.status == "Open" ? "bg-red-500" : "bg-purple-700"}`}
                                         disabled={ride.status !== "Open" && ride.status !== "Closed"}
                                 onClick={() => updateStatus(ride.id, ride.status)}>
                                     {ride.status === "Open" ? "Close" : "Open"}

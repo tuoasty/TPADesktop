@@ -21,6 +21,7 @@ export default function ViewAllMaintenanceReport() {
                         <div className="w-full h-full flex flex-col p-8 gap-2">
                             <h1 className="font-bold text-4xl">{report.ride_name}</h1>
                             <h2 className="text-2xl">Status : {report.status}</h2>
+                            <h4>Description : {report.description}</h4>
                         </div>
                     </div>
                 ))

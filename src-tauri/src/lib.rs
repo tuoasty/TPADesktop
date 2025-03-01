@@ -59,7 +59,7 @@ fn get_app_id() -> Result<String, String> {
                 None
             }
         })
-        .unwrap_or_else(|| "customer".to_string());
+        .unwrap_or_else(|| "2".to_string());
     eprintln!("{}", id);
     Ok(id)
 }

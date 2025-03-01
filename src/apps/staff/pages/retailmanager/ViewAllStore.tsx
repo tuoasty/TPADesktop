@@ -10,6 +10,7 @@ import {
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog.tsx";
 import {toast} from "sonner";
+import {Button} from "@/components/ui/button.tsx";
 
 export default function ViewAllStore() {
     const [stores, setStores] = useState<Store[]>([]);
@@ -61,10 +62,10 @@ export default function ViewAllStore() {
                                                 <h4>{souvenir.description}</h4>
                                             </div>
                                         </div>
-                                        <div className="flex justify-center place-items-center mr-6">
+                                        <div className="flex justify-center place-items-center mr-4">
                                             <AlertDialog>
-                                                <AlertDialogTrigger className="bg-red-500 p-2 rounded-xl">
-                                                    Remove Souvenir
+                                                <AlertDialogTrigger>
+                                                    <Button type="submit" className="bg-red-500">Remove Souvenir</Button>
                                                 </AlertDialogTrigger>
                                                 <AlertDialogContent>
                                                     <AlertDialogHeader>

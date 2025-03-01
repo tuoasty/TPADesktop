@@ -11,6 +11,7 @@ pub mod maintenance_report_handler;
 macro_rules! all_handlers {
     () => {
         tauri::generate_handler![
+            get_app_id,
             $crate::handler::staff_handler::create_staff,
             $crate::handler::staff_handler::verify_authentication,
             $crate::handler::staff_handler::verify_login,
