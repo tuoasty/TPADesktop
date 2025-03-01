@@ -6,7 +6,6 @@ use crate::models::{NewStaff, Staff};
 
 #[command]
 pub fn create_staff(state: State<DbPool>, name:String, password:String, role:String) -> Result<String, String>{
-    use crate::schema::staffs::dsl::staffs;
     let conn = &mut get_conn(&state)?;
     let hashed_password = hash(password, DEFAULT_COST).map_err(|_| "failed to hash".to_string())?;
 
@@ -16,12 +15,7 @@ pub fn create_staff(state: State<DbPool>, name:String, password:String, role:Str
         role,
     };
 
-    diesel::insert_into(staffs)
-        .values(&staff)
-        .execute(conn)
-        .map_err(|e| e.to_string())?;
-
-    Ok("Successfully registered".to_string())
+    Staff::create_staff(conn, staff)
 }
 
 #[command]
