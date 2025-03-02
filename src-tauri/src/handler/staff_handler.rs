@@ -73,3 +73,7 @@ pub fn logout_staff(current_staff: State<CurrentStaff>) -> Result<String, String
 pub fn find_staff_per_role(conn: &mut DbConnect, staff_role:String) -> Result<Vec<StaffDetail>, String> {
     Staff::get_staff_per_role(conn, staff_role)
 }
+
+pub fn find_staff_role(conn: &mut DbConnect, selected_id:i32) -> Result<String, String> {
+    Staff::get_role(conn, selected_id)
+}

@@ -22,6 +22,7 @@ macro_rules! all_handlers {
             $crate::handler::staff_handler::get_current_staff,
             $crate::handler::restaurant_handler::find_all_restaurant,
             $crate::handler::restaurant_handler::change_restaurant_status,
+            $crate::handler::restaurant_handler::find_all_consumption_staff,
             $crate::handler::menu_handler::create_menu,
             $crate::handler::store_handler::find_all_store,
             $crate::handler::store_handler::change_store_status,
@@ -32,6 +33,7 @@ macro_rules! all_handlers {
             $crate::handler::maintenance_report_handler::find_all_maintenance_staff,
             $crate::handler::maintenance_report_handler::accept_request,
             $crate::handler::maintenance_report_handler::reject_request,
+            $crate::handler::restaurant_assignment_handler::assign_staff_to_restaurant,
             // Add all other commands
         ]
     };

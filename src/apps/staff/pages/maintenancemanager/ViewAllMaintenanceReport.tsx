@@ -2,18 +2,18 @@ import {useEffect, useState} from "react";
 import {MaintenanceReport} from "@/ types/maintenance_report.ts";
 import {invoke} from "@tauri-apps/api/core";
 import {Button} from "@/components/ui/button.tsx";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger
-} from "@/components/ui/alert-dialog.tsx";
 import {Staff} from "@/ types/staff.ts";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {toast} from "sonner";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog.tsx";
 export default function ViewAllMaintenanceReport() {
     const [maintenanceReports, setMaintenanceReports] = useState<MaintenanceReport[]>([]);
     const [maintenanceStaff, setMaintenanceStaffs] = useState<Staff[]>([]);
@@ -66,20 +66,18 @@ export default function ViewAllMaintenanceReport() {
                             <h4>Description : {report.description}</h4>
                         </div>
                         <div className="flex flex-col gap-5 justify-center pr-8">
-                            <AlertDialog>
-                                <AlertDialogTrigger asChild>
+                            <Dialog>
+                                <DialogTrigger asChild>
                                     <Button className="w-48 h-12 bg-green-500"
                                             disabled={report.status == "Completed" || report.status == "Rejected" || report.status == "In Progress"}>
                                         Accept Report
                                     </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Choose Staff to Assign</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            Make sure the staff is free
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
+                                </DialogTrigger>
+                                <DialogContent>
+                                    <DialogHeader>
+                                        <DialogTitle>Choose Staff to Assign</DialogTitle>
+                                        <DialogDescription>Make sure the staff is free</DialogDescription>
+                                    </DialogHeader>
                                     <Select onValueChange={(val) => setSelectedId(Number(val))}>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Maintenance Staff"/>
@@ -92,13 +90,11 @@ export default function ViewAllMaintenanceReport() {
                                             )}
                                         </SelectContent>
                                     </Select>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction
-                                            onClick={() => {acceptRequest(report.id)}}>Confirm</AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
+                                    <DialogFooter>
+                                        <Button onClick={() => {acceptRequest(report.id)}}>Confirm</Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
                             <Button onClick={() => {rejectRequest(report.id)}} className="w-48 h-12 bg-red-500"
                                     disabled={report.status == "Completed" || report.status == "Rejected" || report.status == "In Progress"}>
                                 Decline Report

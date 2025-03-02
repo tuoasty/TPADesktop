@@ -1,6 +1,6 @@
 use crate::model::staff_model::{NewStaff, Staff, StaffDetail};
 use crate::schema::staffs::dsl::staffs;
-use crate::schema::staffs::{name, role};
+use crate::schema::staffs::{id, name, role};
 use crate::DbConnect;
 use diesel::prelude::*;
 impl Staff {
@@ -38,5 +38,13 @@ impl Staff {
             .collect();
 
         Ok(staff_details)
+    }
+
+    pub fn get_role(conn: &mut DbConnect, selected_id:i32) -> Result<String, String> {
+        staffs
+            .filter(id.eq(&selected_id))
+            .select(role)
+            .first(conn)
+            .map_err(|e| e.to_string())
     }
 }

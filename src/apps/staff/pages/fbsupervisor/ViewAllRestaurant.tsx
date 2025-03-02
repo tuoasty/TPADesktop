@@ -11,30 +11,45 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import {Input} from "@/components/ui/input.tsx";
 import {toast} from "sonner";
 import {Staff} from "@/ types/staff.ts";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 
 export default function ViewAllRestaurant() {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+    const [staffs, setStaffs] = useState<Staff[]>([]);
+    const [selectedId, setSelectedId] = useState<number | null>(null);
 
     const fetchRestaurants = async () => {
         invoke<Restaurant[]>("find_all_restaurant")
             .then(setRestaurants)
     }
 
+    const fetchConsumptionStaffs = async () => {
+        invoke<Staff[]>("find_all_consumption_staff")
+            .then(setStaffs)
+    }
+
     useEffect(() => {
-        fetchRestaurants()
+        fetchRestaurants();
+        fetchConsumptionStaffs();
     }, []);
 
-    const changeRestaurantStatus = (id:number, status:string) => {
+    const changeRestaurantStatus = async (id:number, status:string) => {
         try {
-            invoke("change_restaurant_status", {restaurantId:id, restaurantStatus:status}).then(() => {
-                toast.success("Successfully updated restaurant status");
-                fetchRestaurants();
-            })
+            await invoke("change_restaurant_status", {restaurantId:id, restaurantStatus:status})
+            toast.success("Successfully updated restaurant status");
+            fetchRestaurants();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
 
+    const assignStaffToRestaurant = async (restaurantId:number) => {
+        try {
+            await invoke("assign_staff_to_restaurant", {staffId:selectedId, restaurantId:restaurantId})
+            toast.success("Successfully assigned staff");
+            fetchRestaurants();
         } catch (e) {
             toast.error(`${e}`)
         }
@@ -64,19 +79,24 @@ export default function ViewAllRestaurant() {
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
-                                                <DialogTitle>Maintenance Request</DialogTitle>
-                                                <DialogDescription>Enter maintenance description</DialogDescription>
+                                                <DialogTitle>Restaurant Staff</DialogTitle>
+                                                <DialogDescription>Choose staff to assign.
+                                                    Restaurants need two Chefs and Waiters</DialogDescription>
                                             </DialogHeader>
-                                            <div className="grid gap-4 py-4">
-                                                <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="reason" className="text-right">
-                                                        Reasoning
-                                                    </Label>
-                                                    <Input id="reason" type="text" className="col-span-3" />
-                                                </div>
-                                            </div>
+                                            <Select onValueChange={(val) => setSelectedId(Number(val))}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Restaurant Staff"/>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {staffs.length > 0 && (
+                                                        staffs.map((staff: Staff) => (
+                                                            <SelectItem key={staff.id} value={staff.id.toString()}>{staff.role} : {staff.name}</SelectItem>
+                                                        ))
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
                                             <DialogFooter>
-                                                <Button type="submit" className="bg-purple-700">Save changes</Button>
+                                                <Button onClick={() => assignStaffToRestaurant(restaurant.id)} type="submit" className="bg-purple-700">Confirm</Button>
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
