@@ -13,6 +13,7 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import {toast} from "sonner";
 
 export default function ViewAllRestaurant() {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -25,6 +26,18 @@ export default function ViewAllRestaurant() {
     useEffect(() => {
         fetchRestaurants()
     }, []);
+
+    const updateStatus = (id:number, status:string) => {
+        try {
+            invoke("change_restaurant_status", {restaurantId:id, restaurantStatus:status}).then(() => {
+                toast.success("Successfully updated restaurant status");
+                fetchRestaurants();
+            })
+
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
 
     return (
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
@@ -41,6 +54,7 @@ export default function ViewAllRestaurant() {
                                     <h1 className="font-bold text-4xl">{restaurant.name}</h1>
                                     <h2 className="text-2xl">Cuisine : {restaurant.cuisine}</h2>
                                     <h4>Open Time : {restaurant.open_time} - {restaurant.close_time}</h4>
+                                    <h3>Status : {restaurant.status}</h3>
                                 </div>
                                 <div className="w-48 h-auto flex flex-col gap-4 mb-4">
                                     <Dialog>
@@ -65,8 +79,9 @@ export default function ViewAllRestaurant() {
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
-                                    <Button className="w-48 h-12">
-                                        Open Restaurant
+                                    <Button className={`w-48 h-12 ${restaurant.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}
+                                    onClick={() => {updateStatus(restaurant.id, restaurant.status)}}>
+                                        {restaurant.status == "Closed" ? "Open" : "Close"}
                                     </Button>
                                 </div>
                             </div>

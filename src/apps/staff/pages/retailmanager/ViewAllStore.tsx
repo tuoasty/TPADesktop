@@ -45,6 +45,18 @@ export default function ViewAllStore() {
         }
     }
 
+    const updateStatus = (id:number, status:string) => {
+        try {
+            invoke("change_store_status", {storeId:id, storeStatus:status}).then(() => {
+                toast.success("Successfully updated store status");
+                fetchStores();
+            })
+
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
+
     return (
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
             {stores.length > 0 && (
@@ -60,6 +72,7 @@ export default function ViewAllStore() {
                                     <h1 className="font-bold text-4xl">{store.name}</h1>
                                     <h4>Open Time : {store.open_time} - {store.close_time}</h4>
                                     <h3 className="font-bold text-2xl">Souvenirs</h3>
+                                    <h3>Status : {store.status}</h3>
                                 </div>
                                 <div className="w-48 h-full gap-4 flex flex-col">
                                     <Dialog>
@@ -84,8 +97,10 @@ export default function ViewAllStore() {
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
-                                    <Button className="w-48 h-12">
-                                        Open Store
+                                    <Button
+                                        onClick={() => updateStatus(store.id, store.status)}
+                                        className={`w-48 h-12 ${store.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}>
+                                        {store.status == "Closed" ? "Open" : "Close"}
                                     </Button>
                                 </div>
                             </div>

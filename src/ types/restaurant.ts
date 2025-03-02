@@ -6,6 +6,7 @@ export interface Restaurant {
     open_time: string;
     close_time: string;
     cuisine: string;
+    status: string;
     image_data: string;
     menus: Menu[];
 }

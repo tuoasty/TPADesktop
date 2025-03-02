@@ -5,6 +5,7 @@ use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
 use crate::handler::souvenir_handler::find_store_souvenir;
 use crate::model::souvenir_model::SouvenirDetail;
+use crate::schema::stores::{id, status};
 
 impl Store {
     pub fn get_all_stores(conn: &mut DbConnect) -> Result<Vec<StoreDetail>, String> {
@@ -29,5 +30,14 @@ impl Store {
             .collect();
 
         Ok(store_details)
+    }
+
+    pub fn update_store_status(conn:&mut DbConnect, store_id:i32, new_status:String) -> Result<(), String>{
+        diesel::update(stores.filter(id.eq(store_id)))
+            .set(status.eq(new_status))
+            .execute(conn)
+            .map_err(|e| format!("Error updating status: {}", e))?;
+
+        Ok(())
     }
 }

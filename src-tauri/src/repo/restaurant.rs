@@ -1,6 +1,6 @@
 use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
 use crate::schema::restaurants::dsl::restaurants;
-use crate::schema::restaurants::id;
+use crate::schema::restaurants::{id, status};
 use crate::DbConnect;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
@@ -40,5 +40,14 @@ impl Restaurant {
             .collect();
 
         Ok(restaurant_details)
+    }
+
+    pub fn update_restaurant_status(conn:&mut DbConnect, restaurant_id:i32, new_status:String) -> Result<(), String>{
+        diesel::update(restaurants.filter(id.eq(restaurant_id)))
+            .set(status.eq(new_status))
+            .execute(conn)
+            .map_err(|e| format!("Error updating status: {}", e))?;
+
+        Ok(())
     }
 }
