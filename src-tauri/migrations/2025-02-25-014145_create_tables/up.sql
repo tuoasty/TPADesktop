@@ -31,7 +31,7 @@ CREATE TABLE restaurants
     open_time  TIME    NOT NULL,
     close_time TIME    NOT NULL,
     cuisine    VARCHAR NOT NULL,
-    status VARCHAR NOT NULL
+    status     VARCHAR NOT NULL
 );
 
 CREATE TABLE menus
@@ -50,7 +50,7 @@ CREATE TABLE stores
     name       VARCHAR NOT NULL,
     open_time  TIME    NOT NULL,
     close_time TIME    NOT NULL,
-    status VARCHAR NOT NULL
+    status     VARCHAR NOT NULL
 );
 
 CREATE TABLE souvenirs
@@ -98,4 +98,25 @@ CREATE TABLE maintenance_assignments
     maintenance_report_id INTEGER NOT NULL REFERENCES maintenance_reports (id) ON DELETE CASCADE,
     assignment_date       TIMESTAMP WITHOUT TIME ZONE    NOT NULL,
     status                VARCHAR NOT NULL
-)
+);
+
+CREATE TABLE store_assignments
+(
+    id                    SERIAL PRIMARY KEY,
+    staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
+    store_id INTEGER NOT NULL REFERENCES stores (id) ON DELETE CASCADE
+);
+
+CREATE TABLE restaurant_assignments
+(
+    id                    SERIAL PRIMARY KEY,
+    staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants (id) ON DELETE CASCADE
+);
+
+CREATE TABLE ride_assignments
+(
+    id                    SERIAL PRIMARY KEY,
+    staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
+    ride_id INTEGER NOT NULL REFERENCES rides (id) ON DELETE CASCADE
+);

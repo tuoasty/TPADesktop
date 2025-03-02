@@ -27,7 +27,7 @@ export default function ViewAllRestaurant() {
         fetchRestaurants()
     }, []);
 
-    const updateStatus = (id:number, status:string) => {
+    const changeRestaurantStatus = (id:number, status:string) => {
         try {
             invoke("change_restaurant_status", {restaurantId:id, restaurantStatus:status}).then(() => {
                 toast.success("Successfully updated restaurant status");
@@ -80,7 +80,7 @@ export default function ViewAllRestaurant() {
                                         </DialogContent>
                                     </Dialog>
                                     <Button className={`w-48 h-12 ${restaurant.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}
-                                    onClick={() => {updateStatus(restaurant.id, restaurant.status)}}>
+                                    onClick={() => {changeRestaurantStatus(restaurant.id, restaurant.status)}}>
                                         {restaurant.status == "Closed" ? "Open" : "Close"}
                                     </Button>
                                 </div>

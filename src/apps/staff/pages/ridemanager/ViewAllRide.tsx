@@ -26,7 +26,7 @@ export default function ViewAllRide(){
         fetchRides();
     }, []);
 
-    const updateStatus = (id:number, status:string) => {
+    const changeRideStatus = (id:number, status:string) => {
         try {
             invoke("change_ride_status", {rideId:id, rideStatus:status}).then(() => {
                 toast.success("Successfully updated ride status");
@@ -80,7 +80,7 @@ export default function ViewAllRide(){
                                 </Dialog>
                                 <Button className={`w-48 h-12  ${ride.status == "Closed" ? "bg-green-500" : ride.status == "Open" ? "bg-red-500" : "bg-purple-700"}`}
                                         disabled={ride.status !== "Open" && ride.status !== "Closed"}
-                                onClick={() => updateStatus(ride.id, ride.status)}>
+                                onClick={() => changeRideStatus(ride.id, ride.status)}>
                                     {ride.status === "Open" ? "Close" : "Open"}
                                 </Button>
                             </div>

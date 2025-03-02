@@ -45,7 +45,7 @@ export default function ViewAllStore() {
         }
     }
 
-    const updateStatus = (id:number, status:string) => {
+    const changeStoreStatus = (id:number, status:string) => {
         try {
             invoke("change_store_status", {storeId:id, storeStatus:status}).then(() => {
                 toast.success("Successfully updated store status");
@@ -98,7 +98,7 @@ export default function ViewAllStore() {
                                         </DialogContent>
                                     </Dialog>
                                     <Button
-                                        onClick={() => updateStatus(store.id, store.status)}
+                                        onClick={() => changeStoreStatus(store.id, store.status)}
                                         className={`w-48 h-12 ${store.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}>
                                         {store.status == "Closed" ? "Open" : "Close"}
                                     </Button>

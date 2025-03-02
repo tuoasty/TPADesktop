@@ -46,6 +46,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    restaurant_assignments (id) {
+        id -> Int4,
+        staff_id -> Int4,
+        restaurant_id -> Int4,
+    }
+}
+
+diesel::table! {
     restaurants (id) {
         id -> Int4,
         name -> Varchar,
@@ -54,6 +62,14 @@ diesel::table! {
         close_time -> Time,
         cuisine -> Varchar,
         status -> Varchar,
+    }
+}
+
+diesel::table! {
+    ride_assignments (id) {
+        id -> Int4,
+        staff_id -> Int4,
+        ride_id -> Int4,
     }
 }
 
@@ -100,6 +116,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    store_assignments (id) {
+        id -> Int4,
+        staff_id -> Int4,
+        store_id -> Int4,
+    }
+}
+
+diesel::table! {
     stores (id) {
         id -> Int4,
         image_id -> Int4,
@@ -115,12 +139,18 @@ diesel::joinable!(maintenance_assignments -> staffs (staff_id));
 diesel::joinable!(maintenance_reports -> rides (ride_id));
 diesel::joinable!(menus -> images (image_id));
 diesel::joinable!(menus -> restaurants (restaurant_id));
+diesel::joinable!(restaurant_assignments -> restaurants (restaurant_id));
+diesel::joinable!(restaurant_assignments -> staffs (staff_id));
 diesel::joinable!(restaurants -> images (image_id));
+diesel::joinable!(ride_assignments -> rides (ride_id));
+diesel::joinable!(ride_assignments -> staffs (staff_id));
 diesel::joinable!(ride_queues -> customers (customer_id));
 diesel::joinable!(ride_queues -> rides (ride_id));
 diesel::joinable!(rides -> images (image_id));
 diesel::joinable!(souvenirs -> images (image_id));
 diesel::joinable!(souvenirs -> stores (store_id));
+diesel::joinable!(store_assignments -> staffs (staff_id));
+diesel::joinable!(store_assignments -> stores (store_id));
 diesel::joinable!(stores -> images (image_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
@@ -129,10 +159,13 @@ diesel::allow_tables_to_appear_in_same_query!(
     maintenance_assignments,
     maintenance_reports,
     menus,
+    restaurant_assignments,
     restaurants,
+    ride_assignments,
     ride_queues,
     rides,
     souvenirs,
     staffs,
+    store_assignments,
     stores,
 );
