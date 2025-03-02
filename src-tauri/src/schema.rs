@@ -53,6 +53,7 @@ diesel::table! {
         open_time -> Time,
         close_time -> Time,
         cuisine -> Varchar,
+        status -> Varchar,
     }
 }
 
@@ -105,6 +106,7 @@ diesel::table! {
         name -> Varchar,
         open_time -> Time,
         close_time -> Time,
+        status -> Varchar,
     }
 }
 

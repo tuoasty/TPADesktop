@@ -12,6 +12,7 @@ pub struct Store {
     pub image_id: i32,
     pub open_time: NaiveTime,
     pub close_time: NaiveTime,
+    pub status:String,
 }
 
 #[derive(Insertable)]
@@ -21,6 +22,7 @@ pub struct NewStore {
     pub image_id: i32,
     pub open_time: NaiveTime,
     pub close_time: NaiveTime,
+    pub status:String,
 }
 
 #[derive(Serialize)]
@@ -29,6 +31,7 @@ pub struct StoreDetail {
     pub name: String,
     pub open_time: String,
     pub close_time: String,
+    pub status:String,
     pub image_data: String,
     pub souvenirs: Vec<SouvenirDetail>
 }

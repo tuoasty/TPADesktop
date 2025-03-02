@@ -30,7 +30,8 @@ CREATE TABLE restaurants
     image_id   INTEGER NOT NULL REFERENCES images (id) ON DELETE CASCADE,
     open_time  TIME    NOT NULL,
     close_time TIME    NOT NULL,
-    cuisine    VARCHAR NOT NULL
+    cuisine    VARCHAR NOT NULL,
+    status VARCHAR NOT NULL
 );
 
 CREATE TABLE menus
@@ -48,7 +49,8 @@ CREATE TABLE stores
     image_id   INTEGER NOT NULL REFERENCES images (id),
     name       VARCHAR NOT NULL,
     open_time  TIME    NOT NULL,
-    close_time TIME    NOT NULL
+    close_time TIME    NOT NULL,
+    status VARCHAR NOT NULL
 );
 
 CREATE TABLE souvenirs

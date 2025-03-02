@@ -11,6 +11,17 @@ import {
 } from "@/components/ui/alert-dialog.tsx";
 import {toast} from "sonner";
 import {Button} from "@/components/ui/button.tsx";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {Input} from "@/components/ui/input.tsx";
 
 export default function ViewAllStore() {
     const [stores, setStores] = useState<Store[]>([]);
@@ -44,9 +55,40 @@ export default function ViewAllStore() {
                                  alt={store.name}/>
                         </div>
                         <div className="w-full h-full flex flex-col p-8 gap-2">
-                            <h1 className="font-bold text-4xl">{store.name}</h1>
-                            <h4>Open Time : {store.open_time} - {store.close_time}</h4>
-                            <h3 className="font-bold text-2xl">Souvenirs</h3>
+                            <div className="w-full h-auto flex flex-row justify-between mb-5">
+                                <div>
+                                    <h1 className="font-bold text-4xl">{store.name}</h1>
+                                    <h4>Open Time : {store.open_time} - {store.close_time}</h4>
+                                    <h3 className="font-bold text-2xl">Souvenirs</h3>
+                                </div>
+                                <div className="w-48 h-full gap-4 flex flex-col">
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button className="bg-purple-700 w-48 h-12">Assign Staff</Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Maintenance Request</DialogTitle>
+                                                <DialogDescription>Enter maintenance description</DialogDescription>
+                                            </DialogHeader>
+                                            <div className="grid gap-4 py-4">
+                                                <div className="grid grid-cols-4 items-center gap-4">
+                                                    <Label htmlFor="reason" className="text-right">
+                                                        Reasoning
+                                                    </Label>
+                                                    <Input id="reason" type="text" className="col-span-3" />
+                                                </div>
+                                            </div>
+                                            <DialogFooter>
+                                                <Button type="submit" className="bg-purple-700">Save changes</Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                    <Button className="w-48 h-12">
+                                        Open Store
+                                    </Button>
+                                </div>
+                            </div>
                             {store.souvenirs.length > 0 && (
                                 store.souvenirs.map((souvenir: Souvenir) => (
                                     <div key={souvenir.id} className="bg-purple-200 rounded-2xl p-2 flex justify-between">
@@ -87,6 +129,7 @@ export default function ViewAllStore() {
                             )}
                         </div>
                     </div>
+
                 ))
             )}
         </div>

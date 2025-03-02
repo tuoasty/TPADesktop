@@ -21,6 +21,7 @@ impl Store {
                     name: store.name,
                     open_time: store.open_time.to_string(),
                     close_time: store.close_time.to_string(),
+                    status: store.status,
                     image_data: base64_image,
                     souvenirs:souvenir_list
                 }

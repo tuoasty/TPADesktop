@@ -32,6 +32,7 @@ impl Restaurant {
                     open_time: restaurant.open_time.to_string(),
                     close_time: restaurant.close_time.to_string(),
                     cuisine: restaurant.cuisine,
+                    status: restaurant.status,
                     image_data: base64_image.unwrap(),
                     menus
                 }

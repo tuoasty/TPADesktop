@@ -13,6 +13,7 @@ pub struct Restaurant {
     pub open_time: NaiveTime,
     pub close_time: NaiveTime,
     pub cuisine: String,
+    pub status:String,
 }
 
 #[derive(Insertable)]
@@ -23,6 +24,7 @@ pub struct NewRestaurant {
     pub open_time: NaiveTime,
     pub close_time: NaiveTime,
     pub cuisine: String,
+    pub status:String,
 }
 
 #[derive(Serialize)]
@@ -32,6 +34,7 @@ pub struct RestaurantDetail {
     pub open_time: String,
     pub close_time: String,
     pub cuisine: String,
+    pub status:String,
     pub image_data: String,
     pub menus: Vec<MenuDetail>
 }

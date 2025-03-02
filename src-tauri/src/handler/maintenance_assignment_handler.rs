@@ -3,11 +3,8 @@ use crate::DbConnect;
 use crate::model::maintenance_assignment_model::{MaintenanceAssignment, NewMaintenanceAssignment};
 
 pub fn check_maintenance_staff_availability(conn: &mut DbConnect, selected_id:i32) -> Result<bool, String> {
-    let staff_assignments = MaintenanceAssignment::get_current_assignments(conn)?;
 
-    if staff_assignments.is_empty() {
-        return Err("No Staff Available".to_string())
-    };
+    let staff_assignments = MaintenanceAssignment::get_current_assignments(conn)?;
 
     let staff_is_busy = staff_assignments
         .iter()
