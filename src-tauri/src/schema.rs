@@ -50,6 +50,7 @@ diesel::table! {
         id -> Int4,
         staff_id -> Int4,
         restaurant_id -> Int4,
+        role -> Varchar,
     }
 }
 

@@ -1,4 +1,5 @@
 import {Menu} from "@/ types/menu.ts";
+import {Staff} from "@/ types/staff.ts";
 
 export interface Restaurant {
     id: number;
@@ -9,5 +10,6 @@ export interface Restaurant {
     status: string;
     image_data: string;
     menus: Menu[];
+    staffs: Staff[];
 }
 

@@ -7,3 +7,4 @@ mod souvenir;
 mod ride;
 mod maintenance_report;
 mod maintenance_assignment;
+mod restaurant_assignment;

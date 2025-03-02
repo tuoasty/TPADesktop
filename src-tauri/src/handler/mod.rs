@@ -7,6 +7,7 @@ pub mod souvenir_handler;
 pub mod ride_handler;
 pub mod maintenance_report_handler;
 pub mod maintenance_assignment_handler;
+pub mod restaurant_assignment_handler;
 
 #[macro_export]
 macro_rules! all_handlers {

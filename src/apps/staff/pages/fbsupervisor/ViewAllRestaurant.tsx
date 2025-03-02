@@ -14,6 +14,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {toast} from "sonner";
+import {Staff} from "@/ types/staff.ts";
 
 export default function ViewAllRestaurant() {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -84,6 +85,16 @@ export default function ViewAllRestaurant() {
                                         {restaurant.status == "Closed" ? "Open" : "Close"}
                                     </Button>
                                 </div>
+                            </div>
+                            <div>
+                                <h1 className="font-bold text-2xl">Staffs</h1>
+                                {restaurant.staffs.length == 0 ? (
+                                    <h2>None</h2>
+                                ) : restaurant.staffs.map((staff: Staff) => (
+                                    <div key={staff.id}>
+                                        <h2>{staff.role} : {staff.name}</h2>
+                                    </div>
+                                ))}
                             </div>
                             {restaurant.menus.length > 0 && (
                                 restaurant.menus.map((menu: Menu) => (

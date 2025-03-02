@@ -7,3 +7,6 @@ pub mod ride_model;
 pub mod souvenir_model;
 pub mod staff_model;
 pub mod store_model;
+pub mod store_assignment_model;
+pub mod restaurant_assignment_model;
+pub mod ride_assignment_model;

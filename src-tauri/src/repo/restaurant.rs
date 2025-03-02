@@ -5,6 +5,7 @@ use crate::DbConnect;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
 use crate::handler::menu_handler::find_restaurant_menu;
+use crate::handler::restaurant_assignment_handler::get_restaurant_staffs;
 
 impl Restaurant {
     pub fn get_restaurant(conn: &mut DbConnect, restaurant_id: i32) -> Result<Self, String> {
@@ -25,6 +26,7 @@ impl Restaurant {
             .map(|restaurant| {
                 let base64_image = get_image_data(conn, restaurant.image_id);
                 let menus = find_restaurant_menu(conn, restaurant.id).unwrap();
+                let staffs = get_restaurant_staffs(conn, restaurant.id).unwrap();
 
                 RestaurantDetail {
                     id: restaurant.id,
@@ -34,7 +36,8 @@ impl Restaurant {
                     cuisine: restaurant.cuisine,
                     status: restaurant.status,
                     image_data: base64_image.unwrap(),
-                    menus
+                    menus,
+                    staffs,
                 }
             })
             .collect();
