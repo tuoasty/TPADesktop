@@ -71,6 +71,7 @@ diesel::table! {
         id -> Int4,
         staff_id -> Int4,
         ride_id -> Int4,
+        role -> Varchar,
     }
 }
 
@@ -121,6 +122,7 @@ diesel::table! {
         id -> Int4,
         staff_id -> Int4,
         store_id -> Int4,
+        role -> Varchar,
     }
 }
 

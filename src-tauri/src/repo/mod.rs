@@ -8,3 +8,5 @@ mod ride;
 mod maintenance_report;
 mod maintenance_assignment;
 mod restaurant_assignment;
+mod store_assignment;
+mod ride_assignment;

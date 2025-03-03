@@ -1,4 +1,5 @@
 import {Souvenir} from "@/ types/souvenir.ts";
+import {Staff} from "@/ types/staff.ts";
 
 export interface Store {
     id: number;
@@ -8,4 +9,5 @@ export interface Store {
     status: string;
     image_data: string;
     souvenirs:Souvenir[];
+    staffs: Staff[];
 }

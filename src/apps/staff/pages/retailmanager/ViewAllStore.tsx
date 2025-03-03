@@ -22,17 +22,25 @@ import {
 } from "@/components/ui/dialog.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
+import {Staff} from "@/ types/staff.ts";
 
 export default function ViewAllStore() {
     const [stores, setStores] = useState<Store[]>([]);
+    const [staffs, setStaffs] = useState<Staff[]>([]);
 
     const fetchStores = async () => {
         invoke<Store[]>("find_all_store")
             .then(setStores)
     }
 
+    const fetchStoreStaff = async () => {
+        invoke<Staff[]>("find_all_staff", {staffRole:"Sales Associate"})
+            .then(setStaffs)
+    }
+
     useEffect(() => {
         fetchStores();
+        fetchStoreStaff();
     }, []);
 
     const removeSouvenir = async (id: number) => {
@@ -103,6 +111,16 @@ export default function ViewAllStore() {
                                         {store.status == "Closed" ? "Open" : "Close"}
                                     </Button>
                                 </div>
+                            </div>
+                            <div>
+                                <h1 className="font-bold text-2xl">Staffs</h1>
+                                {store.staffs.length == 0 ? (
+                                    <h2>None</h2>
+                                ) : store.staffs.map((staff: Staff) => (
+                                    <div key={staff.id}>
+                                        <h2>{staff.role} : {staff.name}</h2>
+                                    </div>
+                                ))}
                             </div>
                             {store.souvenirs.length > 0 && (
                                 store.souvenirs.map((souvenir: Souvenir) => (

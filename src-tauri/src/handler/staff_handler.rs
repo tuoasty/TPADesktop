@@ -70,6 +70,11 @@ pub fn logout_staff(current_staff: State<CurrentStaff>) -> Result<String, String
     Ok("Successfully logout".to_string())
 }
 
+#[command]
+pub fn find_all_staff(state:State<DbPool>, staff_role:String) -> Result<Vec<StaffDetail>, String> {
+    let conn = &mut get_conn(&state)?;
+    Staff::get_staff_per_role(conn, staff_role)
+}
 pub fn find_staff_per_role(conn: &mut DbConnect, staff_role:String) -> Result<Vec<StaffDetail>, String> {
     Staff::get_staff_per_role(conn, staff_role)
 }

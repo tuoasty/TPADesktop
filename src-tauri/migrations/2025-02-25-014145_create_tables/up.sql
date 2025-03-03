@@ -104,7 +104,8 @@ CREATE TABLE store_assignments
 (
     id                    SERIAL PRIMARY KEY,
     staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
-    store_id INTEGER NOT NULL REFERENCES stores (id) ON DELETE CASCADE
+    store_id INTEGER NOT NULL REFERENCES stores (id) ON DELETE CASCADE,
+    role VARCHAR NOT NULL
 );
 
 CREATE TABLE restaurant_assignments
@@ -119,5 +120,6 @@ CREATE TABLE ride_assignments
 (
     id                    SERIAL PRIMARY KEY,
     staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
-    ride_id INTEGER NOT NULL REFERENCES rides (id) ON DELETE CASCADE
+    ride_id INTEGER NOT NULL REFERENCES rides (id) ON DELETE CASCADE,
+    role VARCHAR NOT NULL
 );

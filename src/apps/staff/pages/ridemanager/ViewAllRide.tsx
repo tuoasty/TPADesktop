@@ -14,6 +14,7 @@ import {
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {toast} from "sonner";
+import {Staff} from "@/ types/staff.ts";
 
 export default function ViewAllRide(){
     const [rides, setRides] = useState<Ride[]>([])
@@ -42,47 +43,59 @@ export default function ViewAllRide(){
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
             {rides.length > 0 && (
                 rides.map((ride:Ride) => (
-                    <div key={ride.id} className="w-full bg-white h-min-72 rounded-2xl shrink-0 flex">
+                    <div key={ride.id} className="w-full bg-white h-auto rounded-2xl shrink-0 flex">
                         <div className="w-96 h-auto p-8 overflow-hidden">
                             <img className="object-contain w-full h-full rounded-lg" src={ride.image_data}
                                  alt={ride.name}/>
                         </div>
-                        <div className="w-full h-full justify-between flex flex-row">
-                            <div className="w-auto flex flex-col p-8 gap-2">
-                                <h1 className="font-bold text-4xl">{ride.name}</h1>
-                                <h2 className="text-2xl">Price : {ride.price}</h2>
-                                <h4>{ride.open_time} - {ride.close_time}</h4>
-                                <h3>Status : {ride.status}</h3>
-                            </div>
-                            <div className="w-48 flex justify-center place-items-center mr-6 flex-col gap-4">
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <Button disabled={ride.status == "Maintenance in Progress" || ride.status == "Pending Maintenance"}
-                                                className="bg-purple-700 w-48 h-12">Request Maintenance</Button>
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader>
-                                            <DialogTitle>Maintenance Request</DialogTitle>
-                                            <DialogDescription>Enter maintenance description</DialogDescription>
-                                        </DialogHeader>
-                                        <div className="grid gap-4 py-4">
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="reason" className="text-right">
-                                                    Reasoning
-                                                </Label>
-                                                <Input id="reason" type="text" className="col-span-3" />
+                        <div className="w-full h-auto flex flex-col p-8 gap-5">
+                            <div className="w-full h-full justify-between flex flex-row">
+                                <div className="w-auto flex flex-col gap-2">
+                                    <h1 className="font-bold text-4xl">{ride.name}</h1>
+                                    <h2 className="text-2xl">Price : {ride.price}</h2>
+                                    <h4>{ride.open_time} - {ride.close_time}</h4>
+                                    <h3>Status : {ride.status}</h3>
+                                </div>
+                                <div className="w-48 flex justify-center place-items-center mr-6 flex-col gap-4">
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button disabled={ride.status == "Maintenance in Progress" || ride.status == "Pending Maintenance"}
+                                                    className="bg-purple-700 w-48 h-12">Request Maintenance</Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Maintenance Request</DialogTitle>
+                                                <DialogDescription>Enter maintenance description</DialogDescription>
+                                            </DialogHeader>
+                                            <div className="grid gap-4 py-4">
+                                                <div className="grid grid-cols-4 items-center gap-4">
+                                                    <Label htmlFor="reason" className="text-right">
+                                                        Reasoning
+                                                    </Label>
+                                                    <Input id="reason" type="text" className="col-span-3" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <DialogFooter>
-                                            <Button type="submit" className="bg-purple-700">Save changes</Button>
-                                        </DialogFooter>
-                                    </DialogContent>
-                                </Dialog>
-                                <Button className={`w-48 h-12  ${ride.status == "Closed" ? "bg-green-500" : ride.status == "Open" ? "bg-red-500" : "bg-purple-700"}`}
-                                        disabled={ride.status !== "Open" && ride.status !== "Closed"}
-                                onClick={() => changeRideStatus(ride.id, ride.status)}>
-                                    {ride.status === "Open" ? "Close" : "Open"}
-                                </Button>
+                                            <DialogFooter>
+                                                <Button type="submit" className="bg-purple-700">Save changes</Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                    <Button className={`w-48 h-12  ${ride.status == "Closed" ? "bg-green-500" : ride.status == "Open" ? "bg-red-500" : "bg-purple-700"}`}
+                                            disabled={ride.status !== "Open" && ride.status !== "Closed"}
+                                            onClick={() => changeRideStatus(ride.id, ride.status)}>
+                                        {ride.status === "Open" ? "Close" : "Open"}
+                                    </Button>
+                                </div>
+                            </div>
+                            <div>
+                                <h1 className="font-bold text-2xl">Staffs</h1>
+                                {ride.staffs.length == 0 ? (
+                                    <h2>None</h2>
+                                ) : ride.staffs.map((staff: Staff) => (
+                                    <div key={staff.id}>
+                                        <h2>{staff.role} : {staff.name}</h2>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>

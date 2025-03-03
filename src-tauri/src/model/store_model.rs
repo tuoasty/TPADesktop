@@ -2,6 +2,7 @@ use chrono::NaiveTime;
 use diesel::{Insertable, Queryable, Selectable};
 use serde::Serialize;
 use crate::model::souvenir_model::SouvenirDetail;
+use crate::model::staff_model::StaffDetail;
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::stores)]
@@ -33,5 +34,6 @@ pub struct StoreDetail {
     pub close_time: String,
     pub status:String,
     pub image_data: String,
-    pub souvenirs: Vec<SouvenirDetail>
+    pub souvenirs: Vec<SouvenirDetail>,
+    pub staffs: Vec<StaffDetail>
 }

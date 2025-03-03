@@ -25,3 +25,4 @@ pub fn change_store_status(state:State<DbPool>, store_id:i32, store_status:Strin
 
     Store::update_store_status(conn, store_id, new_status)
 }
+

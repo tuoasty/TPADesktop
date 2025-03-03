@@ -1,6 +1,7 @@
 use chrono::NaiveTime;
 use diesel::{Insertable, Queryable, Selectable};
 use serde::Serialize;
+use crate::model::staff_model::StaffDetail;
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::rides)]
@@ -34,5 +35,6 @@ pub struct RideDetail {
     pub close_time: String,
     pub price: i32,
     pub image_data: String,
-    pub status:String
+    pub status:String,
+    pub staffs: Vec<StaffDetail>
 }

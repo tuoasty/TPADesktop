@@ -9,6 +9,7 @@ pub struct StoreAssignment {
     pub id: i32,
     pub staff_id: i32,
     pub store_id: i32,
+    pub role:String
 }
 
 #[derive(Insertable)]
@@ -16,4 +17,5 @@ pub struct StoreAssignment {
 pub struct NewStoreAssignment {
     pub staff_id: i32,
     pub store_id: i32,
+    pub role:String
 }

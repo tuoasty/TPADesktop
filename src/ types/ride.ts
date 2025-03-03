@@ -1,3 +1,5 @@
+import {Staff} from "@/ types/staff.ts";
+
 export interface Ride {
     id: number;
     name: string;
@@ -6,4 +8,5 @@ export interface Ride {
     price: number;
     image_data: string;
     status:string;
+    staffs: Staff[];
 }

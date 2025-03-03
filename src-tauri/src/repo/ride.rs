@@ -2,6 +2,7 @@ use crate::DbConnect;
 use crate::handler::image_handler::get_image_data;
 use crate::model::ride_model::{Ride, RideDetail};
 use diesel::prelude::*;
+use crate::handler::ride_assignment_handler::get_ride_staffs;
 use crate::schema::rides::dsl::rides;
 use crate::schema::rides::{id, status};
 
@@ -13,6 +14,7 @@ impl Ride {
             .into_iter()
             .map(|ride| {
                 let base64_image = get_image_data(conn, ride.image_id);
+                let staffs = get_ride_staffs(conn, ride.id).unwrap();
 
                 RideDetail {
                     id:ride.id,
@@ -22,6 +24,7 @@ impl Ride {
                     price:ride.price,
                     image_data:base64_image.unwrap(),
                     status:ride.status,
+                    staffs
                 }
             })
             .collect();

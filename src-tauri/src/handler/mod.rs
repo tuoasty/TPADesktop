@@ -8,6 +8,8 @@ pub mod ride_handler;
 pub mod maintenance_report_handler;
 pub mod maintenance_assignment_handler;
 pub mod restaurant_assignment_handler;
+pub mod store_assignment_handler;
+pub mod ride_assignment_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -20,6 +22,7 @@ macro_rules! all_handlers {
             $crate::handler::staff_handler::login_staff,
             $crate::handler::staff_handler::logout_staff,
             $crate::handler::staff_handler::get_current_staff,
+            $crate::handler::staff_handler::find_all_staff,
             $crate::handler::restaurant_handler::find_all_restaurant,
             $crate::handler::restaurant_handler::change_restaurant_status,
             $crate::handler::restaurant_handler::find_all_consumption_staff,
