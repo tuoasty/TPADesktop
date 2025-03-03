@@ -1,11 +1,11 @@
 use crate::DbConnect;
 use crate::model::staff_model::StaffDetail;
-use crate::model::store_assignment_model::StoreAssignment;
+use crate::model::store_assignment_model::{NewStoreAssignment, StoreAssignment};
 use crate::schema::staffs::dsl::staffs;
 use crate::schema::staffs::name;
 use crate::schema::store_assignments::dsl::store_assignments;
 use diesel::prelude::*;
-use crate::schema::store_assignments::{role, store_id};
+use crate::schema::store_assignments::{id, role, staff_id, store_id};
 
 impl StoreAssignment {
     pub fn get_store_assignment(conn:&mut DbConnect, selected_id:i32) -> Result<Vec<StaffDetail>, String> {
@@ -30,5 +30,30 @@ impl StoreAssignment {
             .collect();
 
         Ok(staff_details)
+    }
+
+    pub fn assign_store_staff(conn: &mut DbConnect, new_staff_id:i32, new_store_id:i32) -> Result<(), String> {
+        let existing_assignment =
+            store_assignments.filter(staff_id.eq(new_staff_id))
+                .select(id)
+                .load::<i32>(conn)
+                .map_err(|e| e.to_string())?;
+
+        if !existing_assignment.is_empty(){
+            return Err("Staff is assigned to another store".to_string());
+        };
+
+        diesel::insert_into(store_assignments)
+            .values(
+                NewStoreAssignment{
+                    staff_id:new_staff_id,
+                    store_id:new_store_id,
+                    role:"Sales Associate".to_string(),
+                }
+            )
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 }

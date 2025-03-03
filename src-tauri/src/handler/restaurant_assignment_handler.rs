@@ -11,5 +11,5 @@ pub fn get_restaurant_staffs(conn:&mut DbConnect, selected_id:i32) -> Result<Vec
 #[command]
 pub fn assign_staff_to_restaurant(state:State<DbPool>, staff_id:i32, restaurant_id:i32) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
-    RestaurantAssignment::assign_staff(conn, staff_id, restaurant_id)
+    RestaurantAssignment::assign_restaurant_staff(conn, staff_id, restaurant_id)
 }

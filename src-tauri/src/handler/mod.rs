@@ -37,6 +37,7 @@ macro_rules! all_handlers {
             $crate::handler::maintenance_report_handler::accept_request,
             $crate::handler::maintenance_report_handler::reject_request,
             $crate::handler::restaurant_assignment_handler::assign_staff_to_restaurant,
+            $crate::handler::store_assignment_handler::assign_staff_to_store,
             // Add all other commands
         ]
     };

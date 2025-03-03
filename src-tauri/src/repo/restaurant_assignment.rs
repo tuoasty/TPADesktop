@@ -32,7 +32,7 @@ impl RestaurantAssignment {
         Ok(staff_details)
     }
 
-    pub fn assign_staff(conn: &mut DbConnect, new_staff_id:i32, new_restaurant_id:i32) -> Result<(), String> {
+    pub fn assign_restaurant_staff(conn: &mut DbConnect, new_staff_id:i32, new_restaurant_id:i32) -> Result<(), String> {
         let existing_assignment =
             restaurant_assignments.filter(staff_id.eq(new_staff_id))
                 .select(id)
