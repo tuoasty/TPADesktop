@@ -2,7 +2,7 @@ use crate::DbConnect;
 use crate::handler::image_handler::get_image_data;
 use crate::model::ride_model::{Ride, RideDetail};
 use diesel::prelude::*;
-use crate::handler::ride_assignment_handler::get_ride_staffs;
+use crate::handler::ride_assignment_handler::{check_ride_staff_to_open, get_ride_staffs, reassign_staff_to_ride};
 use crate::schema::rides::dsl::rides;
 use crate::schema::rides::{id, status};
 
@@ -39,7 +39,28 @@ impl Ride {
             .map_err(|e| e.to_string())
     }
 
+    pub fn reassign_ride_staff(conn: &mut DbConnect, new_staff_id:i32, new_ride_id:i32) -> Result<i32, String> {
+        reassign_staff_to_ride(conn, new_staff_id, new_ride_id)
+    }
+
+    pub fn check_ride_assignment_and_update(conn: &mut DbConnect, new_ride_id:i32) -> Result<(), String> {
+        if !check_ride_staff_to_open(conn, new_ride_id)? {
+            diesel::update(rides.filter(id.eq(new_ride_id)))
+                .set(status.eq("Closed".to_string()))
+                .execute(conn)
+                .map_err(|e| format!("Error updating status: {}", e))?;
+        }
+
+        Ok(())
+    }
+
     pub fn update_ride_status(conn:&mut DbConnect, ride_id:i32, new_status:String) -> Result<(), String>{
+        if new_status == "Open" {
+            if !check_ride_staff_to_open(conn, ride_id)? {
+                return Err("Not enough staff assigned".to_string())
+            }
+        }
+
         diesel::update(rides.filter(id.eq(ride_id)))
             .set(status.eq(new_status))
             .execute(conn)

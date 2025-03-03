@@ -32,6 +32,7 @@ macro_rules! all_handlers {
             $crate::handler::souvenir_handler::remove_souvenir,
             $crate::handler::ride_handler::find_all_ride,
             $crate::handler::ride_handler::change_ride_status,
+            $crate::handler::ride_handler::reassign_ride_and_check_status,
             $crate::handler::maintenance_report_handler::find_all_maintenance_report,
             $crate::handler::maintenance_report_handler::find_all_maintenance_staff,
             $crate::handler::maintenance_report_handler::accept_request,
@@ -39,7 +40,6 @@ macro_rules! all_handlers {
             $crate::handler::restaurant_assignment_handler::assign_staff_to_restaurant,
             $crate::handler::store_assignment_handler::assign_staff_to_store,
             $crate::handler::ride_assignment_handler::assign_staff_to_ride,
-            $crate::handler::ride_assignment_handler::reassign_staff_to_ride,
             // Add all other commands
         ]
     };

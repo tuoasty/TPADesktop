@@ -25,6 +25,15 @@ pub fn change_ride_status(state:State<DbPool>, ride_id:i32, ride_status:String) 
     Ride::update_ride_status(conn, ride_id, new_status)
 }
 
+#[command]
+pub fn reassign_ride_and_check_status(state:State<DbPool>, new_staff_id:i32, new_ride_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    let removed_ride_staff_id = Ride::reassign_ride_staff(conn, new_staff_id, new_ride_id)?;
+
+    Ride::check_ride_assignment_and_update(conn, removed_ride_staff_id)
+}
+
 pub fn accept_ride_maintenance(conn: &mut DbConnect, ride_id:i32) -> Result<(), String> {
     Ride::update_ride_status(conn, ride_id, "Maintenance in Progress".to_string())
 }

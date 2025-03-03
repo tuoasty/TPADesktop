@@ -64,9 +64,9 @@ export default function ViewAllRide(){
         }
     }
 
-    const reassignStaffToRide = async() => {
+    const reassignRideAndCheckStatus = async() => {
         try {
-            await invoke("reassign_staff_to_ride", {staffId:selectedId, rideId:rideId})
+            await invoke("reassign_ride_and_check_status", {newStaffId:selectedId, newRideId:rideId})
             toast.success("Succesfully reassigned staff")
             fetchRides();
         } catch (e) {
@@ -147,7 +147,7 @@ export default function ViewAllRide(){
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction onClick={() => reassignStaffToRide()}>
+                                                <AlertDialogAction onClick={() => reassignRideAndCheckStatus()}>
                                                     Reassign
                                                 </AlertDialogAction>
                                             </AlertDialogFooter>

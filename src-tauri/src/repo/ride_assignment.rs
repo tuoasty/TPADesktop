@@ -1,6 +1,6 @@
 use crate::DbConnect;
 use crate::model::ride_assignment_model::{NewRideAssignment, RideAssignment};
-use crate::model::staff_model::StaffDetail;
+use crate::model::staff_model::{StaffDetail};
 use crate::schema::ride_assignments::dsl::ride_assignments;
 use crate::schema::ride_assignments::{id, ride_id, role, staff_id};
 use crate::schema::staffs::dsl::staffs;
@@ -61,10 +61,11 @@ impl RideAssignment {
         Ok(())
     }
 
-    pub fn reassign_ride_staff(conn: &mut DbConnect, new_staff_id:i32, new_ride_id:i32) -> Result<(), String> {
-        diesel::delete(ride_assignments
+    pub fn reassign_ride_staff(conn: &mut DbConnect, new_staff_id:i32, new_ride_id:i32) -> Result<i32, String> {
+        let deleted_ride_id = diesel::delete(ride_assignments
             .filter(staff_id.eq(&new_staff_id)))
-            .execute(conn)
+            .returning(ride_id)
+            .get_result(conn)
             .map_err(|e| e.to_string())?;
 
         diesel::insert_into(ride_assignments)
@@ -78,6 +79,19 @@ impl RideAssignment {
             .execute(conn)
             .map_err(|e| e.to_string())?;
 
-        Ok(())
+        Ok(deleted_ride_id)
+    }
+
+    pub fn check_ride_staffing(conn: &mut DbConnect, selected_id:i32) -> Result<bool, String> {
+        let staff_assignments:Vec<i32> = ride_assignments.filter(ride_id.eq(&selected_id))
+            .select(id)
+            .load(conn)
+            .map_err(|e| e.to_string())?;
+
+        if staff_assignments.len() >= 2 {
+            Ok(true)
+        } else {
+            Ok(false)
+        }
     }
 }
