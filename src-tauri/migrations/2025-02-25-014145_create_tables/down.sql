@@ -10,6 +10,7 @@ DROP TABLE ride_queues;
 DROP TABLE maintenance_assignments;
 DROP TABLE maintenance_reports;
 DROP TABLE rides;
+DROP TABLE lost_items;
 DROP TABLE images;
 DROP TABLE customers;
 DROP TABLE staffs;

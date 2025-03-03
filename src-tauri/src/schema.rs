@@ -17,6 +17,21 @@ diesel::table! {
 }
 
 diesel::table! {
+    lost_items (id) {
+        id -> Int4,
+        name -> Varchar,
+        item_type -> Varchar,
+        color -> Varchar,
+        last_location -> Varchar,
+        owner_id -> Int4,
+        status -> Varchar,
+        finder_id -> Nullable<Int4>,
+        found_location -> Nullable<Varchar>,
+        image_id -> Nullable<Int4>,
+    }
+}
+
+diesel::table! {
     maintenance_assignments (id) {
         id -> Int4,
         staff_id -> Int4,
@@ -137,6 +152,7 @@ diesel::table! {
     }
 }
 
+diesel::joinable!(lost_items -> images (image_id));
 diesel::joinable!(maintenance_assignments -> maintenance_reports (maintenance_report_id));
 diesel::joinable!(maintenance_assignments -> staffs (staff_id));
 diesel::joinable!(maintenance_reports -> rides (ride_id));
@@ -159,6 +175,7 @@ diesel::joinable!(stores -> images (image_id));
 diesel::allow_tables_to_appear_in_same_query!(
     customers,
     images,
+    lost_items,
     maintenance_assignments,
     maintenance_reports,
     menus,

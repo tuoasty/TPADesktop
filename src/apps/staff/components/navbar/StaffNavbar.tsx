@@ -13,6 +13,7 @@ export default function StaffNavbar(){
         {text:"View All Store", key:4, to:"/staff/view-all-store", roles: ["Retail Manager"]},
         {text:"View All Ride", key:5, to:"/staff/view-all-ride", roles: ["Ride Manager"]},
         {text:"View All Maintenance Report", key:6, to:"/staff/view-all-maintenance-report", roles: ["Maintenance Manager"]},
+        {text:"View All Lost Items", key:7, to:"/staff/view-lost-and-found", roles: ["Lost and Found Staff"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {

@@ -25,8 +25,10 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog.tsx";
+import {Label} from "@/components/ui/label.tsx";
+import {Input} from "@/components/ui/input.tsx";
 
-export default function ViewAllRide(){
+export default function ViewAllRide() {
     const [rides, setRides] = useState<Ride[]>([])
     const [staffs, setStaffs] = useState<Staff[]>([])
     const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -38,7 +40,7 @@ export default function ViewAllRide(){
     }
 
     const fetchRideStaffs = async () => {
-        invoke<Staff[]>("find_all_staff", {staffRole:"Ride Staff"})
+        invoke<Staff[]>("find_all_staff", {staffRole: "Ride Staff"})
             .then(setStaffs)
     }
 
@@ -47,9 +49,9 @@ export default function ViewAllRide(){
         fetchRideStaffs();
     }, []);
 
-    const assignStaffToRide = async (rideId:number) => {
+    const assignStaffToRide = async (rideId: number) => {
         try {
-            await invoke("assign_staff_to_ride", {staffId:selectedId, rideId:rideId})
+            await invoke("assign_staff_to_ride", {staffId: selectedId, rideId: rideId})
             toast.success("Successfully assigned staff");
             fetchRides();
         } catch (e) {
@@ -64,9 +66,9 @@ export default function ViewAllRide(){
         }
     }
 
-    const reassignRideAndCheckStatus = async() => {
+    const reassignRideAndCheckStatus = async () => {
         try {
-            await invoke("reassign_ride_and_check_status", {newStaffId:selectedId, newRideId:rideId})
+            await invoke("reassign_ride_and_check_status", {newStaffId: selectedId, newRideId: rideId})
             toast.success("Succesfully reassigned staff")
             fetchRides();
         } catch (e) {
@@ -74,9 +76,9 @@ export default function ViewAllRide(){
         }
     }
 
-    const changeRideStatus = async (id:number, status:string) => {
+    const changeRideStatus = async (id: number, status: string) => {
         try {
-            await invoke("change_ride_status", {rideId:id, rideStatus:status})
+            await invoke("change_ride_status", {rideId: id, rideStatus: status})
             toast.success("Successfully updated ride status");
             fetchRides();
         } catch (e) {
@@ -87,7 +89,7 @@ export default function ViewAllRide(){
     return (
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
             {rides.length > 0 && (
-                rides.map((ride:Ride) => (
+                rides.map((ride: Ride) => (
                     <div key={ride.id} className="w-full bg-white h-auto rounded-2xl shrink-0 flex">
                         <div className="w-96 h-auto p-8 overflow-hidden">
                             <img className="object-contain w-full h-full rounded-lg" src={ride.image_data}
@@ -102,6 +104,30 @@ export default function ViewAllRide(){
                                     <h3>Status : {ride.status}</h3>
                                 </div>
                                 <div className="w-48 flex justify-center place-items-center mr-6 flex-col gap-4">
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button
+                                                disabled={ride.status == "Maintenance in Progress" || ride.status == "Pending Maintenance"}
+                                                className="bg-purple-700 w-48 h-12">Request Maintenance</Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Maintenance Request</DialogTitle>
+                                                <DialogDescription>Enter maintenance description</DialogDescription>
+                                            </DialogHeader>
+                                            <div className="grid gap-4 py-4">
+                                                <div className="grid grid-cols-4 items-center gap-4">
+                                                    <Label htmlFor="reason" className="text-right">
+                                                        Reasoning
+                                                    </Label>
+                                                    <Input id="reason" type="text" className="col-span-3"/>
+                                                </div>
+                                            </div>
+                                            <DialogFooter>
+                                                <Button type="submit" className="bg-purple-700">Save changes</Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
                                     <Dialog>
                                         <DialogTrigger asChild>
                                             <Button className="bg-purple-700 w-48 h-12">Assign Staff</Button>
@@ -119,7 +145,8 @@ export default function ViewAllRide(){
                                                 <SelectContent>
                                                     {staffs.length > 0 && (
                                                         staffs.map((staff: Staff) => (
-                                                            <SelectItem key={staff.id} value={staff.id.toString()}>{staff.name}</SelectItem>
+                                                            <SelectItem key={staff.id}
+                                                                        value={staff.id.toString()}>{staff.name}</SelectItem>
                                                         ))
                                                     )}
                                                 </SelectContent>
@@ -153,9 +180,10 @@ export default function ViewAllRide(){
                                             </AlertDialogFooter>
                                         </AlertDialogContent>
                                     </AlertDialog>
-                                    <Button className={`w-48 h-12  ${ride.status == "Closed" ? "bg-green-500" : ride.status == "Open" ? "bg-red-500" : "bg-purple-700"}`}
-                                            disabled={ride.status !== "Open" && ride.status !== "Closed"}
-                                            onClick={() => changeRideStatus(ride.id, ride.status)}>
+                                    <Button
+                                        className={`w-48 h-12  ${ride.status == "Closed" ? "bg-green-500" : ride.status == "Open" ? "bg-red-500" : "bg-purple-700"}`}
+                                        disabled={ride.status !== "Open" && ride.status !== "Closed"}
+                                        onClick={() => changeRideStatus(ride.id, ride.status)}>
                                         {ride.status === "Open" ? "Close" : "Open"}
                                     </Button>
                                 </div>

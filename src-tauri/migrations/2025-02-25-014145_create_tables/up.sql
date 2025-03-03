@@ -102,24 +102,38 @@ CREATE TABLE maintenance_assignments
 
 CREATE TABLE store_assignments
 (
-    id                    SERIAL PRIMARY KEY,
-    staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
+    id       SERIAL PRIMARY KEY,
+    staff_id INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
     store_id INTEGER NOT NULL REFERENCES stores (id) ON DELETE CASCADE,
-    role VARCHAR NOT NULL
+    role     VARCHAR NOT NULL
 );
 
 CREATE TABLE restaurant_assignments
 (
-    id                    SERIAL PRIMARY KEY,
-    staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
+    id            SERIAL PRIMARY KEY,
+    staff_id      INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
     restaurant_id INTEGER NOT NULL REFERENCES restaurants (id) ON DELETE CASCADE,
-    role VARCHAR NOT NULL
+    role          VARCHAR NOT NULL
 );
 
 CREATE TABLE ride_assignments
 (
-    id                    SERIAL PRIMARY KEY,
-    staff_id              INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
-    ride_id INTEGER NOT NULL REFERENCES rides (id) ON DELETE CASCADE,
-    role VARCHAR NOT NULL
+    id       SERIAL PRIMARY KEY,
+    staff_id INTEGER NOT NULL REFERENCES staffs (id) ON DELETE CASCADE,
+    ride_id  INTEGER NOT NULL REFERENCES rides (id) ON DELETE CASCADE,
+    role     VARCHAR NOT NULL
 );
+
+CREATE TABLE lost_items
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    item_type VARCHAR NOT NULL,
+    color VARCHAR NOT NULL,
+    last_location VARCHAR NOT NULL,
+    owner_id INTEGER NOT NULL,
+    status VARCHAR NOT NULL,
+    finder_id INTEGER,
+    found_location VARCHAR,
+    image_id INTEGER REFERENCES images (id)
+)

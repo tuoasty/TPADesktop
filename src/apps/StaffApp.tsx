@@ -10,6 +10,7 @@ import ViewAllRestaurant from "@/apps/staff/pages/fbsupervisor/ViewAllRestaurant
 import ViewAllStore from "@/apps/staff/pages/retailmanager/ViewAllStore.tsx";
 import ViewAllRide from "@/apps/staff/pages/ridemanager/ViewAllRide.tsx";
 import ViewAllMaintenanceReport from "@/apps/staff/pages/maintenancemanager/ViewAllMaintenanceReport.tsx";
+import ViewAllLostAndFound from "@/apps/staff/pages/lostandfound/ViewAllLostAndFound.tsx";
 
 export default function StaffApp() {
     return (
@@ -33,6 +34,8 @@ export default function StaffApp() {
                                 allowedRoles={["Ride Manager"]}><ViewAllRide/></ProtectedRoute>}/>
                             <Route path="view-all-maintenance-report" element={<ProtectedRoute
                                 allowedRoles={["Maintenance Manager"]}><ViewAllMaintenanceReport/></ProtectedRoute>}/>
+                            <Route path="view-lost-and-found" element={<ProtectedRoute
+                                allowedRoles={["Lost and Found Staff"]}><ViewAllLostAndFound/></ProtectedRoute>}/>
                             <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                         </Route>
                     </Routes>

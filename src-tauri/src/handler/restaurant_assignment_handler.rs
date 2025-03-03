@@ -1,7 +1,6 @@
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
 use crate::model::restaurant_assignment_model::RestaurantAssignment;
-use crate::model::ride_assignment_model::RideAssignment;
 use crate::model::staff_model::{StaffDetail};
 
 #[command]
