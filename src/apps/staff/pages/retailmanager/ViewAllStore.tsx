@@ -27,6 +27,8 @@ export default function ViewAllStore() {
     const [stores, setStores] = useState<Store[]>([]);
     const [staffs, setStaffs] = useState<Staff[]>([]);
     const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [storeId, setStoreId] = useState<number | null>(null);
+    const [reassignDialog, setReassignDialog] = useState(false);
 
     const fetchStores = async () => {
         invoke<Store[]>("find_all_store")
@@ -49,7 +51,14 @@ export default function ViewAllStore() {
             toast.success("Successfully assigned staff");
             fetchStores();
         } catch (e) {
-            toast.error(`${e}`)
+            const error = `${e}`;
+
+            if (error.includes("STAFF ASSIGNED")) {
+                setStoreId(storeId);
+                setReassignDialog(true);
+            } else {
+                toast.error(error)
+            }
         }
     }
 
@@ -70,6 +79,16 @@ export default function ViewAllStore() {
                 fetchStores();
             })
 
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
+
+    const reassignStoreAndCheckStatus = async() => {
+        try {
+            await invoke("reassign_store_and_check_status", {newStaffId:selectedId, newStoreId:storeId})
+            toast.success("Succesfully reassigned staff")
+            fetchStores();
         } catch (e) {
             toast.error(`${e}`)
         }
@@ -127,6 +146,23 @@ export default function ViewAllStore() {
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
+                                    <AlertDialog open={reassignDialog} onOpenChange={setReassignDialog}>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Staff Already Assigned</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This staff member is already assigned.
+                                                    Do you want to reassign them?
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => reassignStoreAndCheckStatus()}>
+                                                    Reassign
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                     <Button
                                         onClick={() => changeStoreStatus(store.id, store.status)}
                                         className={`w-48 h-12 ${store.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}>

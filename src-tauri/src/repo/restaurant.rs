@@ -5,7 +5,8 @@ use crate::DbConnect;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
 use crate::handler::menu_handler::find_restaurant_menu;
-use crate::handler::restaurant_assignment_handler::get_restaurant_staffs;
+use crate::handler::restaurant_assignment_handler::{check_restaurant_staff_to_open, get_restaurant_staffs, reassign_staff_to_restaurant};
+use crate::handler::ride_assignment_handler::{check_ride_staff_to_open, reassign_staff_to_ride};
 
 impl Restaurant {
     pub fn get_restaurant(conn: &mut DbConnect, restaurant_id: i32) -> Result<Self, String> {
@@ -46,10 +47,31 @@ impl Restaurant {
     }
 
     pub fn update_restaurant_status(conn:&mut DbConnect, restaurant_id:i32, new_status:String) -> Result<(), String>{
+        if new_status == "Open" {
+            if !check_restaurant_staff_to_open(conn, restaurant_id)? {
+                return Err("Not enough staff assigned".to_string())
+            }
+        }
+
         diesel::update(restaurants.filter(id.eq(restaurant_id)))
             .set(status.eq(new_status))
             .execute(conn)
             .map_err(|e| format!("Error updating status: {}", e))?;
+
+        Ok(())
+    }
+
+    pub fn reassign_restaurant_staff(conn: &mut DbConnect, new_staff_id:i32, new_restaurant_id:i32) -> Result<i32, String> {
+        reassign_staff_to_restaurant(conn, new_staff_id, new_restaurant_id)
+    }
+
+    pub fn check_restaurant_assignment_and_update(conn: &mut DbConnect, new_restaurant_id:i32) -> Result<(), String> {
+        if !check_restaurant_staff_to_open(conn, new_restaurant_id)? {
+            diesel::update(restaurants.filter(id.eq(new_restaurant_id)))
+                .set(status.eq("Closed".to_string()))
+                .execute(conn)
+                .map_err(|e| format!("Error updating status: {}", e))?;
+        }
 
         Ok(())
     }

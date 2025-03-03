@@ -137,7 +137,7 @@ pub fn seed_database(pool: &DbPool) {
                 open_time: NaiveTime::from_hms_opt(9, 0, 0).unwrap(),
                 close_time: NaiveTime::from_hms_opt(18, 0, 0).unwrap(),
                 cuisine: "Warteg Kehidupan".to_string(),
-                status: "Open".to_string(),
+                status: "Closed".to_string(),
             },
             NewRestaurant {
                 name: "Gyukaku".to_string(),
@@ -155,14 +155,14 @@ pub fn seed_database(pool: &DbPool) {
                 image_id: seed_image(conn, "images/seed/walmart.png").unwrap(),
                 open_time: NaiveTime::from_hms_opt(9, 0, 0).unwrap(),
                 close_time: NaiveTime::from_hms_opt(22, 0, 0).unwrap(),
-                status: "Open".to_string(),
+                status: "Closed".to_string(),
             },
             NewStore {
                 name:"Mito".to_string(),
                 image_id: seed_image(conn, "images/seed/mito.png").unwrap(),
                 open_time: NaiveTime::from_hms_opt(7, 0, 0).unwrap(),
                 close_time: NaiveTime::from_hms_opt(20, 0, 0).unwrap(),
-                status: "Open".to_string(),
+                status: "Closed".to_string(),
             },
         ];
 

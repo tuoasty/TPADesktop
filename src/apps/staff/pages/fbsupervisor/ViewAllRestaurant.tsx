@@ -14,11 +14,22 @@ import {Button} from "@/components/ui/button.tsx";
 import {toast} from "sonner";
 import {Staff} from "@/ types/staff.ts";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle
+} from "@/components/ui/alert-dialog.tsx";
 
 export default function ViewAllRestaurant() {
     const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
     const [staffs, setStaffs] = useState<Staff[]>([]);
     const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [restaurantId, setRestaurantId] = useState<number | null>(null);
+    const [reassignDialog, setReassignDialog] = useState(false);
 
     const fetchRestaurants = async () => {
         invoke<Restaurant[]>("find_all_restaurant")
@@ -45,13 +56,30 @@ export default function ViewAllRestaurant() {
         }
     }
 
+    const reassignRestaurantAndCheckStatus = async() => {
+        try {
+            await invoke("reassign_restaurant_and_check_status", {newStaffId:selectedId, newRestaurantId:restaurantId})
+            toast.success("Succesfully reassigned staff")
+            fetchRestaurants();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
+
     const assignStaffToRestaurant = async (restaurantId:number) => {
         try {
             await invoke("assign_staff_to_restaurant", {staffId:selectedId, restaurantId:restaurantId})
             toast.success("Successfully assigned staff");
             fetchRestaurants();
         } catch (e) {
-            toast.error(`${e}`)
+            const error = `${e}`;
+
+            if (error.includes("STAFF ASSIGNED")) {
+                setRestaurantId(restaurantId);
+                setReassignDialog(true);
+            } else {
+                toast.error(error)
+            }
         }
     }
 
@@ -107,6 +135,23 @@ export default function ViewAllRestaurant() {
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
+                                    <AlertDialog open={reassignDialog} onOpenChange={setReassignDialog}>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Staff Already Assigned</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This staff member is already assigned.
+                                                    Do you want to reassign them?
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => reassignRestaurantAndCheckStatus()}>
+                                                    Reassign
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                     <Button className={`w-48 h-12 ${restaurant.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}
                                     onClick={() => {changeRestaurantStatus(restaurant.id, restaurant.status)}}>
                                         {restaurant.status == "Closed" ? "Open" : "Close"}

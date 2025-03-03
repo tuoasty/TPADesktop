@@ -44,7 +44,7 @@ impl StoreAssignment {
         }
 
         if !existing_assignment.is_empty(){
-            return Err("Staff is assigned to another store".to_string());
+            return Err("STAFF ASSIGNED".to_string());
         };
 
         diesel::insert_into(store_assignments)

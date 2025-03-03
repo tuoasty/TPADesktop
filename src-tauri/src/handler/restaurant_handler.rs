@@ -40,3 +40,11 @@ pub fn change_restaurant_status(state:State<DbPool>, restaurant_id:i32, restaura
     Restaurant::update_restaurant_status(conn, restaurant_id, new_status)
 }
 
+#[command]
+pub fn reassign_restaurant_and_check_status(state: State<DbPool>, new_staff_id:i32, new_restaurant_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    let deleted_restaurant_id = Restaurant::reassign_restaurant_staff(conn, new_staff_id, new_restaurant_id)?;
+
+    Restaurant::check_restaurant_assignment_and_update(conn, deleted_restaurant_id)
+}
