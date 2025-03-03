@@ -116,7 +116,14 @@ export default function ViewAllStore() {
                                                 </SelectContent>
                                             </Select>
                                             <DialogFooter>
-                                                <Button onClick={() => assignStaffToStore(store.id)} type="submit" className="bg-purple-700">Confirm</Button>
+                                                <DialogTrigger asChild>
+                                                    <Button
+                                                        onClick={() => assignStaffToStore(store.id)}
+                                                        type="submit"
+                                                        className="bg-purple-700">
+                                                        Confirm
+                                                    </Button>
+                                                </DialogTrigger>
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>

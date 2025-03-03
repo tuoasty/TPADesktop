@@ -35,9 +35,13 @@ impl RestaurantAssignment {
     pub fn assign_restaurant_staff(conn: &mut DbConnect, new_staff_id:i32, new_restaurant_id:i32) -> Result<(), String> {
         let existing_assignment =
             restaurant_assignments.filter(staff_id.eq(new_staff_id))
-                .select(id)
+                .select(restaurant_id)
                 .load::<i32>(conn)
                 .map_err(|e| e.to_string())?;
+
+        if existing_assignment.contains(&new_restaurant_id) {
+            return Err("Staff is already assigned to this restaurant".to_string());
+        }
 
         if !existing_assignment.is_empty(){
             return Err("Staff is assigned to another restaurant".to_string());

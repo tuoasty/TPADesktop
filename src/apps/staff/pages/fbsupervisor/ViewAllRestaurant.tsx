@@ -96,7 +96,14 @@ export default function ViewAllRestaurant() {
                                                 </SelectContent>
                                             </Select>
                                             <DialogFooter>
-                                                <Button onClick={() => assignStaffToRestaurant(restaurant.id)} type="submit" className="bg-purple-700">Confirm</Button>
+                                               <DialogTrigger asChild>
+                                                   <Button
+                                                       onClick={() => assignStaffToRestaurant(restaurant.id)}
+                                                       type="submit"
+                                                       className="bg-purple-700">
+                                                       Confirm
+                                                   </Button>
+                                               </DialogTrigger>
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>

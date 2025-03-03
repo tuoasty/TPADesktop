@@ -15,11 +15,23 @@ import {
 import {toast} from "sonner";
 import {Staff} from "@/ types/staff.ts";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog.tsx";
 
 export default function ViewAllRide(){
     const [rides, setRides] = useState<Ride[]>([])
     const [staffs, setStaffs] = useState<Staff[]>([])
     const [selectedId, setSelectedId] = useState<number | null>(null);
+    const [rideId, setRideId] = useState<number | null>(null);
+    const [reassignDialog, setReassignDialog] = useState(false);
 
     const fetchRides = async () => {
         invoke<Ride[]>("find_all_ride").then(setRides);
@@ -41,6 +53,23 @@ export default function ViewAllRide(){
             toast.success("Successfully assigned staff");
             fetchRides();
         } catch (e) {
+            const error = `${e}`;
+
+            if (error.includes("STAFF ASSIGNED")) {
+                setRideId(rideId);
+                setReassignDialog(true);
+            } else {
+                toast.error(error)
+            }
+        }
+    }
+
+    const reassignStaffToRide = async() => {
+        try {
+            await invoke("reassign_staff_to_ride", {staffId:selectedId, rideId:rideId})
+            toast.success("Succesfully reassigned staff")
+            fetchRides();
+        } catch (e) {
             toast.error(`${e}`)
         }
     }
@@ -50,7 +79,6 @@ export default function ViewAllRide(){
             await invoke("change_ride_status", {rideId:id, rideStatus:status})
             toast.success("Successfully updated ride status");
             fetchRides();
-
         } catch (e) {
             toast.error(`${e}`)
         }
@@ -97,10 +125,34 @@ export default function ViewAllRide(){
                                                 </SelectContent>
                                             </Select>
                                             <DialogFooter>
-                                                <Button onClick={() => assignStaffToRide(ride.id)} type="submit" className="bg-purple-700">Confirm</Button>
+                                                <DialogTrigger asChild>
+                                                    <Button
+                                                        onClick={() => assignStaffToRide(ride.id)}
+                                                        type="submit"
+                                                        className="bg-purple-700">
+                                                        Confirm
+                                                    </Button>
+                                                </DialogTrigger>
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
+                                    <AlertDialog open={reassignDialog} onOpenChange={setReassignDialog}>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Staff Already Assigned</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This staff member is already assigned.
+                                                    Do you want to reassign them?
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={() => reassignStaffToRide()}>
+                                                    Reassign
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                     <Button className={`w-48 h-12  ${ride.status == "Closed" ? "bg-green-500" : ride.status == "Open" ? "bg-red-500" : "bg-purple-700"}`}
                                             disabled={ride.status !== "Open" && ride.status !== "Closed"}
                                             onClick={() => changeRideStatus(ride.id, ride.status)}>
@@ -114,7 +166,7 @@ export default function ViewAllRide(){
                                     <h2>None</h2>
                                 ) : ride.staffs.map((staff: Staff) => (
                                     <div key={staff.id}>
-                                        <h2>{staff.role} : {staff.name}</h2>
+                                        <h2>{staff.name}</h2>
                                     </div>
                                 ))}
                             </div>

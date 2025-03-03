@@ -39,6 +39,7 @@ macro_rules! all_handlers {
             $crate::handler::restaurant_assignment_handler::assign_staff_to_restaurant,
             $crate::handler::store_assignment_handler::assign_staff_to_store,
             $crate::handler::ride_assignment_handler::assign_staff_to_ride,
+            $crate::handler::ride_assignment_handler::reassign_staff_to_ride,
             // Add all other commands
         ]
     };

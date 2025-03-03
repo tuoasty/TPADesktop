@@ -10,5 +10,12 @@ pub fn get_ride_staffs(conn: &mut DbConnect, selected_id:i32) -> Result<Vec<Staf
 #[command]
 pub fn assign_staff_to_ride(state:State<DbPool>, staff_id:i32, ride_id:i32) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
-    RideAssignment::assign_ride_staff(conn, staff_id, ride_id)
+    RideAssignment::assign_ride_staff(conn, staff_id, rirde_id)
+}
+
+#[command]
+pub fn reassign_staff_to_ride(state:State<DbPool>, staff_id:i32, ride_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    RideAssignment::reassign_ride_staff(conn, staff_id, ride_id)
 }
