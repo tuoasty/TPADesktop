@@ -11,3 +11,4 @@ pub mod store_assignment_model;
 pub mod restaurant_assignment_model;
 pub mod ride_assignment_model;
 pub mod lost_item_model;
+pub mod customer_model;

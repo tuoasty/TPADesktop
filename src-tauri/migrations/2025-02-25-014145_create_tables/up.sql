@@ -12,7 +12,8 @@ CREATE TABLE staffs
 CREATE TABLE customers
 (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL
+    name VARCHAR NOT NULL,
+    balance INTEGER NOT NULL
 );
 
 CREATE TABLE images

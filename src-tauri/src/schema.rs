@@ -4,6 +4,7 @@ diesel::table! {
     customers (id) {
         id -> Int4,
         name -> Varchar,
+        balance -> Int4,
     }
 }
 

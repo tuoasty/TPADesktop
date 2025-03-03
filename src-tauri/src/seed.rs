@@ -6,6 +6,8 @@ use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
 use std::fs;
 use std::path::Path;
+use crate::model::customer_model::NewCustomer;
+use crate::model::lost_item_model::NewLostItem;
 use crate::model::maintenance_report_model::NewMaintenanceReport;
 use crate::model::menu_model::NewMenu;
 use crate::model::restaurant_model::NewRestaurant;
@@ -13,6 +15,8 @@ use crate::model::ride_model::NewRide;
 use crate::model::souvenir_model::NewSouvenir;
 use crate::model::staff_model::NewStaff;
 use crate::model::store_model::NewStore;
+use crate::schema::customers::dsl::customers;
+use crate::schema::lost_items::dsl::lost_items;
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use crate::schema::menus::dsl::menus;
 use crate::schema::rides::dsl::rides;
@@ -130,6 +134,17 @@ pub fn seed_database(pool: &DbPool) {
             },
         ];
 
+        let seed_customers = vec![
+            NewCustomer {
+                name:"Willy".to_string(),
+                balance:0
+            },
+            NewCustomer {
+                name:"aldric".to_string(),
+                balance:99999
+            }
+        ];
+
         let seed_restaurants = vec![
             NewRestaurant {
                 name: "Kemuning".to_string(),
@@ -232,8 +247,39 @@ pub fn seed_database(pool: &DbPool) {
             }
         ];
 
+        let seed_lost_item = vec![
+            NewLostItem {
+                name:"Chill Guy".to_string(),
+                item_type:"Toy".to_string(),
+                color:"Brown".to_string(),
+                last_location:"Rumah Maklo".to_string(),
+                owner_id:1,
+                status:"Found".to_string(),
+                finder_id:Some(2),
+                found_location:Some("Perosotan Kematian".to_string()),
+                image_id:Some(seed_image(conn, "images/seed/chillguy.png").unwrap())
+            },
+            NewLostItem {
+                name:"Handphone samsung".to_string(),
+                item_type:"Gadget".to_string(),
+                color:"White".to_string(),
+                last_location:"Walmart".to_string(),
+                owner_id:2,
+                status:"Missing".to_string(),
+                finder_id:None,
+                found_location:None,
+                image_id:None
+            }
+        ];
+
         diesel::insert_into(staffs)
             .values(&staff_members)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(customers)
+            .values(&seed_customers)
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();
@@ -270,6 +316,12 @@ pub fn seed_database(pool: &DbPool) {
 
         diesel::insert_into(maintenance_reports)
             .values(&seed_maintenance_report)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(lost_items)
+            .values(&seed_lost_item)
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();
