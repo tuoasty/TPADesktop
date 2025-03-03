@@ -11,28 +11,45 @@ import {
     DialogTitle,
     DialogContent
 } from "@/components/ui/dialog.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import {Input} from "@/components/ui/input.tsx";
+
 import {toast} from "sonner";
 import {Staff} from "@/ types/staff.ts";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 
 export default function ViewAllRide(){
     const [rides, setRides] = useState<Ride[]>([])
+    const [staffs, setStaffs] = useState<Staff[]>([])
+    const [selectedId, setSelectedId] = useState<number | null>(null);
 
     const fetchRides = async () => {
         invoke<Ride[]>("find_all_ride").then(setRides);
     }
 
+    const fetchRideStaffs = async () => {
+        invoke<Staff[]>("find_all_staff", {staffRole:"Ride Staff"})
+            .then(setStaffs)
+    }
+
     useEffect(() => {
         fetchRides();
+        fetchRideStaffs();
     }, []);
 
-    const changeRideStatus = (id:number, status:string) => {
+    const assignStaffToRide = async (rideId:number) => {
         try {
-            invoke("change_ride_status", {rideId:id, rideStatus:status}).then(() => {
-                toast.success("Successfully updated ride status");
-                fetchRides();
-            })
+            await invoke("assign_staff_to_ride", {staffId:selectedId, rideId:rideId})
+            toast.success("Successfully assigned staff");
+            fetchRides();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
+
+    const changeRideStatus = async (id:number, status:string) => {
+        try {
+            await invoke("change_ride_status", {rideId:id, rideStatus:status})
+            toast.success("Successfully updated ride status");
+            fetchRides();
 
         } catch (e) {
             toast.error(`${e}`)
@@ -59,24 +76,28 @@ export default function ViewAllRide(){
                                 <div className="w-48 flex justify-center place-items-center mr-6 flex-col gap-4">
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            <Button disabled={ride.status == "Maintenance in Progress" || ride.status == "Pending Maintenance"}
-                                                    className="bg-purple-700 w-48 h-12">Request Maintenance</Button>
+                                            <Button className="bg-purple-700 w-48 h-12">Assign Staff</Button>
                                         </DialogTrigger>
                                         <DialogContent>
                                             <DialogHeader>
-                                                <DialogTitle>Maintenance Request</DialogTitle>
-                                                <DialogDescription>Enter maintenance description</DialogDescription>
+                                                <DialogTitle>Ride Staff</DialogTitle>
+                                                <DialogDescription>Choose staff to assign.
+                                                    Rides need at least two staff</DialogDescription>
                                             </DialogHeader>
-                                            <div className="grid gap-4 py-4">
-                                                <div className="grid grid-cols-4 items-center gap-4">
-                                                    <Label htmlFor="reason" className="text-right">
-                                                        Reasoning
-                                                    </Label>
-                                                    <Input id="reason" type="text" className="col-span-3" />
-                                                </div>
-                                            </div>
+                                            <Select onValueChange={(val) => setSelectedId(Number(val))}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Ride Staff"/>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {staffs.length > 0 && (
+                                                        staffs.map((staff: Staff) => (
+                                                            <SelectItem key={staff.id} value={staff.id.toString()}>{staff.name}</SelectItem>
+                                                        ))
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
                                             <DialogFooter>
-                                                <Button type="submit" className="bg-purple-700">Save changes</Button>
+                                                <Button onClick={() => assignStaffToRide(ride.id)} type="submit" className="bg-purple-700">Confirm</Button>
                                             </DialogFooter>
                                         </DialogContent>
                                     </Dialog>
