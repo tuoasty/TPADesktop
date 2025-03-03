@@ -30,6 +30,7 @@ macro_rules! all_handlers {
             $crate::handler::menu_handler::create_menu,
             $crate::handler::store_handler::find_all_store,
             $crate::handler::store_handler::change_store_status,
+            $crate::handler::store_handler::reassign_store_and_check_status,
             $crate::handler::souvenir_handler::remove_souvenir,
             $crate::handler::ride_handler::find_all_ride,
             $crate::handler::ride_handler::change_ride_status,

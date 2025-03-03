@@ -3,8 +3,9 @@ use crate::model::store_model::{Store, StoreDetail};
 use crate::schema::stores::dsl::stores;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
+use crate::handler::restaurant_assignment_handler::check_restaurant_staff_to_open;
 use crate::handler::souvenir_handler::find_store_souvenir;
-use crate::handler::store_assignment_handler::get_store_staffs;
+use crate::handler::store_assignment_handler::{check_store_staff_to_open, get_store_staffs, reassign_staff_to_store};
 use crate::model::souvenir_model::SouvenirDetail;
 use crate::model::staff_model::StaffDetail;
 use crate::schema::stores::{id, status};
@@ -37,10 +38,31 @@ impl Store {
     }
 
     pub fn update_store_status(conn:&mut DbConnect, store_id:i32, new_status:String) -> Result<(), String>{
+        if new_status == "Open" {
+            if !check_store_staff_to_open(conn, store_id)? {
+                return Err("Not enough staff assigned".to_string())
+            }
+        }
+
         diesel::update(stores.filter(id.eq(store_id)))
             .set(status.eq(new_status))
             .execute(conn)
             .map_err(|e| format!("Error updating status: {}", e))?;
+
+        Ok(())
+    }
+
+    pub fn reassign_store_staff(conn:&mut DbConnect, new_staff_id:i32, new_store_id:i32) -> Result<i32, String> {
+        reassign_staff_to_store(conn, new_staff_id, new_store_id)
+    }
+
+    pub fn check_store_assignment_and_update(conn: &mut DbConnect, new_store_id:i32) -> Result<(), String> {
+        if !check_store_staff_to_open(conn, new_store_id)? {
+            diesel::update(stores.filter(id.eq(&new_store_id)))
+                .set(status.eq("Closed".to_string()))
+                .execute(conn)
+                .map_err(|e| e.to_string())?;
+        }
 
         Ok(())
     }

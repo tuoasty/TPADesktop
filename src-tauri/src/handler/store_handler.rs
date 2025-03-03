@@ -26,3 +26,12 @@ pub fn change_store_status(state:State<DbPool>, store_id:i32, store_status:Strin
     Store::update_store_status(conn, store_id, new_status)
 }
 
+#[command]
+pub fn reassign_store_and_check_status(state:State<DbPool>, new_staff_id:i32, new_store_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    let deleted_store_id = Store::reassign_store_staff(conn, new_staff_id, new_store_id)?;
+
+    Store::check_store_assignment_and_update(conn, deleted_store_id)
+}
+

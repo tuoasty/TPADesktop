@@ -36,7 +36,7 @@ export default function ViewAllStore() {
     }
 
     const fetchStoreStaff = async () => {
-        invoke<Staff[]>("find_all_staff", {staffRole:"Sales Associate"})
+        invoke<Staff[]>("find_all_staff", {staffRole: "Sales Associate"})
             .then(setStaffs)
     }
 
@@ -45,9 +45,9 @@ export default function ViewAllStore() {
         fetchStoreStaff();
     }, []);
 
-    const assignStaffToStore = async (storeId:number) => {
+    const assignStaffToStore = async (storeId: number) => {
         try {
-            await invoke("assign_staff_to_store", {staffId:selectedId, storeId:storeId})
+            await invoke("assign_staff_to_store", {staffId: selectedId, storeId: storeId})
             toast.success("Successfully assigned staff");
             fetchStores();
         } catch (e) {
@@ -72,21 +72,20 @@ export default function ViewAllStore() {
         }
     }
 
-    const changeStoreStatus = (id:number, status:string) => {
+    const changeStoreStatus = async (id: number, status: string) => {
         try {
-            invoke("change_store_status", {storeId:id, storeStatus:status}).then(() => {
-                toast.success("Successfully updated store status");
-                fetchStores();
-            })
+            await invoke("change_store_status", {storeId: id, storeStatus: status});
+            toast.success("Successfully updated store status");
+            fetchStores();
 
         } catch (e) {
             toast.error(`${e}`)
         }
     }
 
-    const reassignStoreAndCheckStatus = async() => {
+    const reassignStoreAndCheckStatus = async () => {
         try {
-            await invoke("reassign_store_and_check_status", {newStaffId:selectedId, newStoreId:storeId})
+            await invoke("reassign_store_and_check_status", {newStaffId: selectedId, newStoreId: storeId})
             toast.success("Succesfully reassigned staff")
             fetchStores();
         } catch (e) {
@@ -129,7 +128,8 @@ export default function ViewAllStore() {
                                                 <SelectContent>
                                                     {staffs.length > 0 && (
                                                         staffs.map((staff: Staff) => (
-                                                            <SelectItem key={staff.id} value={staff.id.toString()}>{staff.name}</SelectItem>
+                                                            <SelectItem key={staff.id}
+                                                                        value={staff.id.toString()}>{staff.name}</SelectItem>
                                                         ))
                                                     )}
                                                 </SelectContent>
@@ -182,7 +182,8 @@ export default function ViewAllStore() {
                             </div>
                             {store.souvenirs.length > 0 && (
                                 store.souvenirs.map((souvenir: Souvenir) => (
-                                    <div key={souvenir.id} className="bg-purple-200 rounded-2xl p-2 flex justify-between">
+                                    <div key={souvenir.id}
+                                         className="bg-purple-200 rounded-2xl p-2 flex justify-between">
                                         <div className="flex flex-row">
                                             <div className="h-28 w-28 mr-4 overflow-hidden">
                                                 <img className="object-cover w-full h-full rounded-lg"
@@ -198,7 +199,8 @@ export default function ViewAllStore() {
                                         <div className="flex justify-center place-items-center mr-4">
                                             <AlertDialog>
                                                 <AlertDialogTrigger asChild>
-                                                    <Button type="submit" className="bg-red-500">Remove Souvenir</Button>
+                                                    <Button type="submit" className="bg-red-500">Remove
+                                                        Souvenir</Button>
                                                 </AlertDialogTrigger>
                                                 <AlertDialogContent>
                                                     <AlertDialogHeader>
