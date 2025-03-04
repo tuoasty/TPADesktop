@@ -12,3 +12,4 @@ mod store_assignment;
 mod ride_assignment;
 mod lost_item;
 mod customer;
+mod notification;

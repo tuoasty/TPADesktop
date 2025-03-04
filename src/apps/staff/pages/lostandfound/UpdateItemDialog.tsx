@@ -34,8 +34,6 @@ export const UpdateItemDialog: React.FC<Props> = ({
             last_location: item.last_location,
             owner_id: item.owner_id,
             status: item.status,
-            finder_id: item.finder_id || 0,
-            found_location: item.found_location || "",
         }
     });
 
@@ -50,8 +48,6 @@ export const UpdateItemDialog: React.FC<Props> = ({
             last_location: item.last_location,
             owner_id: item.owner_id,
             status: item.status,
-            finder_id: item.finder_id || 0,
-            found_location: item.found_location || "",
         });
     }, [item, reset]);
 
@@ -82,6 +78,7 @@ export const UpdateItemDialog: React.FC<Props> = ({
             mime_type: data.mime_type,
             image_name: data.image_name
         }
+        console.log(itemData.finder_id)
         onUpdate(itemData);
     };
 
@@ -148,12 +145,14 @@ export const UpdateItemDialog: React.FC<Props> = ({
                             <div className="flex flex-col gap-2">
                                 <Label htmlFor="finder_id">Finder ID</Label>
                                 <Input id="finder_id" {...register("finder_id")}
-                                       placeholder="Finder ID"/>
+                                       placeholder="Finder ID"
+                                       onChange={(e) => setValue("finder_id", parseInt(e.target.value, 0))}/>
                             </div>
                             <div className="flex flex-col gap-2">
                                 <Label htmlFor="found_location">Found Location</Label>
                                 <Input id="found_location" {...register("found_location")}
-                                       placeholder="Found Location"/>
+                                       placeholder="Found Location"
+                                onChange={(e) => setValue("found_location", e.target.value)}/>
                             </div>
                             <div className="flex flex-col gap-2">
                                 <Label htmlFor="picture">Picture</Label>

@@ -22,6 +22,7 @@ export default function ViewAllLostAndFound() {
 
     const updateItemDetail = async (item:UpdateLostItemPayload) => {
         try {
+            console.log(item)
             await invoke("update_lost_item", {item:item})
             toast.success("Successfully updated item")
             fetchLostItem();

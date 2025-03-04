@@ -12,6 +12,7 @@ DROP TABLE maintenance_reports;
 DROP TABLE rides;
 DROP TABLE lost_items;
 DROP TABLE images;
+DROP TABLE notifications;
 DROP TABLE customers;
 DROP TABLE staffs;
 

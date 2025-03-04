@@ -62,6 +62,14 @@ diesel::table! {
 }
 
 diesel::table! {
+    notifications (id) {
+        id -> Int4,
+        customer_id -> Int4,
+        message -> Varchar,
+    }
+}
+
+diesel::table! {
     restaurant_assignments (id) {
         id -> Int4,
         staff_id -> Int4,
@@ -159,6 +167,7 @@ diesel::joinable!(maintenance_assignments -> staffs (staff_id));
 diesel::joinable!(maintenance_reports -> rides (ride_id));
 diesel::joinable!(menus -> images (image_id));
 diesel::joinable!(menus -> restaurants (restaurant_id));
+diesel::joinable!(notifications -> customers (customer_id));
 diesel::joinable!(restaurant_assignments -> restaurants (restaurant_id));
 diesel::joinable!(restaurant_assignments -> staffs (staff_id));
 diesel::joinable!(restaurants -> images (image_id));
@@ -180,6 +189,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     maintenance_assignments,
     maintenance_reports,
     menus,
+    notifications,
     restaurant_assignments,
     restaurants,
     ride_assignments,

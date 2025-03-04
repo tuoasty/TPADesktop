@@ -11,8 +11,8 @@ CREATE TABLE staffs
 
 CREATE TABLE customers
 (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL,
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR NOT NULL,
     balance INTEGER NOT NULL
 );
 
@@ -127,14 +127,21 @@ CREATE TABLE ride_assignments
 
 CREATE TABLE lost_items
 (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL,
-    item_type VARCHAR NOT NULL,
-    color VARCHAR NOT NULL,
-    last_location VARCHAR NOT NULL,
-    owner_id INTEGER NOT NULL,
-    status VARCHAR NOT NULL,
-    finder_id INTEGER,
+    id             SERIAL PRIMARY KEY,
+    name           VARCHAR NOT NULL,
+    item_type      VARCHAR NOT NULL,
+    color          VARCHAR NOT NULL,
+    last_location  VARCHAR NOT NULL,
+    owner_id       INTEGER NOT NULL,
+    status         VARCHAR NOT NULL,
+    finder_id      INTEGER,
     found_location VARCHAR,
-    image_id INTEGER REFERENCES images (id)
-)
+    image_id       INTEGER REFERENCES images (id)
+);
+
+CREATE TABLE notifications
+(
+    id          SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL REFERENCES customers (id),
+    message     VARCHAR NOT NULL
+);
