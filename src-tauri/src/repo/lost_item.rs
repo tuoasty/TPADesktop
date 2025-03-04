@@ -7,6 +7,7 @@ use crate::schema::lost_items::dsl::lost_items;
 use diesel::prelude::*;
 use crate::handler::customer_handler::find_customer_name;
 use crate::handler::image_handler::{create_image, get_image_data};
+use crate::handler::notification_handler::create_customer_notification;
 use crate::schema::lost_items::*;
 
 impl LostItem {
@@ -83,6 +84,8 @@ impl LostItem {
             ))
             .execute(conn)
             .map_err(|e| e.to_string())?;
+
+        create_customer_notification(conn, item.owner_id, format!("An item has been {}", item.status))?;
 
         Ok(())
     }

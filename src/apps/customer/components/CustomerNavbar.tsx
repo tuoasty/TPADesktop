@@ -5,6 +5,7 @@ export default function CustomerNavbar(){
         <main className="fixed bg-blue-500 w-full h-20 top-0 flex flex-row">
             <CustomerNavButton text="Home" to="/customer/"/>
             <CustomerNavButton text="Login" to="/customer/login"/>
+            <CustomerNavButton text="Notifications" to="/customer/notification"/>
         </main>
     )
 }

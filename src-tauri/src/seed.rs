@@ -10,6 +10,7 @@ use crate::model::customer_model::NewCustomer;
 use crate::model::lost_item_model::NewLostItem;
 use crate::model::maintenance_report_model::NewMaintenanceReport;
 use crate::model::menu_model::NewMenu;
+use crate::model::notification_model::NewNotification;
 use crate::model::restaurant_model::NewRestaurant;
 use crate::model::ride_model::NewRide;
 use crate::model::souvenir_model::NewSouvenir;
@@ -19,6 +20,7 @@ use crate::schema::customers::dsl::customers;
 use crate::schema::lost_items::dsl::lost_items;
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use crate::schema::menus::dsl::menus;
+use crate::schema::notifications::dsl::notifications;
 use crate::schema::rides::dsl::rides;
 use crate::schema::souvenirs::dsl::souvenirs;
 use crate::schema::stores::dsl::stores;
@@ -272,6 +274,13 @@ pub fn seed_database(pool: &DbPool) {
             }
         ];
 
+        let seed_notifications = vec![
+            NewNotification {
+                customer_id:1,
+                message:"An item has been Found".to_string()
+            }
+        ];
+
         diesel::insert_into(staffs)
             .values(&staff_members)
             .execute(conn)
@@ -322,6 +331,12 @@ pub fn seed_database(pool: &DbPool) {
 
         diesel::insert_into(lost_items)
             .values(&seed_lost_item)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(notifications)
+            .values(&seed_notifications)
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();

@@ -3,6 +3,7 @@ import CustomerNavbar from "@/apps/customer/components/CustomerNavbar.tsx";
 import CustomerLogin from "@/apps/customer/pages/CustomerLogin.tsx";
 import CustomerDashboard from "@/apps/customer/pages/CustomerDashboard.tsx";
 import {CustomerAuthProvider, ProtectedRoute} from "@/context/CustomerAuthProvider.tsx";
+import CustomerNotification from "@/apps/customer/pages/CustomerNotification.tsx";
 
 function CustomerApp() {
   return (
@@ -14,9 +15,13 @@ function CustomerApp() {
                       <Route path="*" element={<Navigate to="/customer/login" replace/>}/>
                       <Route path="/customer">
                           <Route path="login" element={<CustomerLogin/>}/>
+                          <Route path="notification" element={<ProtectedRoute>
+                              <CustomerNotification/>
+                          </ProtectedRoute>}/>
                           <Route path="/customer" element={<ProtectedRoute>
                               <CustomerDashboard/>
                           </ProtectedRoute>}/>
+
                       </Route>
                   </Routes>
               </div>

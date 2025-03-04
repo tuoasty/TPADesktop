@@ -51,6 +51,7 @@ macro_rules! all_handlers {
             $crate::handler::customer_handler::login_customer,
             $crate::handler::customer_handler::logout_customer,
             $crate::handler::customer_handler::get_current_customer,
+            $crate::handler::notification_handler::find_customer_notifications,
             // Add all other commands
         ]
     };
