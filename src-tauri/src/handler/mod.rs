@@ -45,6 +45,7 @@ macro_rules! all_handlers {
             $crate::handler::store_assignment_handler::assign_staff_to_store,
             $crate::handler::ride_assignment_handler::assign_staff_to_ride,
             $crate::handler::lost_item_handler::find_all_lost_item,
+            $crate::handler::lost_item_handler::update_lost_item,
             // Add all other commands
         ]
     };

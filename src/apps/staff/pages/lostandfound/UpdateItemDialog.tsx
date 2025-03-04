@@ -19,7 +19,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 
 interface Props {
     item: LostItem,
-    onUpdate: (id: number, data: UpdateLostItemPayload) => void;
+    onUpdate: (item: UpdateLostItemPayload) => void;
 }
 
 export const UpdateItemDialog: React.FC<Props> = ({
@@ -42,6 +42,7 @@ export const UpdateItemDialog: React.FC<Props> = ({
     const item_status = watch("status");
 
     useEffect(() => {
+        setValue("id", item.id)
         reset({
             name: item.name,
             color: item.color,
@@ -66,8 +67,22 @@ export const UpdateItemDialog: React.FC<Props> = ({
         setValue("mime_type", image.mimeType);
     }
 
-    const onSubmit = (data: UpdateLostItemPayload) => {
-        onUpdate(item.id, data);
+    const onSubmit = async (data: UpdateLostItemPayload) => {
+        const itemData: UpdateLostItemPayload = {
+            id: item.id,
+            name: data.name || item.name,
+            item_type: data.item_type || item.item_type,
+            color: data.color || item.color,
+            last_location: data.last_location || item.last_location,
+            owner_id: data.owner_id || item.owner_id,
+            status: data.status || item.status,
+            finder_id: data.finder_id,
+            found_location: data.found_location,
+            image_data: data.image_data,
+            mime_type: data.mime_type,
+            image_name: data.image_name
+        }
+        onUpdate(itemData);
     };
 
     return (
@@ -128,7 +143,7 @@ export const UpdateItemDialog: React.FC<Props> = ({
                         )
                     }/>
 
-                    {(item_status === "Found" || item_status === "Returned to owner") && (
+                    {(item_status === "Found" || item_status === "Returned to Owner") && (
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-2">
                                 <Label htmlFor="finder_id">Finder ID</Label>

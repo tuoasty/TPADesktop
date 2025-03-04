@@ -20,8 +20,14 @@ export default function ViewAllLostAndFound() {
         fetchLostItem();
     }, []);
 
-    const updateItemDetails = async (id:number, data:UpdateLostItemPayload) => {
-        console.log(data)
+    const updateItemDetail = async (item:UpdateLostItemPayload) => {
+        try {
+            await invoke("update_lost_item", {item:item})
+            toast.success("Successfully updated item")
+            fetchLostItem();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
     }
 
     return (
@@ -61,7 +67,7 @@ export default function ViewAllLostAndFound() {
                                         rounded-lg p-2 font-bold w-full text-center`}>
                                         {item.status}
                                     </h2>
-                                    <UpdateItemDialog item={item} onUpdate={updateItemDetails}/>
+                                    <UpdateItemDialog item={item} onUpdate={updateItemDetail}/>
                                 </div>
                             </div>
                         </div>

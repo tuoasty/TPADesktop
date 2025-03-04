@@ -1,11 +1,13 @@
+use base64::Engine;
+use base64::engine::general_purpose::STANDARD;
 use diesel::QueryDsl;
 use crate::DbConnect;
-use crate::model::lost_item_model::{LostItem, LostItemDetail};
+use crate::model::lost_item_model::{LostItem, LostItemDetail, NewLostItemDetail};
 use crate::schema::lost_items::dsl::lost_items;
 use diesel::prelude::*;
 use crate::handler::customer_handler::find_customer_name;
-use crate::handler::image_handler::get_image_data;
-use crate::schema::customers::dsl::customers;
+use crate::handler::image_handler::{create_image, get_image_data};
+use crate::schema::lost_items::*;
 
 impl LostItem {
     pub fn get_all_lost_item(conn: &mut DbConnect) -> Result<Vec<LostItemDetail>, String> {
@@ -20,7 +22,7 @@ impl LostItem {
             .map(|item| {
 
                 let base64_image = match item.image_id {
-                    Some(id) => match get_image_data(conn, id) {
+                    Some(new_image_id) => match get_image_data(conn, new_image_id) {
                         Ok(data) => Some(data),
                         Err(_) => None
                     }
@@ -30,7 +32,7 @@ impl LostItem {
                 let customer_name = find_customer_name(conn, item.owner_id).unwrap();
 
                 let finder_name = match item.finder_id {
-                    Some(id) => match find_customer_name(conn, id) {
+                    Some(customer_id) => match find_customer_name(conn, customer_id) {
                         Ok(data) => Some(data),
                         Err(_) => None
                     }
@@ -55,5 +57,33 @@ impl LostItem {
             .collect();
 
         Ok(lost_items_details)
+    }
+
+    pub fn update_lost_item_details(conn: &mut DbConnect, item:NewLostItemDetail) -> Result<(), String> {
+        let new_image_id = match item.image_data {
+            Some(image) => {
+                let image_data = STANDARD.decode(image).map_err(|_| "Invalid Base encoding".to_string())?;
+                Some(create_image(conn, image_data, item.mime_type.unwrap(), item.image_name.unwrap())?)
+            }
+            None => None
+        };
+
+        diesel::update(lost_items)
+            .filter(id.eq(&item.id))
+            .set((
+                name.eq(&item.name),
+                item_type.eq(&item.item_type),
+                color.eq(&item.color),
+                last_location.eq(&item.last_location),
+                status.eq(&item.status),
+                owner_id.eq(&item.owner_id),
+                finder_id.eq(&item.finder_id),
+                found_location.eq(&item.found_location),
+                image_id.eq(&new_image_id)
+            ))
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 }
