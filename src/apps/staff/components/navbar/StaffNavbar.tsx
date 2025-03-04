@@ -14,6 +14,9 @@ export default function StaffNavbar(){
         {text:"View All Ride", key:5, to:"/staff/view-all-ride", roles: ["Ride Manager"]},
         {text:"View All Maintenance Report", key:6, to:"/staff/view-all-maintenance-report", roles: ["Maintenance Manager"]},
         {text:"View All Lost Items", key:7, to:"/staff/view-lost-and-found", roles: ["Lost and Found Staff"]},
+        {text:"View Ride Proposal", key:8, to:"/staff/view-ride-proposal", roles: ["CFO"]},
+        {text:"View Restaurant Proposal", key:9, to:"/staff/view-restaurant-proposal", roles: ["CEO", "CFO"]},
+        {text:"View Store Proposal", key:10, to:"/staff/view-store-proposal", roles: ["CEO"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {

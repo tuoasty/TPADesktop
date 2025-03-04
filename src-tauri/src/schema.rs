@@ -100,6 +100,17 @@ diesel::table! {
 }
 
 diesel::table! {
+    ride_proposals (id) {
+        id -> Int4,
+        proposal_type -> Varchar,
+        status -> Varchar,
+        description -> Varchar,
+        ride_id -> Nullable<Int4>,
+        image_id -> Nullable<Int4>,
+    }
+}
+
+diesel::table! {
     ride_queues (id) {
         id -> Int4,
         ride_id -> Int4,
@@ -173,6 +184,8 @@ diesel::joinable!(restaurant_assignments -> staffs (staff_id));
 diesel::joinable!(restaurants -> images (image_id));
 diesel::joinable!(ride_assignments -> rides (ride_id));
 diesel::joinable!(ride_assignments -> staffs (staff_id));
+diesel::joinable!(ride_proposals -> images (image_id));
+diesel::joinable!(ride_proposals -> rides (ride_id));
 diesel::joinable!(ride_queues -> customers (customer_id));
 diesel::joinable!(ride_queues -> rides (ride_id));
 diesel::joinable!(rides -> images (image_id));
@@ -193,6 +206,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     restaurant_assignments,
     restaurants,
     ride_assignments,
+    ride_proposals,
     ride_queues,
     rides,
     souvenirs,

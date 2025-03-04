@@ -15,4 +15,5 @@ DROP TABLE images;
 DROP TABLE notifications;
 DROP TABLE customers;
 DROP TABLE staffs;
+DROP TABLE ride_proposals;
 

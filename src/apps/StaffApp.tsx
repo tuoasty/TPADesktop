@@ -11,6 +11,9 @@ import ViewAllStore from "@/apps/staff/pages/retailmanager/ViewAllStore.tsx";
 import ViewAllRide from "@/apps/staff/pages/ridemanager/ViewAllRide.tsx";
 import ViewAllMaintenanceReport from "@/apps/staff/pages/maintenancemanager/ViewAllMaintenanceReport.tsx";
 import ViewAllLostAndFound from "@/apps/staff/pages/lostandfound/ViewAllLostAndFound.tsx";
+import ViewRideProposal from "@/apps/staff/pages/coo/ViewRideProposal.tsx";
+import ViewRestaurantProposal from "@/apps/staff/pages/cfo/ViewRestaurantProposal.tsx";
+import ViewStoreProposal from "@/apps/staff/pages/ceo/ViewStoreProposal.tsx";
 
 export default function StaffApp() {
     return (
@@ -36,6 +39,12 @@ export default function StaffApp() {
                                 allowedRoles={["Maintenance Manager"]}><ViewAllMaintenanceReport/></ProtectedRoute>}/>
                             <Route path="view-lost-and-found" element={<ProtectedRoute
                                 allowedRoles={["Lost and Found Staff"]}><ViewAllLostAndFound/></ProtectedRoute>}/>
+                            <Route path="view-ride-proposal" element={<ProtectedRoute
+                                allowedRoles={["COO"]}><ViewRideProposal/></ProtectedRoute>}/>
+                            <Route path="view-restaurant-proposal" element={<ProtectedRoute
+                                allowedRoles={["CEO", "CFO"]}><ViewRestaurantProposal/></ProtectedRoute>}/>
+                            <Route path="view-store-proposal" element={<ProtectedRoute
+                                allowedRoles={["CEO"]}><ViewStoreProposal/></ProtectedRoute>}/>
                             <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                         </Route>
                     </Routes>

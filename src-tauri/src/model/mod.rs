@@ -13,3 +13,4 @@ pub mod ride_assignment_model;
 pub mod lost_item_model;
 pub mod customer_model;
 pub mod notification_model;
+pub mod ride_proposal_model;

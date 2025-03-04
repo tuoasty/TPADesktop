@@ -11,6 +11,7 @@ use crate::model::lost_item_model::NewLostItem;
 use crate::model::maintenance_report_model::NewMaintenanceReport;
 use crate::model::menu_model::NewMenu;
 use crate::model::notification_model::NewNotification;
+use crate::model::ride_proposal_model::{NewRideProposal};
 use crate::model::restaurant_model::NewRestaurant;
 use crate::model::ride_model::NewRide;
 use crate::model::souvenir_model::NewSouvenir;
@@ -21,6 +22,7 @@ use crate::schema::lost_items::dsl::lost_items;
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use crate::schema::menus::dsl::menus;
 use crate::schema::notifications::dsl::notifications;
+use crate::schema::ride_proposals::dsl::ride_proposals;
 use crate::schema::rides::dsl::rides;
 use crate::schema::souvenirs::dsl::souvenirs;
 use crate::schema::stores::dsl::stores;
@@ -281,6 +283,23 @@ pub fn seed_database(pool: &DbPool) {
             }
         ];
 
+        let seed_ride_proposals = vec![
+            NewRideProposal {
+                proposal_type:"New".to_string(),
+                status:"Pending".to_string(),
+                description:"Cinema Ride".to_string(),
+                ride_id:None,
+                image_id:Some(seed_image(conn, "images/seed/tommy.jpg").unwrap())
+            },
+            NewRideProposal {
+                proposal_type:"Remove".to_string(),
+                status:"Pending".to_string(),
+                description:"Jele".to_string(),
+                ride_id:Some(1),
+                image_id:None,
+            },
+        ];
+
         diesel::insert_into(staffs)
             .values(&staff_members)
             .execute(conn)
@@ -337,6 +356,12 @@ pub fn seed_database(pool: &DbPool) {
 
         diesel::insert_into(notifications)
             .values(&seed_notifications)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(ride_proposals)
+            .values(&seed_ride_proposals)
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();

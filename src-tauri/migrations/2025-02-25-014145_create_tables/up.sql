@@ -145,3 +145,13 @@ CREATE TABLE notifications
     customer_id INTEGER NOT NULL REFERENCES customers (id),
     message     VARCHAR NOT NULL
 );
+
+CREATE TABLE ride_proposals
+(
+    id            SERIAL PRIMARY KEY,
+    proposal_type VARCHAR NOT NULL,
+    status        VARCHAR NOT NULL,
+    description VARCHAR NOT NULL,
+    ride_id INTEGER REFERENCES rides (id),
+    image_id INTEGER REFERENCES images (id)
+);
