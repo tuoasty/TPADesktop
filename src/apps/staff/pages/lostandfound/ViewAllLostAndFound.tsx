@@ -1,7 +1,9 @@
 import {useEffect, useState} from "react";
-import {LostItem} from "@/ types/lost_item.ts";
+import {LostItem, UpdateLostItemPayload} from "@/ types/lost_item.ts";
 import {invoke} from "@tauri-apps/api/core";
 import {toast} from "sonner";
+import {UpdateItemDialog} from "@/apps/staff/pages/lostandfound/UpdateItemDialog.tsx";
+
 
 export default function ViewAllLostAndFound() {
     const [lostItem, setLostItem] = useState<LostItem[]>([]);
@@ -17,6 +19,10 @@ export default function ViewAllLostAndFound() {
     useEffect(() => {
         fetchLostItem();
     }, []);
+
+    const updateItemDetails = async (id:number, data:UpdateLostItemPayload) => {
+        console.log(data)
+    }
 
     return (
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
@@ -37,10 +43,25 @@ export default function ViewAllLostAndFound() {
                             <div className="w-full h-full justify-between flex flex-row">
                                 <div className="w-auto flex flex-col gap-2">
                                     <h1 className="font-bold text-4xl">{item.name}</h1>
-                                    <h3>Status : {item.status}</h3>
+                                    <h2>Type : {item.item_type}</h2>
+                                    <h2>Color : {item.color}</h2>
+                                    <h2>Last Location : {item.last_location}</h2>
+                                    <h2>Owner : {item.owner_name}</h2>
+                                    <br/>
+                                    {item.status != "Missing" && (
+                                        <div className="w-auto flex flex-col gap-2">
+                                            <h2>Finder : {item.finder_name}</h2>
+                                            <h2>Found Location : {item.found_location}</h2>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="w-48 flex justify-center place-items-center mr-6 flex-col gap-4">
-
+                                    <h2
+                                        className={`${item.status == "Found" ? "bg-yellow-400" : item.status == "Missing" ? "bg-red-500" : "bg-green-500"}
+                                        rounded-lg p-2 font-bold w-full text-center`}>
+                                        {item.status}
+                                    </h2>
+                                    <UpdateItemDialog item={item} onUpdate={updateItemDetails}/>
                                 </div>
                             </div>
                         </div>

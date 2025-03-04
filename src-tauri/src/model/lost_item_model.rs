@@ -39,8 +39,10 @@ pub struct LostItemDetail {
     pub color:String,
     pub last_location:String,
     pub owner_id:i32,
+    pub owner_name:String,
     pub status:String,
     pub finder_id:Option<i32>,
+    pub finder_name:Option<String>,
     pub found_location:Option<String>,
     pub image_data:Option<String>
 }

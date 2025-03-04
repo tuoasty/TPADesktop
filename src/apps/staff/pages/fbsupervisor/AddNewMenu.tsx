@@ -6,6 +6,8 @@ import {Restaurant} from "@/ types/restaurant.ts";
 import {invoke} from "@tauri-apps/api/core";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 import {toast} from "sonner";
+import {NewImage} from "@/ types/image.ts";
+import {createImageFile} from "@/lib/fileFunctions.ts";
 
 interface MenuFormData {
     name: string;
@@ -32,41 +34,19 @@ export default function AddNewMenu() {
             .then(setRestaurants)
     }, []);
 
-    const getMimeType = (fileName: string): string => {
-        const extension = fileName.split('.').pop()?.toLowerCase();
-        switch (extension) {
-            case 'jpg':
-            case 'jpeg':
-                return 'image/jpeg';
-            case 'png':
-                return 'image/png';
-            case 'gif':
-                return 'image/gif';
-            case 'webp':
-                return 'image/webp';
-            default:
-                return 'application/octet-stream';
-        }
-    };
 
     async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>){
-        const file = e.target.files?.[0];
-        if (!file) return;
+        const image:NewImage | undefined = await createImageFile(e)!;
 
-        const arrayBuffer = await file.arrayBuffer();
-        const uint8Array = new Uint8Array(arrayBuffer);
-
-        const base64String = btoa(
-            Array.from(uint8Array)
-                .map(byte => String.fromCharCode(byte))
-                .join('')
-        );
+        if(!image) {
+            return
+        }
 
         setFormData({
             ...formData,
-            imageData:base64String,
-            imageName:file.name,
-            mimeType:getMimeType(file.name)
+            imageData:image.imageData,
+            imageName:image.fileName,
+            mimeType:image.mimeType,
         });
     }
 

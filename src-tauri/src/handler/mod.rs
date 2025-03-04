@@ -11,6 +11,7 @@ pub mod restaurant_assignment_handler;
 pub mod store_assignment_handler;
 pub mod ride_assignment_handler;
 pub mod lost_item_handler;
+pub mod customer_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
