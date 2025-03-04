@@ -16,6 +16,8 @@ mod model;
 pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 pub type DbConnect = r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;
 pub struct CurrentStaff(pub Mutex<Option<(i32, String, String)>>);
+
+pub struct CurrentCustomer(pub Mutex<Option<(i32, String)>>);
 fn establish_connection() -> DbPool {
     dotenv().ok();
 
@@ -59,6 +61,7 @@ fn get_app_id() -> Result<String, String> {
 pub fn run() {
     let pool = establish_connection();
     let current_staff = CurrentStaff(Mutex::new(None));
+    let current_customer = CurrentCustomer(Mutex::new(None));
 
     seed::seed_database(&pool);
 
