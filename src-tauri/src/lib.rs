@@ -17,7 +17,7 @@ pub type DbPool = Pool<ConnectionManager<PgConnection>>;
 pub type DbConnect = r2d2::PooledConnection<diesel::r2d2::ConnectionManager<diesel::PgConnection>>;
 pub struct CurrentStaff(pub Mutex<Option<(i32, String, String)>>);
 
-pub struct CurrentCustomer(pub Mutex<Option<(i32, String)>>);
+pub struct CurrentCustomer(pub Mutex<Option<(i32, String, i32)>>);
 fn establish_connection() -> DbPool {
     dotenv().ok();
 
@@ -70,6 +70,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .manage(pool)
         .manage(current_staff)
+        .manage(current_customer)
         .invoke_handler(all_handlers!())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

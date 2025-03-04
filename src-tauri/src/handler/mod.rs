@@ -47,6 +47,10 @@ macro_rules! all_handlers {
             $crate::handler::ride_assignment_handler::assign_staff_to_ride,
             $crate::handler::lost_item_handler::find_all_lost_item,
             $crate::handler::lost_item_handler::update_lost_item,
+            $crate::handler::customer_handler::verify_customer_login,
+            $crate::handler::customer_handler::login_customer,
+            $crate::handler::customer_handler::logout_customer,
+            $crate::handler::customer_handler::get_current_customer,
             // Add all other commands
         ]
     };

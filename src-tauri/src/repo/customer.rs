@@ -11,4 +11,10 @@ impl Customer {
             .first(conn)
             .map_err(|e| e.to_string())
     }
+
+    pub fn get_customer(conn:&mut DbConnect, cust_id:i32) -> Result<Self, String> {
+        customers.filter(id.eq(&cust_id))
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
 }
