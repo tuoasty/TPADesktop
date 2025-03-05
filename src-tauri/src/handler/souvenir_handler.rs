@@ -22,8 +22,6 @@ pub fn purchase_souvenir(state:State<DbPool>, curr_customer:State<CurrentCustome
         return Err("Must purchase at least 1 souvenir".to_string())
     };
 
-    eprintln!("Test");
-
     let conn = &mut get_conn(&state)?;
 
     let balance = get_customer_balance(&curr_customer).map_err(|e| e.to_string())?;
