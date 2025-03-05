@@ -1,4 +1,4 @@
-use chrono::NaiveTime;
+use chrono::{Local, NaiveTime};
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
 use crate::handler::image_handler::get_image_data;
@@ -51,7 +51,15 @@ pub fn find_store_by_id(state:State<DbPool>, selected_id:i32) -> Result<StoreDet
         open_time:store.open_time.to_string(),
         close_time:store.close_time.to_string(),
         image_data:get_image_data(conn, store.image_id)?,
-        status:store.status,
+        status: {
+            let current_time = Local::now().time();
+
+            if current_time < store.open_time || current_time > store.close_time {
+                "Closed".to_string()
+            } else {
+                store.status
+            }
+        },
         souvenirs:find_store_souvenir(conn, store.id)?,
         staffs:get_store_staffs(conn, store.id)?
     };

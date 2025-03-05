@@ -1,3 +1,4 @@
+use chrono::Local;
 use crate::DbConnect;
 use crate::handler::image_handler::get_image_data;
 use crate::model::ride_model::{NewRide, Ride, RideDetail};
@@ -23,7 +24,15 @@ impl Ride {
                     close_time:ride.close_time.to_string(),
                     price:ride.price,
                     image_data:base64_image.unwrap(),
-                    status:ride.status,
+                    status: {
+                        let current_time = Local::now().time();
+
+                        if current_time < ride.open_time || current_time > ride.close_time {
+                            "Closed".to_string()
+                        } else {
+                            ride.status
+                        }
+                    },
                     staffs
                 }
             })

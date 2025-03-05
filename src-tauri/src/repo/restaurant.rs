@@ -1,3 +1,4 @@
+use chrono::{Local, NaiveTime};
 use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
 use crate::schema::restaurants::dsl::restaurants;
 use crate::schema::restaurants::{id, status};
@@ -28,13 +29,22 @@ impl Restaurant {
                 let menus = find_restaurant_menu(conn, restaurant.id).unwrap();
                 let staffs = get_restaurant_staffs(conn, restaurant.id).unwrap();
 
+
                 RestaurantDetail {
                     id: restaurant.id,
                     name: restaurant.name,
                     open_time: restaurant.open_time.to_string(),
                     close_time: restaurant.close_time.to_string(),
                     cuisine: restaurant.cuisine,
-                    status: restaurant.status,
+                    status: {
+                        let current_time = Local::now().time();
+
+                        if current_time < restaurant.open_time || current_time > restaurant.close_time {
+                            "Closed".to_string()
+                        } else {
+                            restaurant.status
+                        }
+                    },
                     image_data: base64_image.unwrap(),
                     menus,
                     staffs,
