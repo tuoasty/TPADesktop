@@ -15,6 +15,7 @@ import ViewRideProposal from "@/apps/staff/pages/coo/ViewRideProposal.tsx";
 import ViewRestaurantProposal from "@/apps/staff/pages/cfo/ViewRestaurantProposal.tsx";
 import ViewStoreProposal from "@/apps/staff/pages/ceo/ViewStoreProposal.tsx";
 import BroadcastMessage from "@/apps/staff/pages/customerservice/BroadcastMessage.tsx";
+import CreateCustomerAccount from "@/apps/staff/pages/customerservice/CreateCustomerAccount.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -47,6 +48,8 @@ export default function StaffApp() {
                                     allowedRoles={["CEO"]}><ViewStoreProposal/></ProtectedRoute>}/>
                                 <Route path="send-broadcast-message" element={<ProtectedRoute
                                     allowedRoles={["Customer Service"]}><BroadcastMessage/></ProtectedRoute>}/>
+                                <Route path="create-customer-account" element={<ProtectedRoute
+                                    allowedRoles={["Customer Service"]}><CreateCustomerAccount/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>
                         </Routes>

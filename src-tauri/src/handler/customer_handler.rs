@@ -1,6 +1,6 @@
 use tauri::{command, State};
 use crate::{get_conn, CurrentCustomer, DbConnect, DbPool};
-use crate::model::customer_model::Customer;
+use crate::model::customer_model::{Customer, NewCustomer};
 pub fn find_customer_name(conn: &mut DbConnect, selected_id:i32) -> Result<String, String> {
     Customer::get_customer_name(conn, selected_id)
 }
@@ -63,4 +63,10 @@ pub fn get_customer_id(current_customer:&CurrentCustomer) -> Result<i32, String>
 
 pub fn deduct_customer_balance(conn: &mut DbConnect, customer_id:i32, value:i32) -> Result<(), String> {
     Customer::deduct_customer_balance(conn, customer_id, value)
+}
+
+#[command]
+pub fn create_customer_account(state:State<DbPool>, data:NewCustomer) -> Result<i32, String> {
+    let conn = &mut get_conn(&state)?;
+    Customer::create_customer(conn, data)
 }

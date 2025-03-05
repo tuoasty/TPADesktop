@@ -1,5 +1,5 @@
 use crate::DbConnect;
-use crate::model::customer_model::Customer;
+use crate::model::customer_model::{Customer, NewCustomer};
 use diesel::prelude::*;
 use crate::schema::customers::dsl::customers;
 use crate::schema::customers::{balance, id, name};
@@ -29,5 +29,13 @@ impl Customer {
         diesel::update(customers.filter(id.eq(&customer_id))).set(balance.eq(&new_balance)).execute(conn).map_err(|e| e.to_string())?;
 
         Ok(())
+    }
+
+    pub fn create_customer(conn: &mut DbConnect, data:NewCustomer) -> Result<i32, String> {
+        diesel::insert_into(customers)
+            .values(&data)
+            .returning(id)
+            .get_result::<i32>(conn)
+            .map_err(|e| e.to_string())
     }
 }

@@ -18,6 +18,7 @@ export default function StaffNavbar(){
         {text:"View Restaurant Proposal", key:9, to:"/staff/view-restaurant-proposal", roles: ["CEO", "CFO"]},
         {text:"View Store Proposal", key:10, to:"/staff/view-store-proposal", roles: ["CEO"]},
         {text:"Broadcast Message", key:11, to:"/staff/send-broadcast-message", roles: ["Customer Service"]},
+        {text:"Create Customer Account", key:12, to:"/staff/create-customer-account", roles: ["Customer Service"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {
