@@ -1,6 +1,5 @@
 use crate::handler::image_handler::create_image;
 use crate::{DbConnect, DbPool};
-use bcrypt::{hash, DEFAULT_COST};
 use chrono::NaiveTime;
 use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
@@ -28,6 +27,13 @@ use crate::schema::rides::dsl::rides;
 use crate::schema::souvenirs::dsl::souvenirs;
 use crate::schema::store_proposals::dsl::store_proposals;
 use crate::schema::stores::dsl::stores;
+use argon2::{
+    password_hash::{
+        rand_core::OsRng,
+        PasswordHasher, SaltString
+    },
+    Argon2
+};
 
 pub fn seed_database(pool: &DbPool) {
     use crate::schema::restaurants::dsl::*;
@@ -42,100 +48,170 @@ pub fn seed_database(pool: &DbPool) {
         let staff_members = vec![
             NewStaff {
                 name: "customerservice".to_string(),
-                password: hash("customerservice", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("customerservice".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Customer Service".to_string(),
             },
             NewStaff {
                 name: "lostandfound".to_string(),
-                password: hash("lostandfound", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("lostandfound".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Lost and Found Staff".to_string(),
             },
             NewStaff {
                 name: "ridemanager".to_string(),
-                password: hash("ridemanager", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("ridemanager".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Ride Manager".to_string(),
             },
             NewStaff {
                 name: "ridestaff".to_string(),
-                password: hash("ridestaff", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("ridestaff".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Ride Staff".to_string(),
             },
             NewStaff {
                 name: "fbsupervisor".to_string(),
-                password: hash("fbsupervisor", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("fbsupervisor".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "F&B Supervisor".to_string(),
             },
             NewStaff {
                 name: "chef".to_string(),
-                password: hash("chef", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("chef".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Chef".to_string(),
             },
             NewStaff {
                 name: "waiter".to_string(),
-                password: hash("waiter", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("waiter".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Waiter".to_string(),
             },
             NewStaff {
                 name: "maintenancemanager".to_string(),
-                password: hash("maintenancemanager", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("maintenancemanager".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Maintenance Manager".to_string(),
             },
             NewStaff {
                 name: "maintenancestaff".to_string(),
-                password: hash("maintenancestaff", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("maintenancestaff".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Maintenance Staff".to_string(),
             },
             NewStaff {
                 name: "retailmanager".to_string(),
-                password: hash("retailmanager", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("retailmanager".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Retail Manager".to_string(),
             },
             NewStaff {
                 name: "salesassociate".to_string(),
-                password: hash("salesassociate", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("salesassociate".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "Sales Associate".to_string(),
             },
             NewStaff {
                 name: "ceo".to_string(),
-                password: hash("ceo", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("ceo".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "CEO".to_string(),
             },
             NewStaff {
                 name: "cfo".to_string(),
-                password: hash("cfo", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("cfo".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "CFO".to_string(),
             },
             NewStaff {
                 name: "coo".to_string(),
-                password: hash("coo", DEFAULT_COST)
-                    .map_err(|_| "failed to hash".to_string())
-                    .unwrap(),
+                password: {
+                    let salt = SaltString::generate(&mut OsRng);
+                    Argon2::default()
+                        .hash_password("coo".as_bytes(), &salt)
+                        .map_err(|_| "failed to hash".to_string())
+                        .unwrap()
+                        .to_string()
+                },
                 role: "COO".to_string(),
             },
         ];

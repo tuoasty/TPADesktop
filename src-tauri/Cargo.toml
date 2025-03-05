@@ -35,3 +35,4 @@ base64 = "0.22.1"
 engine = "0.0.0"
 log = "0.4.25"
 tauri-plugin-dialog = "2"
+argon2 = {version = "0.5.3", features = ["std"]}

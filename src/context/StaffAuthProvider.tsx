@@ -121,18 +121,15 @@ export const ProtectedRoute = ({children, allowedRoles = []}:{children:React.Rea
             }
         }
 
-        // Uncomment checkAuth too
-        // checkAuth();
+        checkAuth();
     }, [isLoggedIn, hasPermission, allowedRoles, navigate]);
+    if(loading){
+        return <h1>Loading...</h1>
+    }
 
-    // Uncomment to enable middleware
-    // if(loading){
-    //     return <h1>Loading...</h1>
-    // }
-    //
-    // if(!authorized){
-    //     return <NotAuthorized/>
-    // }
+    if(!authorized){
+        return <NotAuthorized/>
+    }
     return <>{children}</>
 }
 

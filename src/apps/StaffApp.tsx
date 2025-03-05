@@ -32,11 +32,11 @@ export default function StaffApp() {
                             <Route path="view-all-restaurant" element={<ProtectedRoute
                                 allowedRoles={["F&B Supervisor"]}><ViewAllRestaurant/></ProtectedRoute>}/>
                             <Route path="view-all-store" element={<ProtectedRoute
-                                allowedRoles={["Retail Manager"]}><ViewAllStore/></ProtectedRoute>}/>
+                                allowedRoles={["Retail Manager", "COO"]}><ViewAllStore/></ProtectedRoute>}/>
                             <Route path="view-all-ride" element={<ProtectedRoute
-                                allowedRoles={["Ride Manager"]}><ViewAllRide/></ProtectedRoute>}/>
+                                allowedRoles={["Ride Manager", "COO"]}><ViewAllRide/></ProtectedRoute>}/>
                             <Route path="view-all-maintenance-report" element={<ProtectedRoute
-                                allowedRoles={["Maintenance Manager"]}><ViewAllMaintenanceReport/></ProtectedRoute>}/>
+                                allowedRoles={["Maintenance Manager", "COO"]}><ViewAllMaintenanceReport/></ProtectedRoute>}/>
                             <Route path="view-lost-and-found" element={<ProtectedRoute
                                 allowedRoles={["Lost and Found Staff"]}><ViewAllLostAndFound/></ProtectedRoute>}/>
                             <Route path="view-ride-proposal" element={<ProtectedRoute

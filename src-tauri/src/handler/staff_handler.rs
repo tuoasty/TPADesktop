@@ -1,12 +1,34 @@
-use bcrypt::{hash, verify, DEFAULT_COST};
-use tauri::{command, State};
-use crate::{get_conn, CurrentStaff, DbConnect, DbPool};
+use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
+use argon2::password_hash::rand_core::OsRng;
+use argon2::password_hash::SaltString;
 use crate::model::staff_model::{NewStaff, Staff, StaffDetail};
+use crate::{get_conn, CurrentStaff, DbConnect, DbPool};
+use tauri::{command, State};
+
+fn verify_password(stored_hash: &str, provided_password: &str) -> bool {
+    let parsed_hash = match PasswordHash::new(stored_hash) {
+        Ok(hash) => hash,
+        Err(_) => return false
+    };
+
+    Argon2::default()
+        .verify_password(provided_password.as_bytes(), &parsed_hash)
+        .is_ok()
+}
 
 #[command]
-pub fn create_staff(state: State<DbPool>, name:String, password:String, role:String) -> Result<String, String>{
+pub fn create_staff(
+    state: State<DbPool>,
+    name: String,
+    password: String,
+    role: String,
+) -> Result<String, String> {
     let conn = &mut get_conn(&state)?;
-    let hashed_password = hash(password, DEFAULT_COST).map_err(|_| "failed to hash".to_string())?;
+    let salt = SaltString::generate(&mut OsRng);
+    let hashed_password = Argon2::default()
+        .hash_password(password.as_bytes(), &salt)
+        .map_err(|_| "failed to hash password".to_string())?
+        .to_string();
 
     let staff = NewStaff {
         name,
@@ -18,18 +40,29 @@ pub fn create_staff(state: State<DbPool>, name:String, password:String, role:Str
 }
 
 #[command]
-pub fn get_current_staff(current_staff: State<CurrentStaff>) -> Result<Option<(i32, String, String)>, String>{
-    let staff = current_staff.0.lock().expect("Current staff access error").clone();
+pub fn get_current_staff(
+    current_staff: State<CurrentStaff>,
+) -> Result<Option<(i32, String, String)>, String> {
+    let staff = current_staff
+        .0
+        .lock()
+        .expect("Current staff access error")
+        .clone();
     Ok(staff)
 }
 
 #[command]
-pub fn login_staff(state: State<DbPool>, current_staff:State<CurrentStaff>, name:String, password:String) -> Result<String, String>{
+pub fn login_staff(
+    state: State<DbPool>,
+    current_staff: State<CurrentStaff>,
+    name: String,
+    password: String,
+) -> Result<String, String> {
     let conn = &mut get_conn(&state)?;
 
     let staff = Staff::get_staff(conn, &name)?;
 
-    if verify(password, &staff.password).map_err(|_| "Error verifying password".to_string())?{
+    if verify_password(&staff.password, &password) {
         *current_staff.0.lock().unwrap() = Some((staff.id, staff.name.clone(), staff.role.clone()));
         Ok(format!("Welcome {}", &staff.name))
     } else {
@@ -38,19 +71,21 @@ pub fn login_staff(state: State<DbPool>, current_staff:State<CurrentStaff>, name
 }
 
 #[command]
-pub async fn verify_authentication(current_staff:State<'_,CurrentStaff>, allowed_roles:Vec<String>) -> Result<bool, String> {
+pub async fn verify_authentication(
+    current_staff: State<'_, CurrentStaff>,
+    allowed_roles: Vec<String>,
+) -> Result<bool, String> {
     let current_staff = current_staff.0.lock().unwrap();
 
-    if current_staff.is_none(){
+    if current_staff.is_none() {
         return Ok(false);
     };
 
-    if allowed_roles.is_empty(){
+    if allowed_roles.is_empty() {
         return Ok(true);
     };
 
-
-    let(_,_, role) = current_staff.as_ref().unwrap();
+    let (_, _, role) = current_staff.as_ref().unwrap();
 
     let is_allowed = allowed_roles.contains(&role);
 
@@ -58,7 +93,7 @@ pub async fn verify_authentication(current_staff:State<'_,CurrentStaff>, allowed
 }
 
 #[command]
-pub async fn verify_login(current_staff:State<'_,CurrentStaff>) -> Result<bool, String>{
+pub async fn verify_login(current_staff: State<'_, CurrentStaff>) -> Result<bool, String> {
     let current_staff = !current_staff.0.lock().unwrap().is_none();
     Ok(current_staff)
 }
@@ -71,14 +106,20 @@ pub fn logout_staff(current_staff: State<CurrentStaff>) -> Result<String, String
 }
 
 #[command]
-pub fn find_all_staff(state:State<DbPool>, staff_role:String) -> Result<Vec<StaffDetail>, String> {
+pub fn find_all_staff(
+    state: State<DbPool>,
+    staff_role: String,
+) -> Result<Vec<StaffDetail>, String> {
     let conn = &mut get_conn(&state)?;
     Staff::get_staff_per_role(conn, staff_role)
 }
-pub fn find_staff_per_role(conn: &mut DbConnect, staff_role:String) -> Result<Vec<StaffDetail>, String> {
+pub fn find_staff_per_role(
+    conn: &mut DbConnect,
+    staff_role: String,
+) -> Result<Vec<StaffDetail>, String> {
     Staff::get_staff_per_role(conn, staff_role)
 }
 
-pub fn find_staff_role(conn: &mut DbConnect, selected_id:i32) -> Result<String, String> {
+pub fn find_staff_role(conn: &mut DbConnect, selected_id: i32) -> Result<String, String> {
     Staff::get_role(conn, selected_id)
 }
