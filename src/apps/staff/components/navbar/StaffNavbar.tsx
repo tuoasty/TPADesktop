@@ -9,14 +9,15 @@ export default function StaffNavbar(){
     const navItems = [
         {text:"Create Staff Account", key:1, to:"/staff/create-account", roles: ["COO"]},
         {text:"Add New Menu", key:2, to:"/staff/add-new-menu", roles: ["F&B Supervisor"]},
-        {text:"View All Restaurant", key:3, to:"/staff/view-all-restaurant", roles: ["F&B Supervisor"]},
+        {text:"View All Restaurant", key:3, to:"/staff/view-all-restaurant", roles: ["F&B Supervisor", "Customer Service"]},
         {text:"View All Store", key:4, to:"/staff/view-all-store", roles: ["Retail Manager", "COO"]},
-        {text:"View All Ride", key:5, to:"/staff/view-all-ride", roles: ["Ride Manager", "COO"]},
+        {text:"View All Ride", key:5, to:"/staff/view-all-ride", roles: ["Ride Manager", "COO", "Customer Service"]},
         {text:"View All Maintenance Report", key:6, to:"/staff/view-all-maintenance-report", roles: ["Maintenance Manager", "COO"]},
         {text:"View All Lost Items", key:7, to:"/staff/view-lost-and-found", roles: ["Lost and Found Staff"]},
         {text:"View Ride Proposal", key:8, to:"/staff/view-ride-proposal", roles: ["COO"]},
         {text:"View Restaurant Proposal", key:9, to:"/staff/view-restaurant-proposal", roles: ["CEO", "CFO"]},
         {text:"View Store Proposal", key:10, to:"/staff/view-store-proposal", roles: ["CEO"]},
+        {text:"Broadcast Message", key:11, to:"/staff/send-broadcast-message", roles: ["Customer Service"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {

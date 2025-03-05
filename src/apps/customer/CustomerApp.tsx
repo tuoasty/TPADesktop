@@ -5,6 +5,8 @@ import CustomerDashboard from "@/apps/customer/pages/CustomerDashboard.tsx";
 import {CustomerAuthProvider, ProtectedRoute} from "@/context/CustomerAuthProvider.tsx";
 import CustomerNotification from "@/apps/customer/pages/CustomerNotification.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
+import CustomerRide from "@/apps/customer/pages/CustomerRide.tsx";
+import CustomerRestaurant from "@/apps/customer/pages/CustomerRestaurant.tsx";
 
 function CustomerApp() {
   return (
@@ -16,6 +18,8 @@ function CustomerApp() {
                       <Route path="*" element={<Navigate to="/customer/login" replace/>}/>
                       <Route path="/customer">
                           <Route path="login" element={<CustomerLogin/>}/>
+                          <Route path="ride" element={<CustomerRide/>}/>
+                          <Route path="restaurant" element={<CustomerRestaurant/>}/>
                           <Route path="notification" element={<ProtectedRoute>
                               <CustomerNotification/>
                           </ProtectedRoute>}/>

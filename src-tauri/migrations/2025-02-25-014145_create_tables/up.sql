@@ -186,3 +186,4 @@ CREATE TABLE store_transactions
     souvenir_id INTEGER NOT NULL REFERENCES souvenirs (id),
     count       INTEGER NOT NULL
 );
+

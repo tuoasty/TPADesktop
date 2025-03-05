@@ -14,6 +14,7 @@ import ViewAllLostAndFound from "@/apps/staff/pages/lostandfound/ViewAllLostAndF
 import ViewRideProposal from "@/apps/staff/pages/coo/ViewRideProposal.tsx";
 import ViewRestaurantProposal from "@/apps/staff/pages/cfo/ViewRestaurantProposal.tsx";
 import ViewStoreProposal from "@/apps/staff/pages/ceo/ViewStoreProposal.tsx";
+import BroadcastMessage from "@/apps/staff/pages/customerservice/BroadcastMessage.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -29,11 +30,11 @@ export default function StaffApp() {
                                 <Route path="add-new-menu" element={<ProtectedRoute
                                     allowedRoles={["F&B Supervisor"]}><AddNewMenu/></ProtectedRoute>}/>
                                 <Route path="view-all-restaurant" element={<ProtectedRoute
-                                    allowedRoles={["F&B Supervisor"]}><ViewAllRestaurant/></ProtectedRoute>}/>
+                                    allowedRoles={["F&B Supervisor", "Customer Service"]}><ViewAllRestaurant/></ProtectedRoute>}/>
                                 <Route path="view-all-store" element={<ProtectedRoute
                                     allowedRoles={["Retail Manager", "COO"]}><ViewAllStore/></ProtectedRoute>}/>
                                 <Route path="view-all-ride" element={<ProtectedRoute
-                                    allowedRoles={["Ride Manager", "COO"]}><ViewAllRide/></ProtectedRoute>}/>
+                                    allowedRoles={["Ride Manager", "COO", "Customer Service"]}><ViewAllRide/></ProtectedRoute>}/>
                                 <Route path="view-all-maintenance-report" element={<ProtectedRoute
                                     allowedRoles={["Maintenance Manager", "COO"]}><ViewAllMaintenanceReport/></ProtectedRoute>}/>
                                 <Route path="view-lost-and-found" element={<ProtectedRoute
@@ -44,6 +45,8 @@ export default function StaffApp() {
                                     allowedRoles={["CEO", "CFO"]}><ViewRestaurantProposal/></ProtectedRoute>}/>
                                 <Route path="view-store-proposal" element={<ProtectedRoute
                                     allowedRoles={["CEO"]}><ViewStoreProposal/></ProtectedRoute>}/>
+                                <Route path="send-broadcast-message" element={<ProtectedRoute
+                                    allowedRoles={["Customer Service"]}><BroadcastMessage/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>
                         </Routes>

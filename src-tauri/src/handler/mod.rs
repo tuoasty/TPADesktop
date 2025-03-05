@@ -16,7 +16,7 @@ pub mod notification_handler;
 pub mod ride_proposal_handler;
 pub mod store_proposal_handler;
 pub mod restaurant_proposal_handler;
-mod store_transaction_handler;
+pub mod store_transaction_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -60,6 +60,7 @@ macro_rules! all_handlers {
             $crate::handler::customer_handler::logout_customer,
             $crate::handler::customer_handler::get_current_customer,
             $crate::handler::notification_handler::find_customer_notifications,
+            $crate::handler::notification_handler::broadcast_message,
             $crate::handler::ride_proposal_handler::find_ride_proposal,
             $crate::handler::ride_proposal_handler::accept_ride_proposal,
             $crate::handler::ride_proposal_handler::reject_ride_proposal,
