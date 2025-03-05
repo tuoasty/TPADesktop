@@ -290,6 +290,7 @@ pub fn seed_database(pool: &DbPool) {
                 proposal_type:"New".to_string(),
                 status:"Pending".to_string(),
                 description:"Cinema Ride".to_string(),
+                price:50000,
                 ride_id:None,
                 image_id:Some(seed_image(conn, "images/seed/tommy.jpg").unwrap())
             },
@@ -297,6 +298,7 @@ pub fn seed_database(pool: &DbPool) {
                 proposal_type:"Remove".to_string(),
                 status:"Pending".to_string(),
                 description:"Jele".to_string(),
+                price:30000,
                 ride_id:Some(1),
                 image_id:None,
             },
@@ -304,6 +306,7 @@ pub fn seed_database(pool: &DbPool) {
 
         let seed_store_proposals = vec![
             NewStoreProposal {
+                name:"Toko Teh Obeng".to_string(),
                 proposal_type:"New".to_string(),
                 status:"Pending".to_string(),
                 description:"Toko Teh Obeng".to_string(),
@@ -311,6 +314,7 @@ pub fn seed_database(pool: &DbPool) {
                 image_id:Some(seed_image(conn, "images/seed/tommy.jpg").unwrap())
             },
             NewStoreProposal {
+                name:"Perosotan Kematian".to_string(),
                 proposal_type:"Remove".to_string(),
                 status:"Pending".to_string(),
                 description:"Jele".to_string(),

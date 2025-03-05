@@ -1,5 +1,5 @@
 use crate::DbConnect;
-use crate::model::store_model::{Store, StoreDetail};
+use crate::model::store_model::{NewStore, Store, StoreDetail};
 use crate::schema::stores::dsl::stores;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
@@ -71,5 +71,23 @@ impl Store {
             .filter(id.eq(&selected_id))
             .first(conn)
             .map_err(|e| e.to_string())
+    }
+
+    pub fn create_store(conn: &mut DbConnect, new_store:NewStore) -> Result<(), String>{
+        diesel::insert_into(stores)
+            .values(new_store)
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
+    }
+
+    pub fn close_store(conn: &mut DbConnect, store_id:i32) -> Result<(), String> {
+        diesel::update(stores).filter(id.eq(&store_id))
+            .set(status.eq("Shut Down".to_string()))
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 }

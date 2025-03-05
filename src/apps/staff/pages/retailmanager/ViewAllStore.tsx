@@ -97,132 +97,133 @@ export default function ViewAllStore() {
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
             {stores.length > 0 && (
                 stores.map((store: Store) => (
-                    <div key={store.id} className="w-full bg-white h-min-72 rounded-2xl shrink-0 flex">
-                        <div className="w-96 h-auto p-8 overflow-hidden">
-                            <img className="object-contain w-full h-full rounded-lg" src={store.image_data}
-                                 alt={store.name}/>
-                        </div>
-                        <div className="w-full h-full flex flex-col p-8 gap-2">
-                            <div className="w-full h-auto flex flex-row justify-between mb-5">
+                    store.status != "Shut Down" && (
+                        <div key={store.id} className="w-full bg-white h-min-72 rounded-2xl shrink-0 flex">
+                            <div className="w-96 h-auto p-8 overflow-hidden">
+                                <img className="object-contain w-full h-full rounded-lg" src={store.image_data}
+                                     alt={store.name}/>
+                            </div>
+                            <div className="w-full h-full flex flex-col p-8 gap-2">
+                                <div className="w-full h-auto flex flex-row justify-between mb-5">
+                                    <div>
+                                        <h1 className="font-bold text-4xl">{store.name}</h1>
+                                        <h4>Open Time : {store.open_time} - {store.close_time}</h4>
+                                        <h3 className="font-bold text-2xl">Souvenirs</h3>
+                                        <h3>Status : {store.status}</h3>
+                                    </div>
+                                    <div className="w-48 h-full gap-4 flex flex-col">
+                                        <Dialog>
+                                            <DialogTrigger asChild>
+                                                <Button className="bg-purple-700 w-48 h-12">Assign Staff</Button>
+                                            </DialogTrigger>
+                                            <DialogContent>
+                                                <DialogHeader>
+                                                    <DialogTitle>Store Staff</DialogTitle>
+                                                    <DialogDescription>Choose staff to assign.
+                                                        Stores need at least two associates</DialogDescription>
+                                                </DialogHeader>
+                                                <Select onValueChange={(val) => setSelectedId(Number(val))}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Store Staff"/>
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {staffs.length > 0 && (
+                                                            staffs.map((staff: Staff) => (
+                                                                <SelectItem key={staff.id}
+                                                                            value={staff.id.toString()}>{staff.name}</SelectItem>
+                                                            ))
+                                                        )}
+                                                    </SelectContent>
+                                                </Select>
+                                                <DialogFooter>
+                                                    <DialogTrigger asChild>
+                                                        <Button
+                                                            onClick={() => assignStaffToStore(store.id)}
+                                                            type="submit"
+                                                            className="bg-purple-700">
+                                                            Confirm
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                </DialogFooter>
+                                            </DialogContent>
+                                        </Dialog>
+                                        <AlertDialog open={reassignDialog} onOpenChange={setReassignDialog}>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Staff Already Assigned</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This staff member is already assigned.
+                                                        Do you want to reassign them?
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => reassignStoreAndCheckStatus()}>
+                                                        Reassign
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                        <Button
+                                            onClick={() => changeStoreStatus(store.id, store.status)}
+                                            className={`w-48 h-12 ${store.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}>
+                                            {store.status == "Closed" ? "Open" : "Close"}
+                                        </Button>
+                                    </div>
+                                </div>
                                 <div>
-                                    <h1 className="font-bold text-4xl">{store.name}</h1>
-                                    <h4>Open Time : {store.open_time} - {store.close_time}</h4>
-                                    <h3 className="font-bold text-2xl">Souvenirs</h3>
-                                    <h3>Status : {store.status}</h3>
+                                    <h1 className="font-bold text-2xl">Staffs</h1>
+                                    {store.staffs.length == 0 ? (
+                                        <h2>None</h2>
+                                    ) : store.staffs.map((staff: Staff) => (
+                                        <div key={staff.id}>
+                                            <h2>{staff.name}</h2>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div className="w-48 h-full gap-4 flex flex-col">
-                                    <Dialog>
-                                        <DialogTrigger asChild>
-                                            <Button className="bg-purple-700 w-48 h-12">Assign Staff</Button>
-                                        </DialogTrigger>
-                                        <DialogContent>
-                                            <DialogHeader>
-                                                <DialogTitle>Store Staff</DialogTitle>
-                                                <DialogDescription>Choose staff to assign.
-                                                    Stores need at least two associates</DialogDescription>
-                                            </DialogHeader>
-                                            <Select onValueChange={(val) => setSelectedId(Number(val))}>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Store Staff"/>
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {staffs.length > 0 && (
-                                                        staffs.map((staff: Staff) => (
-                                                            <SelectItem key={staff.id}
-                                                                        value={staff.id.toString()}>{staff.name}</SelectItem>
-                                                        ))
-                                                    )}
-                                                </SelectContent>
-                                            </Select>
-                                            <DialogFooter>
-                                                <DialogTrigger asChild>
-                                                    <Button
-                                                        onClick={() => assignStaffToStore(store.id)}
-                                                        type="submit"
-                                                        className="bg-purple-700">
-                                                        Confirm
-                                                    </Button>
-                                                </DialogTrigger>
-                                            </DialogFooter>
-                                        </DialogContent>
-                                    </Dialog>
-                                    <AlertDialog open={reassignDialog} onOpenChange={setReassignDialog}>
-                                        <AlertDialogContent>
-                                            <AlertDialogHeader>
-                                                <AlertDialogTitle>Staff Already Assigned</AlertDialogTitle>
-                                                <AlertDialogDescription>
-                                                    This staff member is already assigned.
-                                                    Do you want to reassign them?
-                                                </AlertDialogDescription>
-                                            </AlertDialogHeader>
-                                            <AlertDialogFooter>
-                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                <AlertDialogAction onClick={() => reassignStoreAndCheckStatus()}>
-                                                    Reassign
-                                                </AlertDialogAction>
-                                            </AlertDialogFooter>
-                                        </AlertDialogContent>
-                                    </AlertDialog>
-                                    <Button
-                                        onClick={() => changeStoreStatus(store.id, store.status)}
-                                        className={`w-48 h-12 ${store.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}>
-                                        {store.status == "Closed" ? "Open" : "Close"}
-                                    </Button>
-                                </div>
-                            </div>
-                            <div>
-                                <h1 className="font-bold text-2xl">Staffs</h1>
-                                {store.staffs.length == 0 ? (
-                                    <h2>None</h2>
-                                ) : store.staffs.map((staff: Staff) => (
-                                    <div key={staff.id}>
-                                        <h2>{staff.name}</h2>
-                                    </div>
-                                ))}
-                            </div>
-                            {store.souvenirs.length > 0 && (
-                                store.souvenirs.map((souvenir: Souvenir) => (
-                                    <div key={souvenir.id}
-                                         className="bg-purple-200 rounded-2xl p-2 flex justify-between">
-                                        <div className="flex flex-row">
-                                            <div className="h-28 w-28 mr-4 overflow-hidden">
-                                                <img className="object-cover w-full h-full rounded-lg"
-                                                     src={souvenir.image_data}
-                                                     alt={souvenir.name}/>
+                                {store.souvenirs.length > 0 && (
+                                    store.souvenirs.map((souvenir: Souvenir) => (
+                                        <div key={souvenir.id}
+                                             className="bg-purple-200 rounded-2xl p-2 flex justify-between">
+                                            <div className="flex flex-row">
+                                                <div className="h-28 w-28 mr-4 overflow-hidden">
+                                                    <img className="object-cover w-full h-full rounded-lg"
+                                                         src={souvenir.image_data}
+                                                         alt={souvenir.name}/>
+                                                </div>
+                                                <div className="flex justify-center flex-col">
+                                                    <h4 className="font-bold">{souvenir.name}</h4>
+                                                    <h4>Price : {souvenir.price}</h4>
+                                                    <h4>{souvenir.description}</h4>
+                                                </div>
                                             </div>
-                                            <div className="flex justify-center flex-col">
-                                                <h4 className="font-bold">{souvenir.name}</h4>
-                                                <h4>Price : {souvenir.price}</h4>
-                                                <h4>{souvenir.description}</h4>
+                                            <div className="flex justify-center place-items-center mr-4">
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <Button type="submit" className="bg-red-500">Remove
+                                                            Souvenir</Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle>Delete Souvenir?</AlertDialogTitle>
+                                                            <AlertDialogDescription>
+                                                                This action cannot be undone.
+                                                            </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                            <AlertDialogAction
+                                                                onClick={() => removeSouvenir(souvenir.id)}>Confirm</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
                                             </div>
                                         </div>
-                                        <div className="flex justify-center place-items-center mr-4">
-                                            <AlertDialog>
-                                                <AlertDialogTrigger asChild>
-                                                    <Button type="submit" className="bg-red-500">Remove
-                                                        Souvenir</Button>
-                                                </AlertDialogTrigger>
-                                                <AlertDialogContent>
-                                                    <AlertDialogHeader>
-                                                        <AlertDialogTitle>Delete Souvenir?</AlertDialogTitle>
-                                                        <AlertDialogDescription>
-                                                            This action cannot be undone.
-                                                        </AlertDialogDescription>
-                                                    </AlertDialogHeader>
-                                                    <AlertDialogFooter>
-                                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                        <AlertDialogAction
-                                                            onClick={() => removeSouvenir(souvenir.id)}>Confirm</AlertDialogAction>
-                                                    </AlertDialogFooter>
-                                                </AlertDialogContent>
-                                            </AlertDialog>
-                                        </div>
-                                    </div>
-                                ))
-                            )}
+                                    ))
+                                )}
+                            </div>
                         </div>
-                    </div>
-
+                    )
                 ))
             )}
         </div>

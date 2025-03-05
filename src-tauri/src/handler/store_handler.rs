@@ -1,6 +1,8 @@
+use chrono::NaiveTime;
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
-use crate::model::store_model::{Store, StoreDetail};
+use crate::model::store_model::{NewStore, Store, StoreDetail};
+use crate::model::store_proposal_model::StoreProposal;
 
 #[command]
 pub fn find_all_store(state: State<DbPool>) -> Result<Vec<StoreDetail>, String> {
@@ -33,6 +35,22 @@ pub fn reassign_store_and_check_status(state:State<DbPool>, new_staff_id:i32, ne
     let deleted_store_id = Store::reassign_store_staff(conn, new_staff_id, new_store_id)?;
 
     Store::check_store_assignment_and_update(conn, deleted_store_id)
+}
+
+pub fn create_new_store(conn: &mut DbConnect, proposal:StoreProposal) -> Result<(), String> {
+    let new_store = NewStore {
+        name:proposal.name,
+        image_id:proposal.image_id.unwrap(),
+        open_time:NaiveTime::from_hms_opt(7,0,0).unwrap(),
+        close_time:NaiveTime::from_hms_opt(19,0,0).unwrap(),
+        status:"In Construction".to_string()
+    };
+
+    Store::create_store(conn, new_store)
+}
+
+pub fn close_store(conn: &mut DbConnect, store_id:i32) -> Result<(), String> {
+    Store::close_store(conn, store_id)
 }
 
 pub fn find_store(conn: &mut DbConnect, store_id:i32) -> Result<Store, String> {

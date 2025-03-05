@@ -27,6 +27,7 @@ impl RideProposal {
                     proposal_type:proposal.proposal_type,
                     status:proposal.status,
                     description:proposal.description,
+                    price:proposal.price,
                     ride_id:proposal.ride_id,
                     ride_name,
                     image_data

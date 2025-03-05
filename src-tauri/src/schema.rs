@@ -115,6 +115,7 @@ diesel::table! {
         proposal_type -> Varchar,
         status -> Varchar,
         description -> Varchar,
+        price -> Int4,
         ride_id -> Nullable<Int4>,
         image_id -> Nullable<Int4>,
     }
@@ -174,6 +175,7 @@ diesel::table! {
 diesel::table! {
     store_proposals (id) {
         id -> Int4,
+        name -> Varchar,
         proposal_type -> Varchar,
         status -> Varchar,
         description -> Varchar,

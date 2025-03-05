@@ -9,6 +9,7 @@ pub struct RideProposal {
     pub proposal_type:String,
     pub status:String,
     pub description:String,
+    pub price:i32,
     pub ride_id:Option<i32>,
     pub image_id:Option<i32>
 }
@@ -19,6 +20,7 @@ pub struct NewRideProposal {
     pub proposal_type:String,
     pub status:String,
     pub description:String,
+    pub price:i32,
     pub ride_id:Option<i32>,
     pub image_id:Option<i32>
 }
@@ -29,6 +31,7 @@ pub struct RideProposalDetail {
     pub proposal_type:String,
     pub status:String,
     pub description:String,
+    pub price:i32,
     pub ride_id:Option<i32>,
     pub ride_name:Option<String>,
     pub image_data:Option<String>,

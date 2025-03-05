@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {invoke} from "@tauri-apps/api/core";
 import {Button} from "@/components/ui/button.tsx";
 import {StoreProposal} from "@/ types/store_proposal.ts";
+import {toast} from "sonner";
 export default function ViewStoreProposal() {
     const [storeProposals, setStoreProposals] = useState<StoreProposal[]>([]);
 
@@ -12,6 +13,26 @@ export default function ViewStoreProposal() {
     useEffect(() => {
         fetchStoreProposals()
     }, []);
+
+    const acceptStoreProposal = async (proposalId:number) => {
+        try {
+            await invoke("accept_store_proposal", {proposalId:proposalId});
+            toast.success("Success")
+            fetchStoreProposals();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
+
+    const rejectStoreProposal = async (proposalId:number) => {
+        try {
+            await invoke("reject_store_proposal", {proposalId:proposalId});
+            toast.success("Success")
+            fetchStoreProposals();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
 
     return (
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
@@ -31,16 +52,18 @@ export default function ViewStoreProposal() {
                         </div>
                         <div className="w-full h-full flex flex-row p-8 gap-2 justify-between">
                             <div className="w-auto h-full flex-col flex">
-                                <h1 className="font-bold text-4xl">{proposal.proposal_type} Ride</h1>
+                                <h1 className="font-bold text-4xl">{proposal.proposal_type} Store</h1>
                                 {proposal.proposal_type == "Remove" && (
-                                    <h1>{proposal.store_name}</h1>
+                                    <h1>{proposal.name}</h1>
                                 )}
                                 <h2>Description : {proposal.description}</h2>
                                 <h2>Status : {proposal.status}</h2>
                             </div>
                             <div className="flex flex-col gap-5 justify-center pr-8">
-                                <Button className="w-48">Accept</Button>
-                                <Button className="w-48">Reject</Button>
+                                <Button className="w-48" onClick={() => {acceptStoreProposal(proposal.id)}}
+                                disabled={proposal.status == "Accepted" || proposal.status == "Rejected"}>Accept</Button>
+                                <Button className="w-48" onClick={() => {rejectStoreProposal(proposal.id)}}
+                                        disabled={proposal.status == "Accepted" || proposal.status == "Rejected"}>Reject</Button>
                             </div>
                         </div>
                     </div>

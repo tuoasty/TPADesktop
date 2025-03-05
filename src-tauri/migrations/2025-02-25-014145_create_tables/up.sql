@@ -152,6 +152,7 @@ CREATE TABLE ride_proposals
     proposal_type VARCHAR NOT NULL,
     status        VARCHAR NOT NULL,
     description   VARCHAR NOT NULL,
+    price INTEGER NOT NULL,
     ride_id       INTEGER REFERENCES rides (id),
     image_id      INTEGER REFERENCES images (id)
 );
@@ -159,6 +160,7 @@ CREATE TABLE ride_proposals
 CREATE TABLE store_proposals
 (
     id            SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
     proposal_type VARCHAR NOT NULL,
     status        VARCHAR NOT NULL,
     description   VARCHAR NOT NULL,
