@@ -2,34 +2,33 @@ use diesel::{Insertable, Queryable, Selectable};
 use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Selectable, Serialize)]
-#[diesel(table_name = crate::schema::ride_proposals)]
+#[diesel(table_name = crate::schema::store_proposals)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
-pub struct RideProposal {
+pub struct StoreProposal {
     pub id: i32,
     pub proposal_type:String,
     pub status:String,
     pub description:String,
-    pub ride_id:Option<i32>,
+    pub store_id:Option<i32>,
     pub image_id:Option<i32>
 }
 
 #[derive(Insertable, Deserialize)]
-#[diesel(table_name = crate::schema::ride_proposals)]
-pub struct NewRideProposal {
+#[diesel(table_name = crate::schema::store_proposals)]
+pub struct NewStoreProposal {
     pub proposal_type:String,
     pub status:String,
     pub description:String,
-    pub ride_id:Option<i32>,
+    pub store_id:Option<i32>,
     pub image_id:Option<i32>
 }
 
 #[derive(Serialize)]
-pub struct RideProposalDetail {
-    pub id:i32,
+pub struct StoreProposalDetail {
     pub proposal_type:String,
     pub status:String,
     pub description:String,
-    pub ride_id:Option<i32>,
-    pub ride_name:Option<String>,
+    pub store_id:Option<i32>,
+    pub store_name:Option<String>,
     pub image_data:Option<String>,
 }

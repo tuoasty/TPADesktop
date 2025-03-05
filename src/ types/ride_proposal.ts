@@ -1,7 +1,9 @@
 export interface RideProposal {
     id:number,
     proposal_type:string,
-    department:string,
     status:string,
-    department_id:number | null
+    description:string,
+    ride_id:number | null,
+    ride_name:string | null,
+    image_data:string | null,
 }

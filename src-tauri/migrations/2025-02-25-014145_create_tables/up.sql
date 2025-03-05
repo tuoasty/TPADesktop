@@ -151,7 +151,25 @@ CREATE TABLE ride_proposals
     id            SERIAL PRIMARY KEY,
     proposal_type VARCHAR NOT NULL,
     status        VARCHAR NOT NULL,
-    description VARCHAR NOT NULL,
-    ride_id INTEGER REFERENCES rides (id),
-    image_id INTEGER REFERENCES images (id)
+    description   VARCHAR NOT NULL,
+    ride_id       INTEGER REFERENCES rides (id),
+    image_id      INTEGER REFERENCES images (id)
+);
+
+CREATE TABLE store_proposals
+(
+    id            SERIAL PRIMARY KEY,
+    proposal_type VARCHAR NOT NULL,
+    status        VARCHAR NOT NULL,
+    description   VARCHAR NOT NULL,
+    store_id       INTEGER REFERENCES stores (id),
+    image_id      INTEGER REFERENCES images (id)
+);
+
+CREATE TABLE restaurant_proposals(
+    id SERIAL PRIMARY KEY,
+    image_id INTEGER NOT NULL REFERENCES images(id),
+    open_time TIME NOT NULL,
+    close_time TIME NOT NULL,
+    cuisine VARCHAR NOT NULL
 );

@@ -14,3 +14,5 @@ mod lost_item;
 mod customer;
 mod notification;
 mod ride_proposal;
+mod restaurant_proposal;
+mod store_proposal;

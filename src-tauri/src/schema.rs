@@ -79,6 +79,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    restaurant_proposals (id) {
+        id -> Int4,
+        image_id -> Int4,
+        open_time -> Time,
+        close_time -> Time,
+        cuisine -> Varchar,
+    }
+}
+
+diesel::table! {
     restaurants (id) {
         id -> Int4,
         name -> Varchar,
@@ -162,6 +172,17 @@ diesel::table! {
 }
 
 diesel::table! {
+    store_proposals (id) {
+        id -> Int4,
+        proposal_type -> Varchar,
+        status -> Varchar,
+        description -> Varchar,
+        store_id -> Nullable<Int4>,
+        image_id -> Nullable<Int4>,
+    }
+}
+
+diesel::table! {
     stores (id) {
         id -> Int4,
         image_id -> Int4,
@@ -181,6 +202,7 @@ diesel::joinable!(menus -> restaurants (restaurant_id));
 diesel::joinable!(notifications -> customers (customer_id));
 diesel::joinable!(restaurant_assignments -> restaurants (restaurant_id));
 diesel::joinable!(restaurant_assignments -> staffs (staff_id));
+diesel::joinable!(restaurant_proposals -> images (image_id));
 diesel::joinable!(restaurants -> images (image_id));
 diesel::joinable!(ride_assignments -> rides (ride_id));
 diesel::joinable!(ride_assignments -> staffs (staff_id));
@@ -193,6 +215,8 @@ diesel::joinable!(souvenirs -> images (image_id));
 diesel::joinable!(souvenirs -> stores (store_id));
 diesel::joinable!(store_assignments -> staffs (staff_id));
 diesel::joinable!(store_assignments -> stores (store_id));
+diesel::joinable!(store_proposals -> images (image_id));
+diesel::joinable!(store_proposals -> stores (store_id));
 diesel::joinable!(stores -> images (image_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
@@ -204,6 +228,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     menus,
     notifications,
     restaurant_assignments,
+    restaurant_proposals,
     restaurants,
     ride_assignments,
     ride_proposals,
@@ -212,5 +237,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     souvenirs,
     staffs,
     store_assignments,
+    store_proposals,
     stores,
 );
