@@ -1,6 +1,6 @@
 use crate::DbConnect;
 use crate::handler::image_handler::get_image_data;
-use crate::model::ride_model::{Ride, RideDetail};
+use crate::model::ride_model::{NewRide, Ride, RideDetail};
 use diesel::prelude::*;
 use crate::handler::ride_assignment_handler::{check_ride_staff_to_open, get_ride_staffs, reassign_staff_to_ride};
 use crate::schema::rides::dsl::rides;
@@ -65,6 +65,23 @@ impl Ride {
             .set(status.eq(new_status))
             .execute(conn)
             .map_err(|e| format!("Error updating status: {}", e))?;
+
+        Ok(())
+    }
+
+    pub fn create_ride(conn:&mut DbConnect, new_ride:NewRide) -> Result<(), String> {
+        diesel::insert_into(rides)
+            .values(new_ride)
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+        Ok(())
+    }
+
+    pub fn close_ride(conn: &mut DbConnect, ride_id:i32) -> Result<(), String> {
+        diesel::update(rides).filter(id.eq(&ride_id))
+            .set(status.eq("Shut Down".to_string()))
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
 
         Ok(())
     }

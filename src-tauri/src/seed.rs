@@ -287,6 +287,7 @@ pub fn seed_database(pool: &DbPool) {
 
         let seed_ride_proposals = vec![
             NewRideProposal {
+                name:"Cinema Ride".to_string(),
                 proposal_type:"New".to_string(),
                 status:"Pending".to_string(),
                 description:"Cinema Ride".to_string(),
@@ -295,6 +296,7 @@ pub fn seed_database(pool: &DbPool) {
                 image_id:Some(seed_image(conn, "images/seed/tommy.jpg").unwrap())
             },
             NewRideProposal {
+                name:"Rollercoaster buatan LORD VK".to_string(),
                 proposal_type:"Remove".to_string(),
                 status:"Pending".to_string(),
                 description:"Jele".to_string(),

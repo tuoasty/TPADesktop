@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct RideProposal {
     pub id: i32,
+    pub name:String,
     pub proposal_type:String,
     pub status:String,
     pub description:String,
@@ -18,6 +19,7 @@ pub struct RideProposal {
 #[diesel(table_name = crate::schema::ride_proposals)]
 pub struct NewRideProposal {
     pub proposal_type:String,
+    pub name:String,
     pub status:String,
     pub description:String,
     pub price:i32,
@@ -28,11 +30,11 @@ pub struct NewRideProposal {
 #[derive(Serialize)]
 pub struct RideProposalDetail {
     pub id:i32,
+    pub name:String,
     pub proposal_type:String,
     pub status:String,
     pub description:String,
     pub price:i32,
     pub ride_id:Option<i32>,
-    pub ride_name:Option<String>,
     pub image_data:Option<String>,
 }

@@ -112,6 +112,7 @@ diesel::table! {
 diesel::table! {
     ride_proposals (id) {
         id -> Int4,
+        name -> Varchar,
         proposal_type -> Varchar,
         status -> Varchar,
         description -> Varchar,

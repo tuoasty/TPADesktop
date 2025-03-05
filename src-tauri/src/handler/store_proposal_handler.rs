@@ -13,12 +13,12 @@ pub fn find_store_proposal(state:State<DbPool>) -> Result<Vec<StoreProposalDetai
 pub fn accept_store_proposal(state:State<DbPool>, proposal_id:i32) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
 
-    StoreProposal::accept_proposal(conn, proposal_id)
+    StoreProposal::accept_store_proposal(conn, proposal_id)
 }
 
 #[command]
 pub fn reject_store_proposal(state:State<DbPool>, proposal_id:i32) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
 
-    StoreProposal::reject_proposal(conn, proposal_id)
+    StoreProposal::reject_store_proposal(conn, proposal_id)
 }

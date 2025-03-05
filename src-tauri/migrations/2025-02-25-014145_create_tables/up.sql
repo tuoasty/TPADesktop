@@ -149,10 +149,11 @@ CREATE TABLE notifications
 CREATE TABLE ride_proposals
 (
     id            SERIAL PRIMARY KEY,
+    name          VARCHAR NOT NULL,
     proposal_type VARCHAR NOT NULL,
     status        VARCHAR NOT NULL,
     description   VARCHAR NOT NULL,
-    price INTEGER NOT NULL,
+    price         INTEGER NOT NULL,
     ride_id       INTEGER REFERENCES rides (id),
     image_id      INTEGER REFERENCES images (id)
 );
@@ -160,26 +161,28 @@ CREATE TABLE ride_proposals
 CREATE TABLE store_proposals
 (
     id            SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL,
+    name          VARCHAR NOT NULL,
     proposal_type VARCHAR NOT NULL,
     status        VARCHAR NOT NULL,
     description   VARCHAR NOT NULL,
-    store_id       INTEGER REFERENCES stores (id),
+    store_id      INTEGER REFERENCES stores (id),
     image_id      INTEGER REFERENCES images (id)
 );
 
-CREATE TABLE restaurant_proposals(
-    id SERIAL PRIMARY KEY,
-    image_id INTEGER NOT NULL REFERENCES images(id),
-    open_time TIME NOT NULL,
-    close_time TIME NOT NULL,
-    cuisine VARCHAR NOT NULL
+CREATE TABLE restaurant_proposals
+(
+    id         SERIAL PRIMARY KEY,
+    image_id   INTEGER NOT NULL REFERENCES images (id),
+    open_time  TIME    NOT NULL,
+    close_time TIME    NOT NULL,
+    cuisine    VARCHAR NOT NULL
 );
 
-CREATE TABLE store_transactions (
-    id SERIAL PRIMARY KEY,
+CREATE TABLE store_transactions
+(
+    id          SERIAL PRIMARY KEY,
     customer_id INTEGER NOT NULL REFERENCES customers (id),
-    store_id INTEGER NOT NULL REFERENCES stores (id),
+    store_id    INTEGER NOT NULL REFERENCES stores (id),
     souvenir_id INTEGER NOT NULL REFERENCES souvenirs (id),
-    count INTEGER NOT NULL
+    count       INTEGER NOT NULL
 );

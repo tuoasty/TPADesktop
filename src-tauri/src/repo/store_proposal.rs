@@ -35,20 +35,20 @@ impl StoreProposal {
         Ok(proposal_details)
     }
 
-    pub fn get_proposal(conn: &mut DbConnect, proposal_id:i32) -> Result<StoreProposal, String> {
+    pub fn get_store_proposal(conn: &mut DbConnect, proposal_id:i32) -> Result<StoreProposal, String> {
         store_proposals.filter(id.eq(&proposal_id))
             .first(conn)
             .map_err(|e| e.to_string())
     }
 
-    pub fn accept_proposal(conn: &mut DbConnect, proposal_id:i32) -> Result<(), String> {
+    pub fn accept_store_proposal(conn: &mut DbConnect, proposal_id:i32) -> Result<(), String> {
         diesel::update(store_proposals)
             .filter(id.eq(&proposal_id))
             .set(status.eq("Accepted".to_string()))
             .execute(conn)
             .map_err(|e| e.to_string())?;
 
-        let proposal = Self::get_proposal(conn, proposal_id)?;
+        let proposal = Self::get_store_proposal(conn, proposal_id)?;
 
         if proposal.proposal_type == "New" {
             create_new_store(conn, proposal)
@@ -57,7 +57,7 @@ impl StoreProposal {
         }
     }
 
-    pub fn reject_proposal(conn: &mut DbConnect, proposal_id:i32) -> Result<(), String> {
+    pub fn reject_store_proposal(conn: &mut DbConnect, proposal_id:i32) -> Result<(), String> {
         diesel::update(store_proposals)
             .filter(id.eq(&proposal_id))
             .set(status.eq("Rejected".to_string()))

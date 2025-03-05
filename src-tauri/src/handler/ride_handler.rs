@@ -1,6 +1,8 @@
+use chrono::NaiveTime;
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
-use crate::model::ride_model::{Ride, RideDetail};
+use crate::model::ride_model::{NewRide, Ride, RideDetail};
+use crate::model::ride_proposal_model::RideProposal;
 
 #[command]
 pub fn find_all_ride(state:State<DbPool>) -> Result<Vec<RideDetail>, String> {
@@ -44,4 +46,21 @@ pub fn reject_ride_maintenance(conn: &mut DbConnect, ride_id:i32) -> Result<(), 
 
 pub fn find_ride(conn:&mut DbConnect, ride_id:i32) -> Result<Ride, String> {
     Ride::get_ride(conn, ride_id)
+}
+
+pub fn create_new_ride(conn: &mut DbConnect, proposal:RideProposal) -> Result<(), String> {
+    let new_ride = NewRide {
+        name:proposal.name,
+        image_id:proposal.image_id.unwrap(),
+        open_time:NaiveTime::from_hms_opt(7,0,0).unwrap(),
+        close_time:NaiveTime::from_hms_opt(19,0,0).unwrap(),
+        price:proposal.price,
+        status:"In Construction".to_string()
+    };
+
+    Ride::create_ride(conn, new_ride)
+}
+
+pub fn close_ride(conn:&mut DbConnect, ride_id:i32) -> Result<(), String> {
+    Ride::close_ride(conn, ride_id)
 }
