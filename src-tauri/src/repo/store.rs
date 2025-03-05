@@ -65,4 +65,11 @@ impl Store {
 
         Ok(())
     }
+
+    pub fn get_store(conn: &mut DbConnect, selected_id:i32) -> Result<Store, String> {
+        stores
+            .filter(id.eq(&selected_id))
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
 }

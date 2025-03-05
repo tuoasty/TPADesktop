@@ -25,6 +25,7 @@ pub struct NewStoreProposal {
 
 #[derive(Serialize)]
 pub struct StoreProposalDetail {
+    pub id:i32,
     pub proposal_type:String,
     pub status:String,
     pub description:String,

@@ -1,10 +1,8 @@
-use base64::engine::general_purpose::STANDARD;
 use crate::DbConnect;
 use crate::model::ride_proposal_model::{RideProposal, RideProposalDetail};
 use diesel::prelude::*;
-use crate::handler::image_handler::{create_image, get_image_data};
+use crate::handler::image_handler::{get_image_data};
 use crate::handler::ride_handler::find_ride;
-use crate::model::maintenance_report_model::MaintenanceReportDetail;
 use crate::schema::ride_proposals::dsl::ride_proposals;
 
 impl RideProposal {

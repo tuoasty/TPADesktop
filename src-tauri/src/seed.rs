@@ -17,6 +17,7 @@ use crate::model::ride_model::NewRide;
 use crate::model::souvenir_model::NewSouvenir;
 use crate::model::staff_model::NewStaff;
 use crate::model::store_model::NewStore;
+use crate::model::store_proposal_model::NewStoreProposal;
 use crate::schema::customers::dsl::customers;
 use crate::schema::lost_items::dsl::lost_items;
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
@@ -25,6 +26,7 @@ use crate::schema::notifications::dsl::notifications;
 use crate::schema::ride_proposals::dsl::ride_proposals;
 use crate::schema::rides::dsl::rides;
 use crate::schema::souvenirs::dsl::souvenirs;
+use crate::schema::store_proposals::dsl::store_proposals;
 use crate::schema::stores::dsl::stores;
 
 pub fn seed_database(pool: &DbPool) {
@@ -300,6 +302,24 @@ pub fn seed_database(pool: &DbPool) {
             },
         ];
 
+        let seed_store_proposals = vec![
+            NewStoreProposal {
+                proposal_type:"New".to_string(),
+                status:"Pending".to_string(),
+                description:"Toko Teh Obeng".to_string(),
+                store_id:None,
+                image_id:Some(seed_image(conn, "images/seed/tommy.jpg").unwrap())
+            },
+            NewStoreProposal {
+                proposal_type:"Remove".to_string(),
+                status:"Pending".to_string(),
+                description:"Jele".to_string(),
+                store_id:Some(1),
+                image_id:None,
+            },
+        ];
+
+
         diesel::insert_into(staffs)
             .values(&staff_members)
             .execute(conn)
@@ -362,6 +382,12 @@ pub fn seed_database(pool: &DbPool) {
 
         diesel::insert_into(ride_proposals)
             .values(&seed_ride_proposals)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(store_proposals)
+            .values(&seed_store_proposals)
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();

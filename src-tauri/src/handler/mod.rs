@@ -14,6 +14,8 @@ pub mod lost_item_handler;
 pub mod customer_handler;
 pub mod notification_handler;
 pub mod ride_proposal_handler;
+pub mod store_proposal_handler;
+pub mod restaurant_proposal_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -54,6 +56,7 @@ macro_rules! all_handlers {
             $crate::handler::customer_handler::get_current_customer,
             $crate::handler::notification_handler::find_customer_notifications,
             $crate::handler::ride_proposal_handler::find_ride_proposal,
+            $crate::handler::store_proposal_handler::find_store_proposal,
             // Add all other commands
         ]
     };

@@ -9,8 +9,8 @@ use crate::model::staff_model::StaffDetail;
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Store {
     pub id: i32,
-    pub name: String,
     pub image_id: i32,
+    pub name: String,
     pub open_time: NaiveTime,
     pub close_time: NaiveTime,
     pub status:String,

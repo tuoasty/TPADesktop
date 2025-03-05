@@ -1,6 +1,6 @@
 use chrono::NaiveTime;
 use diesel::{Insertable, Queryable, Selectable};
-use serde::{Deserialize, Serialize};
+use serde::{Serialize};
 
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = crate::schema::restaurant_proposals)]
