@@ -16,6 +16,7 @@ import ViewRestaurantProposal from "@/apps/staff/pages/cfo/ViewRestaurantProposa
 import ViewStoreProposal from "@/apps/staff/pages/ceo/ViewStoreProposal.tsx";
 import BroadcastMessage from "@/apps/staff/pages/customerservice/BroadcastMessage.tsx";
 import CreateCustomerAccount from "@/apps/staff/pages/customerservice/CreateCustomerAccount.tsx";
+import GlobalChat from "@/apps/staff/GlobalChat.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -50,6 +51,7 @@ export default function StaffApp() {
                                     allowedRoles={["Customer Service"]}><BroadcastMessage/></ProtectedRoute>}/>
                                 <Route path="create-customer-account" element={<ProtectedRoute
                                     allowedRoles={["Customer Service"]}><CreateCustomerAccount/></ProtectedRoute>}/>
+                                <Route path="staff-chat" element={<ProtectedRoute><GlobalChat/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>
                         </Routes>

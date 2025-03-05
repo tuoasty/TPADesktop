@@ -48,7 +48,7 @@ export default function ViewAllRestaurant() {
 
     const changeRestaurantStatus = async (id:number, status:string) => {
         try {
-            await invoke("change_restaurant_status", {restaurantId:id, restaurantStatus:status})
+            await invoke("change_restaurant_status", {selectedId:id, restaurantStatus:status})
             toast.success("Successfully updated restaurant status");
             fetchRestaurants();
         } catch (e) {

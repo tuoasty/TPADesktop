@@ -36,6 +36,7 @@ export default function StaffNavbar(){
             ) : (
                 <StaffLogoutMenu/>
             )}
+            <StaffNavButton text={"Staff Chat"} to={"/staff/staff-chat"}/>
             {isAuthenticated && (
                 <div className="flex flex-row">
                     {navItems.map((item) => (

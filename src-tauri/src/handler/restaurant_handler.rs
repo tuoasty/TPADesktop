@@ -1,4 +1,5 @@
 use chrono::Local;
+use diesel::dsl::select;
 use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
 use crate::{get_conn, DbPool};
 use tauri::{command, State};
@@ -62,7 +63,7 @@ pub fn find_all_consumption_staff(state: State<DbPool>) -> Result<Vec<StaffDetai
 }
 
 #[command]
-pub fn change_restaurant_status(state:State<DbPool>, restaurant_id:i32, restaurant_status:String) -> Result<(), String> {
+pub fn change_restaurant_status(state:State<DbPool>, selected_id:i32, restaurant_status:String) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
 
     let mut new_status = restaurant_status.clone();
@@ -73,7 +74,7 @@ pub fn change_restaurant_status(state:State<DbPool>, restaurant_id:i32, restaura
         new_status = "Open".to_string();
     }
 
-    Restaurant::update_restaurant_status(conn, restaurant_id, new_status)
+    Restaurant::update_restaurant_status(conn, selected_id, new_status)
 }
 
 #[command]

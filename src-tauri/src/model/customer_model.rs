@@ -10,7 +10,7 @@ pub struct Customer {
     pub balance: i32,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, Deserialize)]
 #[diesel(table_name = crate::schema::customers)]
 pub struct NewCustomer {
     pub name: String,

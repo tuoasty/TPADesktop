@@ -57,8 +57,10 @@ fn get_app_id() -> Result<String, String> {
     Ok(id)
 }
 
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
+#[tokio::main]
+pub async fn run() {
     let pool = establish_connection();
     let current_staff = CurrentStaff(Mutex::new(None));
     let current_customer = CurrentCustomer(Mutex::new(None));

@@ -17,6 +17,7 @@ pub mod ride_proposal_handler;
 pub mod store_proposal_handler;
 pub mod restaurant_proposal_handler;
 pub mod store_transaction_handler;
+pub mod firebase;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -68,6 +69,8 @@ macro_rules! all_handlers {
             $crate::handler::store_proposal_handler::find_store_proposal,
             $crate::handler::store_proposal_handler::accept_store_proposal,
             $crate::handler::store_proposal_handler::reject_store_proposal,
+            $crate::handler::firebase::send_chat_message,
+            $crate::handler::firebase::fetch_new_messages,
             // Add all other commands
         ]
     };
