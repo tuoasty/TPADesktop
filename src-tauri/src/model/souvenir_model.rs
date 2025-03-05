@@ -7,9 +7,9 @@ use serde::Serialize;
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Souvenir {
     pub id: i32,
-    pub name: String,
     pub store_id: i32,
     pub image_id: i32,
+    pub name: String,
     pub price: i32,
     pub description: String
 }

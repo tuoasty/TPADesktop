@@ -2,7 +2,7 @@ use crate::DbConnect;
 use crate::model::customer_model::Customer;
 use diesel::prelude::*;
 use crate::schema::customers::dsl::customers;
-use crate::schema::customers::{id, name};
+use crate::schema::customers::{balance, id, name};
 
 impl Customer {
     pub fn get_customer_name(conn: &mut DbConnect, selected_id:i32) -> Result<String, String> {
@@ -16,5 +16,18 @@ impl Customer {
         customers.filter(id.eq(&cust_id))
             .first(conn)
             .map_err(|e| e.to_string())
+    }
+
+    pub fn deduct_customer_balance(conn: &mut DbConnect, customer_id:i32, value:i32) -> Result<(), String> {
+        let current_balance:i32 = customers.filter(id.eq(&customer_id))
+            .select(balance)
+            .first(conn)
+            .map_err(|e| e.to_string())?;
+
+        let new_balance = current_balance - value;
+
+        diesel::update(customers.filter(id.eq(&customer_id))).set(balance.eq(&new_balance)).execute(conn).map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 }

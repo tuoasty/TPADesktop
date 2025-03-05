@@ -1,6 +1,9 @@
 use chrono::NaiveTime;
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
+use crate::handler::image_handler::get_image_data;
+use crate::handler::souvenir_handler::find_store_souvenir;
+use crate::handler::store_assignment_handler::get_store_staffs;
 use crate::model::store_model::{NewStore, Store, StoreDetail};
 use crate::model::store_proposal_model::StoreProposal;
 
@@ -36,6 +39,27 @@ pub fn reassign_store_and_check_status(state:State<DbPool>, new_staff_id:i32, ne
 
     Store::check_store_assignment_and_update(conn, deleted_store_id)
 }
+
+#[command]
+pub fn find_store_by_id(state:State<DbPool>, selected_id:i32) -> Result<StoreDetail, String> {
+    let conn = &mut get_conn(&state)?;
+    let store = Store::get_store(conn, selected_id)?;
+
+    let store_detail = StoreDetail {
+        id:store.id,
+        name:store.name,
+        open_time:store.open_time.to_string(),
+        close_time:store.close_time.to_string(),
+        image_data:get_image_data(conn, store.image_id)?,
+        status:store.status,
+        souvenirs:find_store_souvenir(conn, store.id)?,
+        staffs:get_store_staffs(conn, store.id)?
+    };
+
+    Ok(store_detail)
+}
+
+
 
 pub fn create_new_store(conn: &mut DbConnect, proposal:StoreProposal) -> Result<(), String> {
     let new_store = NewStore {

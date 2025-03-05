@@ -4,6 +4,7 @@ import CustomerLogin from "@/apps/customer/pages/CustomerLogin.tsx";
 import CustomerDashboard from "@/apps/customer/pages/CustomerDashboard.tsx";
 import {CustomerAuthProvider, ProtectedRoute} from "@/context/CustomerAuthProvider.tsx";
 import CustomerNotification from "@/apps/customer/pages/CustomerNotification.tsx";
+import {Toaster} from "@/components/ui/sonner.tsx";
 
 function CustomerApp() {
   return (
@@ -26,6 +27,7 @@ function CustomerApp() {
                   </Routes>
               </div>
           </CustomerAuthProvider>
+          <Toaster/>
       </BrowserRouter>
   );
 }

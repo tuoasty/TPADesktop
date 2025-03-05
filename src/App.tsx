@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import CustomerApp from "@/apps/customer/CustomerApp.tsx";
 import {invoke} from "@tauri-apps/api/core";
 import StaffApp from "@/apps/StaffApp.tsx";
+import StoreApp from "@/apps/store/StoreApp.tsx";
 
 export default function App() {
     const [appId, setAppId] = useState("1");
@@ -24,6 +25,8 @@ export default function App() {
             return <CustomerApp/>
         case "2":
             return <StaffApp/>
+        case "3.1":
+            return <StoreApp storeId={1}/>
         default:
             return <CustomerApp/>
     }

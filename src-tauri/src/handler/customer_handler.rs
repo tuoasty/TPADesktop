@@ -42,3 +42,25 @@ pub fn logout_customer(current_customer:State<CurrentCustomer>) -> Result<String
     *lock = None;
     Ok("Successfully logout".to_string())
 }
+
+pub fn get_customer_balance(current_customer:&CurrentCustomer) -> Result<i32, String> {
+    let curr_customer = current_customer.0.lock()
+        .map_err(|_| "Failed to acquire lock".to_string())?
+        .clone()
+        .ok_or("No customer found".to_string())?;
+
+    Ok(curr_customer.2)
+}
+
+pub fn get_customer_id(current_customer:&CurrentCustomer) -> Result<i32, String> {
+    let curr_customer = current_customer.0.lock()
+        .map_err(|_| "Failed to acquire lock".to_string())?
+        .clone()
+        .ok_or("No customer found".to_string())?;
+
+    Ok(curr_customer.0)
+}
+
+pub fn deduct_customer_balance(conn: &mut DbConnect, customer_id:i32, value:i32) -> Result<(), String> {
+    Customer::deduct_customer_balance(conn, customer_id, value)
+}

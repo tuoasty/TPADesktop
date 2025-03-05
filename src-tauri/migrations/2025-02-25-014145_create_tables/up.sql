@@ -175,3 +175,11 @@ CREATE TABLE restaurant_proposals(
     close_time TIME NOT NULL,
     cuisine VARCHAR NOT NULL
 );
+
+CREATE TABLE store_transactions (
+    id SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL REFERENCES customers (id),
+    store_id INTEGER NOT NULL REFERENCES stores (id),
+    souvenir_id INTEGER NOT NULL REFERENCES souvenirs (id),
+    count INTEGER NOT NULL
+);

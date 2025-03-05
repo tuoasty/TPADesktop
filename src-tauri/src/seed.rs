@@ -248,7 +248,7 @@ pub fn seed_database(pool: &DbPool) {
                 name:"Egg Stuffed Doll".to_string(),
                 store_id:1,
                 image_id: seed_image(conn, "images/seed/telordadar.png").unwrap(),
-                price:500000,
+                price:50,
                 description:"An Egg".to_string()
             }
         ];

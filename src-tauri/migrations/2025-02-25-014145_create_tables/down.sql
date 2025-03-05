@@ -1,5 +1,6 @@
 -- This file should undo anything in `up.sql`
 DROP TABLE menus;
+DROP TABLE store_transactions;
 DROP TABLE ride_assignments;
 DROP TABLE store_assignments;
 DROP TABLE restaurant_assignments;

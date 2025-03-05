@@ -42,4 +42,10 @@ impl Souvenir{
 
         remove_image(conn, selected_image_id)
     }
+
+    pub fn get_souvenir(conn: &mut DbConnect, selected_id:i32) -> Result<Souvenir, String> {
+        souvenirs.filter(id.eq(&selected_id))
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
 }

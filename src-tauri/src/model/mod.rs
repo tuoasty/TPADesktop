@@ -16,3 +16,4 @@ pub mod notification_model;
 pub mod ride_proposal_model;
 pub mod restaurant_proposal_model;
 pub mod store_proposal_model;
+pub mod store_transaction_model;

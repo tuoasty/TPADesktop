@@ -16,6 +16,7 @@ pub mod notification_handler;
 pub mod ride_proposal_handler;
 pub mod store_proposal_handler;
 pub mod restaurant_proposal_handler;
+mod store_transaction_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -37,7 +38,9 @@ macro_rules! all_handlers {
             $crate::handler::store_handler::find_all_store,
             $crate::handler::store_handler::change_store_status,
             $crate::handler::store_handler::reassign_store_and_check_status,
+            $crate::handler::store_handler::find_store_by_id,
             $crate::handler::souvenir_handler::remove_souvenir,
+            $crate::handler::souvenir_handler::purchase_souvenir,
             $crate::handler::ride_handler::find_all_ride,
             $crate::handler::ride_handler::change_ride_status,
             $crate::handler::ride_handler::reassign_ride_and_check_status,

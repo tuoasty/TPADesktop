@@ -185,6 +185,16 @@ diesel::table! {
 }
 
 diesel::table! {
+    store_transactions (id) {
+        id -> Int4,
+        customer_id -> Int4,
+        store_id -> Int4,
+        souvenir_id -> Int4,
+        count -> Int4,
+    }
+}
+
+diesel::table! {
     stores (id) {
         id -> Int4,
         image_id -> Int4,
@@ -219,6 +229,9 @@ diesel::joinable!(store_assignments -> staffs (staff_id));
 diesel::joinable!(store_assignments -> stores (store_id));
 diesel::joinable!(store_proposals -> images (image_id));
 diesel::joinable!(store_proposals -> stores (store_id));
+diesel::joinable!(store_transactions -> customers (customer_id));
+diesel::joinable!(store_transactions -> souvenirs (souvenir_id));
+diesel::joinable!(store_transactions -> stores (store_id));
 diesel::joinable!(stores -> images (image_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
@@ -240,5 +253,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     staffs,
     store_assignments,
     store_proposals,
+    store_transactions,
     stores,
 );

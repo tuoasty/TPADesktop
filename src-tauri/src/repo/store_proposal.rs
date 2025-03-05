@@ -1,8 +1,8 @@
 use crate::DbConnect;
 use crate::handler::image_handler::get_image_data;
-use crate::model::store_proposal_model::{NewStoreProposal, StoreProposal, StoreProposalDetail};
+use crate::model::store_proposal_model::{StoreProposal, StoreProposalDetail};
 use diesel::prelude::*;
-use crate::handler::store_handler::{close_store, create_new_store, find_store};
+use crate::handler::store_handler::{close_store, create_new_store};
 use crate::schema::store_proposals::dsl::store_proposals;
 use crate::schema::store_proposals::{id, status};
 
