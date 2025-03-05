@@ -1,6 +1,8 @@
-use chrono::NaiveTime;
+use chrono::{Local, NaiveTime};
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
+use crate::handler::image_handler::get_image_data;
+use crate::handler::ride_assignment_handler::get_ride_staffs;
 use crate::model::ride_model::{NewRide, Ride, RideDetail};
 use crate::model::ride_proposal_model::RideProposal;
 
@@ -10,6 +12,33 @@ pub fn find_all_ride(state:State<DbPool>) -> Result<Vec<RideDetail>, String> {
     let ride_details:Vec<RideDetail> = Ride::get_all_ride(conn)?;
 
     Ok(ride_details)
+}
+
+#[command]
+pub fn find_ride_by_id(state:State<DbPool>, selected_id:i32) -> Result<RideDetail, String> {
+    let conn = &mut get_conn(&state)?;
+    let ride = Ride::get_ride(conn, selected_id)?;
+
+    let ride_detail = RideDetail {
+        id:ride.id,
+        name:ride.name,
+        open_time:ride.open_time.to_string(),
+        close_time:ride.close_time.to_string(),
+        image_data:get_image_data(conn, ride.image_id)?,
+        price:ride.price,
+        status: {
+            let current_time = Local::now().time();
+
+            if current_time < ride.open_time || current_time > ride.close_time {
+                "Closed".to_string()
+            } else {
+                ride.status
+            }
+        },
+        staffs:get_ride_staffs(conn, ride.id)?
+    };
+
+    Ok(ride_detail)
 }
 
 #[command]

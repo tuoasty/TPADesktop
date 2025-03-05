@@ -1,6 +1,10 @@
+use chrono::Local;
 use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
 use crate::{get_conn, DbPool};
 use tauri::{command, State};
+use crate::handler::image_handler::get_image_data;
+use crate::handler::menu_handler::find_restaurant_menu;
+use crate::handler::restaurant_assignment_handler::get_restaurant_staffs;
 use crate::handler::staff_handler::find_staff_per_role;
 use crate::model::staff_model::StaffDetail;
 
@@ -13,6 +17,33 @@ pub fn find_all_restaurant(state: State<DbPool>) -> Result<Vec<RestaurantDetail>
     Ok(restaurant_details)
 }
 
+#[command]
+pub fn find_restaurant_by_id(state:State<DbPool>, selected_id:i32) -> Result<RestaurantDetail, String> {
+    let conn = &mut get_conn(&state)?;
+    let restaurant = Restaurant::get_restaurant(conn, selected_id)?;
+
+    let restaurant_detail = RestaurantDetail {
+        id:restaurant.id,
+        name:restaurant.name,
+        open_time:restaurant.open_time.to_string(),
+        close_time:restaurant.close_time.to_string(),
+        image_data:get_image_data(conn, restaurant.image_id)?,
+        status: {
+            let current_time = Local::now().time();
+
+            if current_time < restaurant.open_time || current_time > restaurant.close_time {
+                "Closed".to_string()
+            } else {
+                restaurant.status
+            }
+        },
+        menus:find_restaurant_menu(conn, restaurant.id)?,
+        staffs:get_restaurant_staffs(conn, restaurant.id)?,
+        cuisine:restaurant.cuisine
+    };
+
+    Ok(restaurant_detail)
+}
 #[command]
 pub fn find_all_consumption_staff(state: State<DbPool>) -> Result<Vec<StaffDetail>, String> {
     let conn = &mut get_conn(&state)?;

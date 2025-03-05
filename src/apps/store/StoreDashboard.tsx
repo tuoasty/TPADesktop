@@ -68,7 +68,7 @@ export default function StoreDashboard(p:Props){
 
     return (
         <main className="bg-yellow-200 h-full w-full flex flex-col place-items-center justify-center">
-            {store && (
+            {store && store.status == "Open" ? (
                 <div className="h-full w-full flex">
                     <div className="w-[25%] h-auto">
                         <img className="object-contain w-full h-full rounded-lg" src={store.image_data}
@@ -102,7 +102,7 @@ export default function StoreDashboard(p:Props){
                                         <div className="flex flex-col place-items-center justify-center p-8">
                                             <Dialog>
                                                 <DialogTrigger asChild>
-                                                    <Button
+                                                    <Button disabled={store.status == "Closed" || store.status=="Shut Down"}
                                                         className="bg-yellow-600 w-48 h-12">Purchase</Button>
                                                 </DialogTrigger>
                                                 <DialogContent>
@@ -120,7 +120,8 @@ export default function StoreDashboard(p:Props){
                                                     </div>
                                                     <DialogFooter className="w-full flex-col justify-between">
                                                         <h2>Price : {price}</h2>
-                                                        <Button type="submit" className="bg-yellow-700" onClick={() => purchaseSouvenir(souvenir.id)}>Purchase</Button>
+                                                        <Button type="submit" className="bg-yellow-700" onClick={() => purchaseSouvenir(souvenir.id)}
+                                                        disabled={store.status == "Closed" || store.status=="Shut Down"}>Purchase</Button>
                                                     </DialogFooter>
                                                 </DialogContent>
                                             </Dialog>
@@ -131,6 +132,8 @@ export default function StoreDashboard(p:Props){
                         )}
                     </div>
                 </div>
+            ) : (
+                <h1>Store is {store?.status}</h1>
             )}
         </main>
     )

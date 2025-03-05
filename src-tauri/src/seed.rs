@@ -244,6 +244,14 @@ pub fn seed_database(pool: &DbPool) {
                 cuisine: "Japanese".to_string(),
                 status: "Closed".to_string(),
             },
+            NewRestaurant {
+                name: "Restonya Tommy".to_string(),
+                image_id: seed_image(conn, "images/seed/tommy.jpg").unwrap(),
+                open_time: NaiveTime::from_hms_opt(8, 0, 0).unwrap(),
+                close_time: NaiveTime::from_hms_opt(23, 0, 0).unwrap(),
+                cuisine: "Batamese".to_string(),
+                status: "Closed".to_string(),
+            },
         ];
 
         let seed_stores = vec![
@@ -257,6 +265,13 @@ pub fn seed_database(pool: &DbPool) {
             NewStore {
                 name:"Mito".to_string(),
                 image_id: seed_image(conn, "images/seed/mito.png").unwrap(),
+                open_time: NaiveTime::from_hms_opt(7, 0, 0).unwrap(),
+                close_time: NaiveTime::from_hms_opt(20, 0, 0).unwrap(),
+                status: "Closed".to_string(),
+            },
+            NewStore {
+                name:"Tokonya Tommy".to_string(),
+                image_id: seed_image(conn, "images/seed/tommy.jpg").unwrap(),
                 open_time: NaiveTime::from_hms_opt(7, 0, 0).unwrap(),
                 close_time: NaiveTime::from_hms_opt(20, 0, 0).unwrap(),
                 status: "Closed".to_string(),
