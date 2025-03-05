@@ -44,7 +44,7 @@ export default function RestaurantDashboard(p:Props){
     }, []);
 
     return (
-        <main className="bg-yellow-200 h-full w-full flex flex-col place-items-center justify-center">
+        <main className="bg-green-200 h-full w-full flex flex-col place-items-center justify-center">
             {restaurant && restaurant.status == "Open" ? (
                 <div className="h-full w-full flex">
                     <div className="w-[25%] h-auto">

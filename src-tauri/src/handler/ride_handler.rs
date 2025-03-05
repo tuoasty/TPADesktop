@@ -29,8 +29,10 @@ pub fn find_ride_by_id(state:State<DbPool>, selected_id:i32) -> Result<RideDetai
         status: {
             let current_time = Local::now().time();
 
-            if current_time < ride.open_time || current_time > ride.close_time {
-                "Closed".to_string()
+            if ride.status == "Shut Down" {
+                ride.status
+            } else if current_time < ride.open_time || current_time > ride.close_time {
+                "Closed for the day".to_string()
             } else {
                 ride.status
             }

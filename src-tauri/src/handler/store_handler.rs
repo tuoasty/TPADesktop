@@ -54,8 +54,10 @@ pub fn find_store_by_id(state:State<DbPool>, selected_id:i32) -> Result<StoreDet
         status: {
             let current_time = Local::now().time();
 
-            if current_time < store.open_time || current_time > store.close_time {
-                "Closed".to_string()
+            if store.status == "Shut Down" {
+                store.status
+            } else if current_time < store.open_time || current_time > store.close_time {
+                "Closed for the day".to_string()
             } else {
                 store.status
             }

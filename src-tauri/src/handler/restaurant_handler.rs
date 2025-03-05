@@ -7,6 +7,8 @@ use crate::handler::menu_handler::find_restaurant_menu;
 use crate::handler::restaurant_assignment_handler::get_restaurant_staffs;
 use crate::handler::staff_handler::find_staff_per_role;
 use crate::model::staff_model::StaffDetail;
+use crate::schema::menus::restaurant_id;
+use crate::schema::restaurant_proposals::dsl::restaurant_proposals;
 
 #[command]
 pub fn find_all_restaurant(state: State<DbPool>) -> Result<Vec<RestaurantDetail>, String> {
@@ -31,8 +33,11 @@ pub fn find_restaurant_by_id(state:State<DbPool>, selected_id:i32) -> Result<Res
         status: {
             let current_time = Local::now().time();
 
-            if current_time < restaurant.open_time || current_time > restaurant.close_time {
-                "Closed".to_string()
+
+            if restaurant.status == "Shut Down" {
+                restaurant.status
+            } else if current_time < restaurant.open_time || current_time > restaurant.close_time {
+                "Closed for the day".to_string()
             } else {
                 restaurant.status
             }
