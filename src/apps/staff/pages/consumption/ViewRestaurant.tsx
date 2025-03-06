@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { useStaffAuth } from "@/context/StaffAuthProvider.tsx";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
+import {RestaurantOrder} from "@/ types/restaurant_order.ts";
 import {Restaurant} from "@/ types/restaurant.ts";
 import {Staff} from "@/ types/staff.ts";
 import {Menu} from "@/ types/menu.ts";
-
 export default function ViewRestaurant() {
     const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
-    const { staffId } = useStaffAuth();
+    const { staffId , role} = useStaffAuth();
+    const [orders, setOrders] = useState<RestaurantOrder[]>([]);
 
     const findStaffRestaurant = async () => {
         try {
@@ -20,9 +21,51 @@ export default function ViewRestaurant() {
         }
     };
 
+    const findRestaurantOrders = async () => {
+        try {
+            invoke<RestaurantOrder[]>("find_restaurant_orders", {selectedId:restaurant?.id}).then(setOrders)
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
+
     useEffect(() => {
         findStaffRestaurant();
     }, []);
+
+    useEffect(() => {
+        findRestaurantOrders();
+    }, [restaurant]);
+
+    const takeOrder = async (orderId: number) => {
+        try {
+            await invoke("set_order_status", {selectedId:orderId, newStatus:"Ongoing Order"})
+            toast.success("Successfully took order")
+            findRestaurantOrders();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    };
+
+    const finishOrder = async (orderId: number) => {
+        try {
+            await invoke("set_order_status", {selectedId:orderId, newStatus:"Finished"})
+            toast.success("Successfully finished order")
+            findRestaurantOrders();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    };
+
+    const markOrderAsReady = async (orderId: number) => {
+        try {
+            await invoke("set_order_status", {selectedId:orderId, newStatus:"Ready to Serve"})
+            toast.success("Successfully marked order as ready")
+            findRestaurantOrders();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    };
 
     if (!restaurant) {
         return (
@@ -94,6 +137,54 @@ export default function ViewRestaurant() {
                         )}
                     </div>
                 </div>
+            </div>
+
+            <div className="w-full bg-white rounded-2xl shadow-lg p-6 mt-6">
+                <h1 className="font-bold text-2xl mb-4">Orders</h1>
+                {orders.length === 0 ? (
+                    <h2 className="text-gray-500">No orders yet.</h2>
+                ) : (
+                    orders.map((order) => (
+                        order.status != "Finished" && (
+                            <div key={order.id} className="bg-purple-100 rounded-2xl p-4 flex justify-between items-center mb-2 shadow-md">
+                                <div>
+                                    <h4 className="font-bold">Customer ID: {order.customer_id}</h4>
+                                    <h4>Menu: {order.menu_name}</h4>
+                                    <h4>Status: {order.status}</h4>
+                                </div>
+                                <div className="flex gap-4">
+                                    {role === "Waiter" && (
+                                        <>
+                                            <button
+                                                className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+                                                onClick={() => takeOrder(order.id)}
+                                                disabled={order.status !== "New Order"}
+                                            >
+                                                Take Order
+                                            </button>
+                                            <button
+                                                className="bg-green-500 text-white px-4 py-2 rounded disabled:opacity-50"
+                                                onClick={() => finishOrder(order.id)}
+                                                disabled={order.status !== "Ready to Serve"}
+                                            >
+                                                Finish Order
+                                            </button>
+                                        </>
+                                    )}
+                                    {role === "Chef" && (
+                                        <button
+                                            className="bg-yellow-500 text-white px-4 py-2 rounded disabled:opacity-50"
+                                            onClick={() => markOrderAsReady(order.id)}
+                                            disabled={order.status !== "Ongoing Order"}
+                                        >
+                                            Mark as Ready
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )
+                    ))
+                )}
             </div>
         </div>
     );

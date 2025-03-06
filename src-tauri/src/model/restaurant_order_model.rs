@@ -1,6 +1,6 @@
 use chrono::NaiveTime;
 use diesel::{Insertable, Queryable, Selectable};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Selectable)]
 #[diesel(belongs_to(Customer, foreign_key = customer_id))]
@@ -19,16 +19,17 @@ pub struct RestaurantOrder {
     pub time_ordered:NaiveTime
 }
 
-#[derive(Insertable, Serialize)]
-#[diesel(table_name = crate::schema::restaurant_orders)]
+#[derive(Deserialize, Serialize)]
 pub struct RestaurantOrderDetail {
     pub id:i32,
     pub customer_id:i32,
     pub restaurant_id:i32,
     pub menu_id:i32,
+    pub menu_name:String,
     pub status:String,
     pub count:i32,
     pub value:i32,
+    pub time_ordered:String,
 }
 
 

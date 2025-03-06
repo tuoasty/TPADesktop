@@ -79,6 +79,8 @@ macro_rules! all_handlers {
             $crate::handler::ride_queue_handler::add_customer_to_ride_queue,
             $crate::handler::ride_queue_handler::dequeue_customer_from_ride,
             $crate::handler::restaurant_order_handler::order_restaurant_food,
+            $crate::handler::restaurant_order_handler::find_restaurant_orders,
+            $crate::handler::restaurant_order_handler::set_order_status,
             // Add all other commands
         ]
     };
