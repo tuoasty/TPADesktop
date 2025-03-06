@@ -82,7 +82,7 @@ CREATE TABLE ride_queues
     customer_id INTEGER NOT NULL REFERENCES customers (id),
     time_joined TIME    NOT NULL,
     status      VARCHAR NOT NULL,
-    value INTEGER NOT NULL
+    value       INTEGER NOT NULL
 );
 
 CREATE TABLE maintenance_reports
@@ -186,6 +186,19 @@ CREATE TABLE store_transactions
     store_id    INTEGER NOT NULL REFERENCES stores (id),
     souvenir_id INTEGER NOT NULL REFERENCES souvenirs (id),
     count       INTEGER NOT NULL,
-    value INTEGER NOT NULL
+    value       INTEGER NOT NULL,
+    time_ordered TIME NOT NULL
+);
+
+CREATE TABLE restaurant_orders
+(
+    id            SERIAL PRIMARY KEY,
+    customer_id   INTEGER NOT NULL REFERENCES customers (id),
+    restaurant_id INTEGER NOT NULL REFERENCES restaurants (id),
+    menu_id       INTEGER NOT NULL REFERENCES menus (id),
+    status        VARCHAR NOT NULL,
+    count         INTEGER NOT NULL,
+    value         INTEGER NOT NULL,
+    time_ordered TIME NOT NULL
 );
 

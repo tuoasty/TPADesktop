@@ -18,3 +18,4 @@ mod restaurant_proposal;
 mod store_proposal;
 mod store_transaction;
 mod ride_queue;
+mod restaurant_order;

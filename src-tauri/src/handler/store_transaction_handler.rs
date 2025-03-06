@@ -1,3 +1,4 @@
+use chrono::Local;
 use crate::DbConnect;
 use crate::model::store_transaction_model::{NewStoreTransaction, StoreTransaction};
 
@@ -7,7 +8,8 @@ pub fn create_new_store_transaction(conn: &mut DbConnect, customer_id:i32, store
         store_id,
         souvenir_id,
         count,
-        value
+        value,
+        time_ordered:Local::now().time()
     };
 
     StoreTransaction::create_store_transaction(conn, transaction)

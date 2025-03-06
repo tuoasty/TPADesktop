@@ -1,14 +1,14 @@
 use crate::DbConnect;
 use crate::model::menu_model::{Menu, MenuDetail, NewMenu, NewMenuDetail};
 use crate::schema::menus::dsl::menus;
-use crate::schema::menus::restaurant_id;
+use crate::schema::menus::{id, restaurant_id};
 use diesel::prelude::*;
 use crate::handler::image_handler::{create_image, get_image_data};
 
 impl Menu {
-    pub fn get_restaurant_menu(conn: &mut DbConnect, id:i32) -> Result<Vec<MenuDetail>, String> {
+    pub fn get_restaurant_menu(conn: &mut DbConnect, selected_id:i32) -> Result<Vec<MenuDetail>, String> {
         let other_menus =
-            menus.filter(restaurant_id.eq(&id))
+            menus.filter(restaurant_id.eq(&selected_id))
                 .select(Menu::as_select())
                 .load(conn)
                 .map_err(|e| e.to_string())?;
@@ -50,5 +50,12 @@ impl Menu {
             .map_err(|e| e.to_string())?;
 
         Ok(())
+    }
+
+    pub fn get_menu(conn: &mut DbConnect, selected_restaurant_id:i32, selected_menu_id:i32) -> Result<Menu, String> {
+        menus.filter(id.eq(&selected_menu_id).and(restaurant_id.eq(&selected_restaurant_id)))
+            .select(Menu::as_select())
+            .first(conn)
+            .map_err(|e| e.to_string())
     }
 }

@@ -19,6 +19,7 @@ pub mod restaurant_proposal_handler;
 pub mod store_transaction_handler;
 pub mod chat_handler;
 pub mod ride_queue_handler;
+pub mod restaurant_order_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -76,6 +77,7 @@ macro_rules! all_handlers {
             $crate::handler::ride_queue_handler::find_ride_queue,
             $crate::handler::ride_queue_handler::add_customer_to_ride_queue,
             $crate::handler::ride_queue_handler::dequeue_customer_from_ride,
+            $crate::handler::restaurant_order_handler::order_restaurant_food,
             // Add all other commands
         ]
     };

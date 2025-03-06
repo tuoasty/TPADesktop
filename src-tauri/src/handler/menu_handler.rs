@@ -9,6 +9,10 @@ pub fn find_restaurant_menu(conn: &mut DbConnect, id:i32) -> Result<Vec<MenuDeta
     Ok(restaurant_menus)
 }
 
+pub fn find_menu(conn: &mut DbConnect, selected_restaurant_id:i32, selected_menu_id:i32) -> Result<Menu, String> {
+    Menu::get_menu(conn, selected_restaurant_id, selected_menu_id)
+}
+
 #[command]
 pub fn create_menu(state: State<DbPool>, menu: NewMenuDetail) -> Result<(), String> {
     if menu.name.is_empty() || menu.image_data.is_empty() || menu.image_name.is_empty() || menu.mime_type.is_empty() ||

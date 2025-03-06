@@ -325,7 +325,7 @@ pub fn seed_database(pool: &DbPool) {
                 restaurant_id:1,
                 image_id: seed_image(conn, "images/seed/telordadar.png").unwrap(),
                 name:"Telor Dadar".to_string(),
-                price:500000
+                price:5000
             }
         ];
 
