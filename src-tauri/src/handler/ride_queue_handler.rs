@@ -1,11 +1,9 @@
 use chrono::Local;
 use tauri::{command, State};
 use crate::{get_conn, DbPool};
-use crate::handler::customer_handler::{deduct_customer_balance, find_customer_name, get_balance, get_customer_balance};
+use crate::handler::customer_handler::{deduct_customer_balance, find_customer_name, get_balance};
 use crate::handler::ride_handler::{find_ride, find_ride_price};
-use crate::model::ride_model::NewRide;
 use crate::model::ride_queue_model::{NewRideQueue, RideQueue, RideQueueDetail};
-use crate::schema::ride_queues::dsl::ride_queues;
 
 #[command]
 pub fn find_ride_queue(state:State<DbPool>, selected_id:i32) -> Result<Vec<RideQueueDetail>, String> {
@@ -24,7 +22,8 @@ pub fn find_ride_queue(state:State<DbPool>, selected_id:i32) -> Result<Vec<RideQ
                 customer_id:queue.customer_id,
                 customer_name:customer,
                 time_joined:queue.time_joined.to_string(),
-                status:queue.status
+                status:queue.status,
+                value:queue.value
             }
         }).collect();
     Ok(queue_details)
@@ -45,7 +44,8 @@ pub fn add_customer_to_ride_queue(state:State<DbPool>, selected_ride_id:i32, sel
         ride_id:selected_ride_id,
         customer_id:selected_customer_id,
         time_joined:Local::now().time(),
-        status:"Waiting in Line".to_string()
+        status:"Waiting in Line".to_string(),
+        value:ride_price
     };
 
     RideQueue::add_ride_queue(conn, ride_queue)?;

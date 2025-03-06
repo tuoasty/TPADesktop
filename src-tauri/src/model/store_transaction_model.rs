@@ -12,7 +12,8 @@ pub struct StoreTransaction {
     pub customer_id:i32,
     pub store_id:i32,
     pub souvenir_id:i32,
-    pub count:i32
+    pub count:i32,
+    pub value:i32
 }
 
 #[derive(Insertable, Serialize)]
@@ -21,5 +22,6 @@ pub struct NewStoreTransaction {
     pub customer_id:i32,
     pub store_id:i32,
     pub souvenir_id:i32,
-    pub  count:i32
+    pub count:i32,
+    pub value:i32
 }

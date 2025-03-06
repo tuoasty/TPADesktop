@@ -1,4 +1,4 @@
-use chrono::{Local, NaiveTime};
+use chrono::{Local};
 use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
 use crate::schema::restaurants::dsl::restaurants;
 use crate::schema::restaurants::{id, status};

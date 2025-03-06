@@ -12,7 +12,8 @@ pub struct RideQueue {
     pub ride_id:i32,
     pub customer_id:i32,
     pub time_joined:NaiveTime,
-    pub status:String
+    pub status:String,
+    pub value:i32
 }
 
 #[derive(Insertable)]
@@ -21,7 +22,8 @@ pub struct NewRideQueue {
     pub ride_id:i32,
     pub customer_id:i32,
     pub time_joined:NaiveTime,
-    pub status:String
+    pub status:String,
+    pub value:i32
 }
 
 #[derive(Serialize)]
@@ -32,5 +34,6 @@ pub struct RideQueueDetail {
     pub customer_id:i32,
     pub customer_name:String,
     pub time_joined:String,
-    pub status:String
+    pub status:String,
+    pub value:i32
 }

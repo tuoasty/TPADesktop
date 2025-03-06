@@ -129,6 +129,7 @@ diesel::table! {
         customer_id -> Int4,
         time_joined -> Time,
         status -> Varchar,
+        value -> Int4,
     }
 }
 
@@ -192,6 +193,7 @@ diesel::table! {
         store_id -> Int4,
         souvenir_id -> Int4,
         count -> Int4,
+        value -> Int4,
     }
 }
 

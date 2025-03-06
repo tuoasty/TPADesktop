@@ -81,7 +81,8 @@ CREATE TABLE ride_queues
     ride_id     INTEGER NOT NULL REFERENCES rides (id),
     customer_id INTEGER NOT NULL REFERENCES customers (id),
     time_joined TIME    NOT NULL,
-    status      VARCHAR NOT NULL
+    status      VARCHAR NOT NULL,
+    value INTEGER NOT NULL
 );
 
 CREATE TABLE maintenance_reports
@@ -184,6 +185,7 @@ CREATE TABLE store_transactions
     customer_id INTEGER NOT NULL REFERENCES customers (id),
     store_id    INTEGER NOT NULL REFERENCES stores (id),
     souvenir_id INTEGER NOT NULL REFERENCES souvenirs (id),
-    count       INTEGER NOT NULL
+    count       INTEGER NOT NULL,
+    value INTEGER NOT NULL
 );
 

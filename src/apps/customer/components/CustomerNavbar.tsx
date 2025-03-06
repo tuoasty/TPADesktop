@@ -8,6 +8,8 @@ export default function CustomerNavbar(){
             <CustomerLogout/>
             <CustomerNavButton text="Login" to="/customer/login"/>
             <CustomerNavButton text="Notifications" to="/customer/notification"/>
+            <CustomerNavButton text="Ride" to="/customer/ride"/>
+            <CustomerNavButton text="Restaurant" to="/customer/restaurant"/>
         </div>
     )
 }

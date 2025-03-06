@@ -424,12 +424,14 @@ pub fn seed_database(pool: &DbPool) {
                 customer_id:1,
                 time_joined:Local::now().time(),
                 status:"Waiting in Line".to_string(),
+                value:50000,
             },
             NewRideQueue {
                 ride_id:1,
                 customer_id:2,
                 time_joined:Local::now().time(),
                 status:"Waiting in Line".to_string(),
+                value:50000,
             },
         ];
 

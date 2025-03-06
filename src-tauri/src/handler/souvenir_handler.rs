@@ -35,6 +35,6 @@ pub fn purchase_souvenir(state:State<DbPool>, curr_customer:State<CurrentCustome
 
     deduct_customer_balance(conn, customer_id, souvenir.price * souvenir_count)?;
 
-    create_new_store_transaction(conn, customer_id, souvenir.store_id, souvenir.id, souvenir_count)
+    create_new_store_transaction(conn, customer_id, souvenir.store_id, souvenir.id, souvenir_count, souvenir.price * souvenir_count)
 
 }

@@ -1,8 +1,6 @@
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
-use crate::handler::ride_handler::find_ride;
 use crate::model::ride_assignment_model::RideAssignment;
-use crate::model::ride_model::RideDetail;
 use crate::model::staff_model::StaffDetail;
 
 pub fn get_ride_staffs(conn: &mut DbConnect, selected_id:i32) -> Result<Vec<StaffDetail>, String> {
