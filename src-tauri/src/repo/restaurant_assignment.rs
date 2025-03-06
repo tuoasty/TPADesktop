@@ -104,4 +104,11 @@ impl RestaurantAssignment {
             Ok(false)
         }
     }
+
+    pub fn get_staff_restaurant(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+        restaurant_assignments.filter(staff_id.eq(&selected_id))
+            .select(restaurant_id)
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
 }

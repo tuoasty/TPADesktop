@@ -6,7 +6,7 @@ use crate::DbConnect;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
 use crate::handler::menu_handler::find_restaurant_menu;
-use crate::handler::restaurant_assignment_handler::{check_restaurant_staff_to_open, get_restaurant_staffs, reassign_staff_to_restaurant};
+use crate::handler::restaurant_assignment_handler::{check_restaurant_staff_to_open, find_staff_restaurant, get_restaurant_staffs, reassign_staff_to_restaurant};
 
 impl Restaurant {
     pub fn get_restaurant(conn: &mut DbConnect, restaurant_id: i32) -> Result<Self, String> {
@@ -83,5 +83,28 @@ impl Restaurant {
         }
 
         Ok(())
+    }
+
+    pub fn get_staff_restaurant(conn: &mut DbConnect, selected_id:i32) -> Result<RestaurantDetail, String> {
+        let staff_restaurant_id = find_staff_restaurant(conn, selected_id)?;
+
+        let restaurant = Self::get_restaurant(conn, staff_restaurant_id)?;
+        let image_data = get_image_data(conn, restaurant.image_id)?;
+        let menus = find_restaurant_menu(conn, restaurant.id)?;
+        let staffs = get_restaurant_staffs(conn, restaurant.id)?;
+
+        let restaurant_detail = RestaurantDetail {
+            id:restaurant.id,
+            name:restaurant.name,
+            open_time:restaurant.open_time.to_string(),
+            close_time:restaurant.close_time.to_string(),
+            cuisine:restaurant.cuisine,
+            status:restaurant.status,
+            image_data,
+            menus,
+            staffs
+        };
+
+        Ok(restaurant_detail)
     }
 }

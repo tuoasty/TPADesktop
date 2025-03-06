@@ -26,6 +26,7 @@ import ExecutiveChat from "@/apps/staff/pages/executive/ExecutiveChat.tsx";
 import MarketingChat from "@/apps/staff/pages/marketing/MarketingChat.tsx";
 import OperationalChat from "@/apps/staff/pages/operational/OperationalChat.tsx";
 import ViewRide from "@/apps/staff/pages/operational/ridestaff/ViewRide.tsx";
+import ViewRestaurant from "@/apps/staff/pages/consumption/ViewRestaurant.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -72,6 +73,8 @@ export default function StaffApp() {
                                     allowedRoles={["Retail Manager", "Sales Associate", "CEO"]}><MarketingChat/></ProtectedRoute>}/>
                                 <Route path="operational-chat" element={<ProtectedRoute
                                     allowedRoles={["Ride Manager", "Ride Staff", "CEO"]}><OperationalChat/></ProtectedRoute>}/>
+                                <Route path="view-restaurant" element={<ProtectedRoute
+                                    allowedRoles={["Waiter", "Chef"]}><ViewRestaurant/></ProtectedRoute>}/>
                                 <Route path="staff-chat" element={<ProtectedRoute><GlobalChat/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>

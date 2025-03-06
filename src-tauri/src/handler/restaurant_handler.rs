@@ -29,8 +29,6 @@ pub fn find_restaurant_by_id(state:State<DbPool>, selected_id:i32) -> Result<Res
         image_data:get_image_data(conn, restaurant.image_id)?,
         status: {
             let current_time = Local::now().time();
-
-
             if restaurant.status == "Shut Down" {
                 restaurant.status
             } else if current_time < restaurant.open_time || current_time > restaurant.close_time {
@@ -80,4 +78,10 @@ pub fn reassign_restaurant_and_check_status(state: State<DbPool>, new_staff_id:i
     let deleted_restaurant_id = Restaurant::reassign_restaurant_staff(conn, new_staff_id, new_restaurant_id)?;
 
     Restaurant::check_restaurant_assignment_and_update(conn, deleted_restaurant_id)
+}
+
+#[command]
+pub fn find_staff_restaurant(state:State<DbPool>, selected_id:i32) -> Result<RestaurantDetail, String> {
+    let conn = &mut get_conn(&state)?;
+    Restaurant::get_staff_restaurant(conn, selected_id)
 }

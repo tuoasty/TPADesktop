@@ -21,3 +21,7 @@ pub fn reassign_staff_to_restaurant(conn: &mut DbConnect, staff_id:i32, restaura
 pub fn check_restaurant_staff_to_open(conn: &mut DbConnect, selected_id:i32) -> Result<bool, String> {
     RestaurantAssignment::check_restaurant_staffing(conn, selected_id)
 }
+
+pub fn find_staff_restaurant(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+    RestaurantAssignment::get_staff_restaurant(conn, selected_id)
+}

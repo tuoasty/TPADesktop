@@ -38,6 +38,7 @@ macro_rules! all_handlers {
             $crate::handler::restaurant_handler::find_all_consumption_staff,
             $crate::handler::restaurant_handler::reassign_restaurant_and_check_status,
             $crate::handler::restaurant_handler::find_restaurant_by_id,
+            $crate::handler::restaurant_handler::find_staff_restaurant,
             $crate::handler::menu_handler::create_menu,
             $crate::handler::store_handler::find_all_store,
             $crate::handler::store_handler::change_store_status,
