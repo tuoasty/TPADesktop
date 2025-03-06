@@ -5,7 +5,7 @@ use crate::model::ride_model::{NewRide, Ride, RideDetail};
 use diesel::prelude::*;
 use crate::handler::ride_assignment_handler::{check_ride_staff_to_open, find_staff_ride, get_ride_staffs, reassign_staff_to_ride};
 use crate::schema::rides::dsl::rides;
-use crate::schema::rides::{id, status};
+use crate::schema::rides::{id, price, status};
 
 impl Ride {
     pub fn get_all_ride(conn:&mut DbConnect) -> Result<Vec<RideDetail>, String> {
@@ -70,6 +70,13 @@ impl Ride {
         };
 
         Ok(ride_detail)
+    }
+
+    pub fn get_ride_price(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+        rides.filter(id.eq(&selected_id))
+            .select(price)
+            .first(conn)
+            .map_err(|e| e.to_string())
     }
 
     pub fn reassign_ride_staff(conn: &mut DbConnect, new_staff_id:i32, new_ride_id:i32) -> Result<i32, String> {

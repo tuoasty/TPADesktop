@@ -4,8 +4,7 @@ use crate::model::ride_queue_model::{NewRideQueue, RideQueue};
 use crate::schema::ride_queues::dsl::ride_queues;
 use crate::schema::ride_queues::{customer_id, ride_id, status, time_joined};
 use diesel::prelude::*;
-use crate::model::customer_model::Customer;
-use crate::schema::ride_assignments::dsl::ride_assignments;
+use crate::handler::customer_handler::deduct_customer_balance;
 
 impl RideQueue {
     pub fn get_ride_queues(conn: &mut DbConnect, selected_id:i32) -> Result<Vec<RideQueue>, String> {
@@ -21,6 +20,7 @@ impl RideQueue {
             .values(customer)
             .execute(conn)
             .map_err(|e| e.to_string())?;
+
 
         Ok(())
     }

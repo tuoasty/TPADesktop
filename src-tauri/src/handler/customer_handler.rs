@@ -52,6 +52,10 @@ pub fn get_customer_balance(current_customer:&CurrentCustomer) -> Result<i32, St
     Ok(curr_customer.2)
 }
 
+pub fn get_balance(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+    Customer::get_balance(conn, selected_id)
+}
+
 pub fn get_customer_id(current_customer:&CurrentCustomer) -> Result<i32, String> {
     let curr_customer = current_customer.0.lock()
         .map_err(|_| "Failed to acquire lock".to_string())?

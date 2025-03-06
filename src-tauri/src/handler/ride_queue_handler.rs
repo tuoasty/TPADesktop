@@ -1,8 +1,8 @@
 use chrono::Local;
 use tauri::{command, State};
 use crate::{get_conn, DbPool};
-use crate::handler::customer_handler::find_customer_name;
-use crate::handler::ride_handler::find_ride;
+use crate::handler::customer_handler::{deduct_customer_balance, find_customer_name, get_balance, get_customer_balance};
+use crate::handler::ride_handler::{find_ride, find_ride_price};
 use crate::model::ride_model::NewRide;
 use crate::model::ride_queue_model::{NewRideQueue, RideQueue, RideQueueDetail};
 use crate::schema::ride_queues::dsl::ride_queues;
@@ -34,6 +34,13 @@ pub fn find_ride_queue(state:State<DbPool>, selected_id:i32) -> Result<Vec<RideQ
 pub fn add_customer_to_ride_queue(state:State<DbPool>, selected_ride_id:i32, selected_customer_id:i32) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
 
+    let customer_balance = get_balance(conn, selected_customer_id)?;
+    let ride_price = find_ride_price(conn, selected_ride_id)?;
+
+    if customer_balance < ride_price {
+        return Err("Insufficient Funds".to_string())
+    }
+
     let ride_queue = NewRideQueue {
         ride_id:selected_ride_id,
         customer_id:selected_customer_id,
@@ -41,7 +48,9 @@ pub fn add_customer_to_ride_queue(state:State<DbPool>, selected_ride_id:i32, sel
         status:"Waiting in Line".to_string()
     };
 
-    RideQueue::add_ride_queue(conn, ride_queue)
+    RideQueue::add_ride_queue(conn, ride_queue)?;
+
+    deduct_customer_balance(conn, selected_customer_id, ride_price)
 }
 
 #[command]

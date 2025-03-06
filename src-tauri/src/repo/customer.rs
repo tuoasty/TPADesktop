@@ -31,6 +31,13 @@ impl Customer {
         Ok(())
     }
 
+    pub fn get_balance(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+        customers.filter(id.eq(&selected_id))
+            .select(balance)
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
+
     pub fn create_customer(conn: &mut DbConnect, data:NewCustomer) -> Result<i32, String> {
         diesel::insert_into(customers)
             .values(&data)

@@ -43,6 +43,9 @@ pub fn find_ride_by_id(state:State<DbPool>, selected_id:i32) -> Result<RideDetai
     Ok(ride_detail)
 }
 
+pub fn find_ride_price(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+    Ride::get_ride_price(conn, selected_id)
+}
 #[command]
 pub fn change_ride_status(state:State<DbPool>, ride_id:i32, ride_status:String) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
