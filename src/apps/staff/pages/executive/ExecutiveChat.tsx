@@ -17,7 +17,7 @@ const GlobalChat: React.FC = () => {
     useEffect(() => {
         const fetchInitialMessages = async () => {
             try {
-                const initialMessages = await invoke<Message[]>('fetch_new_messages', { group: "Global" });
+                const initialMessages = await invoke<Message[]>('fetch_new_messages', { group: "Executive" });
                 setMessages(initialMessages);
             } catch (error) {
                 console.error('Failed to fetch messages:', error);
@@ -27,7 +27,7 @@ const GlobalChat: React.FC = () => {
         const startPolling = () => {
             pollingRef.current = setInterval(async () => {
                 try {
-                    const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "Global" });
+                    const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "Executive" });
                     if (newMessages.length > 0) {
                         setMessages(prevMessages => {
                             const combinedMessages = [...prevMessages, ...newMessages];
@@ -59,11 +59,11 @@ const GlobalChat: React.FC = () => {
             await invoke('send_chat_message', {
                 text: newMessage,
                 sender: username,
-                group: "Global"
+                group: "Executive"
             });
             setNewMessage('');
 
-            const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "Global" });
+            const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "Executive" });
             setMessages(prevMessages => {
                 const combinedMessages = [...prevMessages, ...newMessages];
                 const uniqueMessages = Array.from(

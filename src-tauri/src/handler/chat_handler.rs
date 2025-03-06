@@ -23,9 +23,9 @@ impl FirebaseHandler {
         }
     }
 
-    pub async fn send_message(&self, message: Message) -> Result<(), Box<dyn Error>> {
+    pub async fn send_message(&self, message: Message, group:String) -> Result<(), Box<dyn Error>> {
         let client = reqwest::Client::new();
-        let url = format!("{}chats.json", self.base_url);
+        let url = format!("{}{}chats.json", self.base_url, group);
 
         client.post(&url)
             .json(&message)
@@ -35,9 +35,9 @@ impl FirebaseHandler {
         Ok(())
     }
 
-    pub async fn get_messages(&mut self) -> Result<Vec<Message>, Box<dyn Error>> {
+    pub async fn get_messages(&mut self, group:String) -> Result<Vec<Message>, Box<dyn Error>> {
         let client = reqwest::Client::new();
-        let url = format!("{}chats.json", self.base_url);
+        let url = format!("{}{}chats.json", self.base_url, group);
 
         let response = client.get(&url)
             .send()
@@ -50,7 +50,6 @@ impl FirebaseHandler {
         if let Some(messages_obj) = response.as_object() {
             for (_, msg_value) in messages_obj.iter() {
                 if let Ok(message) = serde_json::from_value::<Message>(msg_value.clone()) {
-                    // Only add messages newer than the last fetch
                     if message.timestamp > self.last_fetch_timestamp {
                         messages.push(message.clone());
                     }
@@ -70,21 +69,19 @@ impl FirebaseHandler {
 }
 
 #[tauri::command]
-pub async fn send_chat_message(text: String, sender: String) -> Result<(), String> {
+pub async fn send_chat_message(text: String, sender: String, group:String) -> Result<(), String> {
     let handler = FirebaseHandler::new();
-
-
     let message = Message {
         text,
         sender,
         timestamp: Utc::now().timestamp(),
     };
 
-    handler.send_message(message).await.map_err(|e| e.to_string())
+    handler.send_message(message, group).await.map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-pub async fn fetch_new_messages() -> Result<Vec<Message>, String> {
+pub async fn fetch_new_messages(group:String) -> Result<Vec<Message>, String> {
     let mut handler = FirebaseHandler::new();
-    handler.get_messages().await.map_err(|e| e.to_string())
+    handler.get_messages(group).await.map_err(|e| e.to_string())
 }

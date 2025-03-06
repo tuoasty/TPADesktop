@@ -1,22 +1,30 @@
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import {StaffAuthProvider, ProtectedRoute} from "@/context/StaffAuthProvider.tsx";
 import StaffLogin from "@/apps/staff/pages/StaffLogin.tsx";
-import CreateStaffAccount from "@/apps/staff/pages/coo/CreateStaffAccount.tsx";
 import StaffDashboard from "@/apps/staff/pages/StaffDashboard.tsx";
 import StaffNavbar from "@/apps/staff/components/navbar/StaffNavbar.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
-import AddNewMenu from "@/apps/staff/pages/fbsupervisor/AddNewMenu.tsx";
-import ViewAllRestaurant from "@/apps/staff/pages/fbsupervisor/ViewAllRestaurant.tsx";
-import ViewAllStore from "@/apps/staff/pages/retailmanager/ViewAllStore.tsx";
-import ViewAllRide from "@/apps/staff/pages/ridemanager/ViewAllRide.tsx";
-import ViewAllMaintenanceReport from "@/apps/staff/pages/maintenancemanager/ViewAllMaintenanceReport.tsx";
-import ViewAllLostAndFound from "@/apps/staff/pages/lostandfound/ViewAllLostAndFound.tsx";
-import ViewRideProposal from "@/apps/staff/pages/coo/ViewRideProposal.tsx";
-import ViewRestaurantProposal from "@/apps/staff/pages/cfo/ViewRestaurantProposal.tsx";
-import ViewStoreProposal from "@/apps/staff/pages/ceo/ViewStoreProposal.tsx";
-import BroadcastMessage from "@/apps/staff/pages/customerservice/BroadcastMessage.tsx";
-import CreateCustomerAccount from "@/apps/staff/pages/customerservice/CreateCustomerAccount.tsx";
+
 import GlobalChat from "@/apps/staff/GlobalChat.tsx";
+import AddNewMenu from "@/apps/staff/pages/consumption/fbsupervisor/AddNewMenu.tsx";
+import ViewAllRestaurant from "@/apps/staff/pages/consumption/fbsupervisor/ViewAllRestaurant.tsx";
+import ViewAllStore from "@/apps/staff/pages/marketing/retailmanager/ViewAllStore.tsx";
+import ViewAllRide from "@/apps/staff/pages/operational/ridemanager/ViewAllRide.tsx";
+import ViewAllMaintenanceReport
+    from "@/apps/staff/pages/careandmaintenance/maintenancemanager/ViewAllMaintenanceReport.tsx";
+import ViewAllLostAndFound from "@/apps/staff/pages/customerserviceassistance/lostandfound/ViewAllLostAndFound.tsx";
+import ViewRideProposal from "@/apps/staff/pages/executive/coo/ViewRideProposal.tsx";
+import ViewRestaurantProposal from "@/apps/staff/pages/executive/cfo/ViewRestaurantProposal.tsx";
+import ViewStoreProposal from "@/apps/staff/pages/executive/ceo/ViewStoreProposal.tsx";
+import BroadcastMessage from "@/apps/staff/pages/customerserviceassistance/customerservice/BroadcastMessage.tsx";
+import CreateCustomerAccount
+    from "@/apps/staff/pages/customerserviceassistance/customerservice/CreateCustomerAccount.tsx";
+import CreateStaffAccount from "@/apps/staff/pages/executive/coo/CreateStaffAccount.tsx";
+import CareAndMaintenanceChat from "@/apps/staff/pages/careandmaintenance/CareAndMaintenanceChat.tsx";
+import ConsumptionChat from "@/apps/staff/pages/consumption/ConsumptionChat.tsx";
+import ExecutiveChat from "@/apps/staff/pages/executive/ExecutiveChat.tsx";
+import MarketingChat from "@/apps/staff/pages/marketing/MarketingChat.tsx";
+import OperationalChat from "@/apps/staff/pages/operational/OperationalChat.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -34,11 +42,11 @@ export default function StaffApp() {
                                 <Route path="view-all-restaurant" element={<ProtectedRoute
                                     allowedRoles={["F&B Supervisor", "Customer Service"]}><ViewAllRestaurant/></ProtectedRoute>}/>
                                 <Route path="view-all-store" element={<ProtectedRoute
-                                    allowedRoles={["Retail Manager", "COO"]}><ViewAllStore/></ProtectedRoute>}/>
+                                    allowedRoles={["Retail Manager", "CEO"]}><ViewAllStore/></ProtectedRoute>}/>
                                 <Route path="view-all-ride" element={<ProtectedRoute
-                                    allowedRoles={["Ride Manager", "COO", "Customer Service"]}><ViewAllRide/></ProtectedRoute>}/>
+                                    allowedRoles={["Ride Manager", "CEO", "Customer Service"]}><ViewAllRide/></ProtectedRoute>}/>
                                 <Route path="view-all-maintenance-report" element={<ProtectedRoute
-                                    allowedRoles={["Maintenance Manager", "COO"]}><ViewAllMaintenanceReport/></ProtectedRoute>}/>
+                                    allowedRoles={["Maintenance Manager", "COO" , "CEO"]}><ViewAllMaintenanceReport/></ProtectedRoute>}/>
                                 <Route path="view-lost-and-found" element={<ProtectedRoute
                                     allowedRoles={["Lost and Found Staff"]}><ViewAllLostAndFound/></ProtectedRoute>}/>
                                 <Route path="view-ride-proposal" element={<ProtectedRoute
@@ -51,6 +59,16 @@ export default function StaffApp() {
                                     allowedRoles={["Customer Service"]}><BroadcastMessage/></ProtectedRoute>}/>
                                 <Route path="create-customer-account" element={<ProtectedRoute
                                     allowedRoles={["Customer Service"]}><CreateCustomerAccount/></ProtectedRoute>}/>
+                                <Route path="care-and-maintenance-chat" element={<ProtectedRoute
+                                    allowedRoles={["Maintenance Manager", "Maintenance Staff", "CEO"]}><CareAndMaintenanceChat/></ProtectedRoute>}/>
+                                <Route path="consumption-chat" element={<ProtectedRoute
+                                    allowedRoles={["F&B Supervisor", "Waiter", "Chef"]}><ConsumptionChat/></ProtectedRoute>}/>
+                                <Route path="executive-chat" element={<ProtectedRoute
+                                    allowedRoles={["COO", "CFO", "CEO"]}><ExecutiveChat/></ProtectedRoute>}/>
+                                <Route path="marketing-chat" element={<ProtectedRoute
+                                    allowedRoles={["Retail Manager", "Sales Associate", "CEO"]}><MarketingChat/></ProtectedRoute>}/>
+                                <Route path="operational-chat" element={<ProtectedRoute
+                                    allowedRoles={["Ride Manager", "Ride Staff", "CEO"]}><OperationalChat/></ProtectedRoute>}/>
                                 <Route path="staff-chat" element={<ProtectedRoute><GlobalChat/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>

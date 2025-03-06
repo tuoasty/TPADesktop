@@ -8,7 +8,7 @@ interface Message {
     timestamp: number;
 }
 
-const GlobalChat: React.FC = () => {
+const LostAndFoundChat: React.FC = () => {
     const { username } = useStaffAuth();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
@@ -17,7 +17,7 @@ const GlobalChat: React.FC = () => {
     useEffect(() => {
         const fetchInitialMessages = async () => {
             try {
-                const initialMessages = await invoke<Message[]>('fetch_new_messages', { group: "Global" });
+                const initialMessages = await invoke<Message[]>('fetch_new_messages', { group: "LostAndFound" });
                 setMessages(initialMessages);
             } catch (error) {
                 console.error('Failed to fetch messages:', error);
@@ -27,7 +27,7 @@ const GlobalChat: React.FC = () => {
         const startPolling = () => {
             pollingRef.current = setInterval(async () => {
                 try {
-                    const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "Global" });
+                    const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "LostAndFound" });
                     if (newMessages.length > 0) {
                         setMessages(prevMessages => {
                             const combinedMessages = [...prevMessages, ...newMessages];
@@ -59,11 +59,11 @@ const GlobalChat: React.FC = () => {
             await invoke('send_chat_message', {
                 text: newMessage,
                 sender: username,
-                group: "Global"
+                group: "LostAndFound"
             });
             setNewMessage('');
 
-            const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "Global" });
+            const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "LostAndFound" });
             setMessages(prevMessages => {
                 const combinedMessages = [...prevMessages, ...newMessages];
                 const uniqueMessages = Array.from(
@@ -111,4 +111,4 @@ const GlobalChat: React.FC = () => {
     );
 };
 
-export default GlobalChat;
+export default LostAndFoundChat;
