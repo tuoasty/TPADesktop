@@ -74,6 +74,8 @@ macro_rules! all_handlers {
             $crate::handler::chat_handler::send_chat_message,
             $crate::handler::chat_handler::fetch_new_messages,
             $crate::handler::ride_queue_handler::find_ride_queue,
+            $crate::handler::ride_queue_handler::add_customer_to_ride_queue,
+            $crate::handler::ride_queue_handler::dequeue_customer_from_ride,
             // Add all other commands
         ]
     };

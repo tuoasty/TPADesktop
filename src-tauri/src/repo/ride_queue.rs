@@ -28,7 +28,7 @@ impl RideQueue {
     pub fn dequeue_ride(conn: &mut DbConnect, selected_ride_id:i32, selected_customer_id:i32) -> Result<(), String> {
             diesel::update(ride_queues)
                 .filter(customer_id.eq(&selected_customer_id)
-                    .and(status.eq("Waiting for Line"))
+                    .and(status.eq("Waiting in Line".to_string()))
                     .and(ride_id.eq(&selected_ride_id)))
             .set(status.eq("Completed"))
             .execute(conn)
