@@ -38,4 +38,5 @@ impl Customer {
             .get_result::<i32>(conn)
             .map_err(|e| e.to_string())
     }
+
 }

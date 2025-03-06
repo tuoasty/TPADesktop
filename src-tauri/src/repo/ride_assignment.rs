@@ -94,4 +94,11 @@ impl RideAssignment {
             Ok(false)
         }
     }
+
+    pub fn get_staff_ride(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+        ride_assignments.filter(staff_id.eq(&selected_id))
+            .select(ride_id)
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
 }

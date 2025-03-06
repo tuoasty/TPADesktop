@@ -18,6 +18,7 @@ pub mod store_proposal_handler;
 pub mod restaurant_proposal_handler;
 pub mod store_transaction_handler;
 pub mod chat_handler;
+pub mod ride_queue_handler;
 
 #[macro_export]
 macro_rules! all_handlers {
@@ -71,6 +72,7 @@ macro_rules! all_handlers {
             $crate::handler::store_proposal_handler::reject_store_proposal,
             $crate::handler::chat_handler::send_chat_message,
             $crate::handler::chat_handler::fetch_new_messages,
+            $crate::handler::ride_queue_handler::find_ride_queue,
             // Add all other commands
         ]
     };

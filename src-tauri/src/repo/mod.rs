@@ -17,3 +17,4 @@ mod ride_proposal;
 mod restaurant_proposal;
 mod store_proposal;
 mod store_transaction;
+mod ride_queue;

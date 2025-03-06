@@ -24,6 +24,7 @@ export default function StaffNavbar(){
         {text:"Executive Chat", key:15, to:"/staff/executive-chat", roles: ["COO", "CFO", "CEO"]},
         {text:"Marketing Chat", key:16, to:"/staff/marketing-chat", roles: ["Retail Manager", "Sales Associate", "CEO"]},
         {text:"Operational Chat", key:17, to:"/staff/operational-chat", roles: ["Ride Manager", "Ride Staff", "CEO"]},
+        {text:"View Ride", key:18, to:"/staff/view-ride", roles: ["Ride Staff"]},
     ]
 
 

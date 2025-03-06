@@ -1,6 +1,8 @@
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
+use crate::handler::ride_handler::find_ride;
 use crate::model::ride_assignment_model::RideAssignment;
+use crate::model::ride_model::RideDetail;
 use crate::model::staff_model::StaffDetail;
 
 pub fn get_ride_staffs(conn: &mut DbConnect, selected_id:i32) -> Result<Vec<StaffDetail>, String> {
@@ -17,7 +19,10 @@ pub fn assign_staff_to_ride(state:State<DbPool>, staff_id:i32, ride_id:i32) -> R
     RideAssignment::assign_ride_staff(conn, staff_id, ride_id)
 }
 
-
 pub fn reassign_staff_to_ride(conn: &mut DbConnect, staff_id:i32, ride_id:i32) -> Result<i32, String> {
     RideAssignment::reassign_ride_staff(conn, staff_id, ride_id)
+}
+
+pub fn find_staff_ride(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+    RideAssignment::get_staff_ride(conn, selected_id)
 }

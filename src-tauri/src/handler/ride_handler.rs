@@ -1,4 +1,5 @@
 use chrono::{Local, NaiveTime};
+use diesel::dsl::select;
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
 use crate::handler::image_handler::get_image_data;
@@ -77,6 +78,12 @@ pub fn reject_ride_maintenance(conn: &mut DbConnect, ride_id:i32) -> Result<(), 
 
 pub fn find_ride(conn:&mut DbConnect, ride_id:i32) -> Result<Ride, String> {
     Ride::get_ride(conn, ride_id)
+}
+
+#[command]
+pub fn find_staff_ride(state:State<DbPool>, selected_id:i32) -> Result<RideDetail, String> {
+    let conn = &mut get_conn(&state)?;
+    Ride::get_staff_ride(conn, selected_id)
 }
 
 pub fn create_new_ride(conn: &mut DbConnect, proposal:RideProposal) -> Result<(), String> {
