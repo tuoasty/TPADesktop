@@ -1,8 +1,11 @@
+use chrono::Local;
 use tauri::{command, State};
 use crate::{get_conn, DbPool};
 use crate::handler::customer_handler::find_customer_name;
 use crate::handler::ride_handler::find_ride;
-use crate::model::ride_queue_model::{RideQueue, RideQueueDetail};
+use crate::model::ride_model::NewRide;
+use crate::model::ride_queue_model::{NewRideQueue, RideQueue, RideQueueDetail};
+use crate::schema::ride_queues::dsl::ride_queues;
 
 #[command]
 pub fn find_ride_queue(state:State<DbPool>, selected_id:i32) -> Result<Vec<RideQueueDetail>, String> {
@@ -25,4 +28,25 @@ pub fn find_ride_queue(state:State<DbPool>, selected_id:i32) -> Result<Vec<RideQ
             }
         }).collect();
     Ok(queue_details)
+}
+
+#[command]
+pub fn add_customer_to_ride_queue(state:State<DbPool>, selected_ride_id:i32, selected_customer_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    let ride_queue = NewRideQueue {
+        ride_id:selected_ride_id,
+        customer_id:selected_customer_id,
+        time_joined:Local::now().time(),
+        status:"Waiting in Line".to_string()
+    };
+
+    RideQueue::add_ride_queue(conn, ride_queue)
+}
+
+#[command]
+pub fn dequeue_customer_from_ride(state:State<DbPool>, selected_ride_id:i32, selected_customer_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    RideQueue::dequeue_ride(conn, selected_ride_id, selected_customer_id)
 }
