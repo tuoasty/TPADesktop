@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { toast } from "sonner";
 import { useCustomerAuth } from "@/context/CustomerAuthProvider.tsx";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button.tsx";
-import {Ride} from "@/ types/ride.ts";
+import { useRideData } from "@/hooks/useRideData";
+import {useEffect} from "react";
 
 interface Props {
     rideId: number;
 }
 
 export default function RideDashboard({ rideId }: Props) {
-    const [ride, setRide] = useState<Ride | null>(null);
     const navigate = useNavigate();
     const { customerId, name, balance, customerIsLoggedIn } = useCustomerAuth();
+
+    // Use the query hook instead of useState and useEffect
+    const { data: ride, isLoading, error } = useRideData(rideId);
 
     const addCustomerToRideQueue = async () => {
         try {
@@ -29,17 +31,13 @@ export default function RideDashboard({ rideId }: Props) {
         }
     };
 
-    const fetchRide = async () => {
-        try {
-            invoke<Ride>("find_ride_by_id", { selectedId: rideId }).then(setRide);
-        } catch (e) {
-            toast.error(`${e}`);
-        }
-    };
-
     useEffect(() => {
-        fetchRide();
+        console.log(ride)
     }, []);
+
+    if (isLoading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    if (error) return <div className="flex items-center justify-center min-h-screen">Error loading ride data</div>;
+    if (!ride) return <div className="flex items-center justify-center min-h-screen">Ride not found</div>;
 
     return (
         <main className="bg-red-100 min-h-screen w-full flex items-center justify-center p-6">
@@ -69,7 +67,7 @@ export default function RideDashboard({ rideId }: Props) {
                     </div>
                 </div>
             ) : (
-                <h1 className="text-2xl font-semibold text-gray-700">Ride is {ride?.status || "Unavailable"}</h1>
+                <h1 className="text-2xl font-semibold text-gray-700">{ride.name} is {ride?.status || "Unavailable"}</h1>
             )}
         </main>
     );

@@ -18,6 +18,59 @@ pub type DbConnect = r2d2::PooledConnection<diesel::r2d2::ConnectionManager<dies
 pub struct CurrentStaff(pub Mutex<Option<(i32, String, String)>>);
 
 pub struct CurrentCustomer(pub Mutex<Option<(i32, String, i32)>>);
+
+use redis::{Client, Commands, RedisError};
+use serde_json;
+
+pub struct RedisCache {
+    client: Client,
+}
+
+impl RedisCache {
+    pub fn new(redis_url: &str) -> Result<Self, RedisError> {
+        let client = Client::open(redis_url)?;
+        Ok(Self { client })
+    }
+
+    pub fn get_ride(&self, id: i32) -> Option<model::ride_model::RideDetail> {
+        let mut conn = match self.client.get_connection() {
+            Ok(conn) => conn,
+            Err(_) => return None,
+        };
+
+        let key = format!("ride:{}", id);
+        let data: Option<String> = match conn.get(&key) {
+            Ok(data) => data,
+            Err(_) => return None,
+        };
+
+        if let Some(json_data) = data {
+            return match serde_json::from_str(&json_data) {
+                Ok(ride) => Some(ride),
+                Err(_) => None,
+            };
+        }
+
+        None
+    }
+
+    pub fn set_ride(&self, ride: &model::ride_model::RideDetail) -> Result<(), RedisError> {
+        let mut conn = self.client.get_connection()?;
+        let key = format!("ride:{}", ride.id);
+
+        let json_data = serde_json::to_string(ride).unwrap();
+        conn.set_ex(key, json_data, 1800)?;
+        Ok(())
+    }
+
+    pub fn invalidate_ride(&self, id: i32) -> Result<(), RedisError> {
+        let mut conn = self.client.get_connection()?;
+        let key = format!("ride:{}", id);
+        conn.del(key)?;
+        Ok(())
+    }
+}
+
 fn establish_connection() -> DbPool {
     dotenv().ok();
 
@@ -65,6 +118,11 @@ pub async fn run() {
     let current_staff = CurrentStaff(Mutex::new(None));
     let current_customer = CurrentCustomer(Mutex::new(None));
 
+    dotenv().ok();
+    dotenv().ok();
+    let redis_url = env::var("REDIS_URL").unwrap_or_else(|_| "redis://default:6Pe97ZWcNwITTlxkkzhLGA2cVEsEOYzj@redis-16407.c334.asia-southeast2-1.gce.redns.redis-cloud.com:16407".to_string());
+    let redis_cache = RedisCache::new(&redis_url).expect("Failed to connect to Redis");
+
     seed::seed_database(&pool);
 
     tauri::Builder::default()
@@ -73,6 +131,7 @@ pub async fn run() {
         .manage(pool)
         .manage(current_staff)
         .manage(current_customer)
+        .manage(redis_cache)
         .invoke_handler(all_handlers!())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,6 +1,6 @@
 use chrono::{Local, NaiveTime};
 use tauri::{command, State};
-use crate::{get_conn, DbConnect, DbPool};
+use crate::{get_conn, DbConnect, DbPool, RedisCache};
 use crate::handler::image_handler::get_image_data;
 use crate::handler::ride_assignment_handler::get_ride_staffs;
 use crate::model::ride_model::{NewRide, Ride, RideDetail};
@@ -15,17 +15,21 @@ pub fn find_all_ride(state:State<DbPool>) -> Result<Vec<RideDetail>, String> {
 }
 
 #[command]
-pub fn find_ride_by_id(state:State<DbPool>, selected_id:i32) -> Result<RideDetail, String> {
+pub fn find_ride_by_id(state: State<DbPool>, redis_state: State<RedisCache>, selected_id: i32) -> Result<RideDetail, String> {
+    if let Some(cached_ride) = redis_state.get_ride(selected_id) {
+        return Ok(cached_ride);
+    }
+
     let conn = &mut get_conn(&state)?;
     let ride = Ride::get_ride(conn, selected_id)?;
 
     let ride_detail = RideDetail {
-        id:ride.id,
-        name:ride.name,
-        open_time:ride.open_time.to_string(),
-        close_time:ride.close_time.to_string(),
-        image_data:get_image_data(conn, ride.image_id)?,
-        price:ride.price,
+        id: ride.id,
+        name: ride.name,
+        open_time: ride.open_time.to_string(),
+        close_time: ride.close_time.to_string(),
+        image_data: get_image_data(conn, ride.image_id)?,
+        price: ride.price,
         status: {
             let current_time = Local::now().time();
 
@@ -37,8 +41,10 @@ pub fn find_ride_by_id(state:State<DbPool>, selected_id:i32) -> Result<RideDetai
                 ride.status
             }
         },
-        staffs:get_ride_staffs(conn, ride.id)?
+        staffs: get_ride_staffs(conn, ride.id)?
     };
+
+    let _ = redis_state.set_ride(&ride_detail);
 
     Ok(ride_detail)
 }
