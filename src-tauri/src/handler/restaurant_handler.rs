@@ -1,5 +1,4 @@
 use chrono::Local;
-use diesel::dsl::select;
 use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
 use crate::{get_conn, DbPool};
 use tauri::{command, State};
@@ -8,9 +7,6 @@ use crate::handler::menu_handler::find_restaurant_menu;
 use crate::handler::restaurant_assignment_handler::get_restaurant_staffs;
 use crate::handler::staff_handler::find_staff_per_role;
 use crate::model::staff_model::StaffDetail;
-use crate::schema::menus::restaurant_id;
-use crate::schema::restaurant_proposals::dsl::restaurant_proposals;
-
 #[command]
 pub fn find_all_restaurant(state: State<DbPool>) -> Result<Vec<RestaurantDetail>, String> {
     let conn = &mut get_conn(&state)?;

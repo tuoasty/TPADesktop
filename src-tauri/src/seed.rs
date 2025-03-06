@@ -1,6 +1,6 @@
 use crate::handler::image_handler::create_image;
 use crate::{DbConnect, DbPool};
-use chrono::NaiveTime;
+use chrono::{Local, NaiveTime};
 use diesel::{QueryDsl, RunQueryDsl};
 use mime_guess::from_path;
 use std::fs;
@@ -34,6 +34,8 @@ use argon2::{
     },
     Argon2
 };
+use crate::model::ride_queue_model::NewRideQueue;
+use crate::schema::ride_queues::dsl::ride_queues;
 
 pub fn seed_database(pool: &DbPool) {
     use crate::schema::restaurants::dsl::*;
@@ -416,6 +418,20 @@ pub fn seed_database(pool: &DbPool) {
             },
         ];
 
+        let seed_ride_queue = vec![
+            NewRideQueue {
+                ride_id:1,
+                customer_id:1,
+                time_joined:Local::now().time(),
+                status:"Waiting in Line".to_string(),
+            },
+            NewRideQueue {
+                ride_id:1,
+                customer_id:2,
+                time_joined:Local::now().time(),
+                status:"Waiting in Line".to_string(),
+            },
+        ];
 
         diesel::insert_into(staffs)
             .values(&staff_members)
@@ -485,6 +501,12 @@ pub fn seed_database(pool: &DbPool) {
 
         diesel::insert_into(store_proposals)
             .values(&seed_store_proposals)
+            .execute(conn)
+            .map_err(|e| e.to_string())
+            .unwrap();
+
+        diesel::insert_into(ride_queues)
+            .values(&seed_ride_queue)
             .execute(conn)
             .map_err(|e| e.to_string())
             .unwrap();

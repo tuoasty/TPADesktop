@@ -11,8 +11,8 @@ pub fn find_ride_queue(state:State<DbPool>, selected_id:i32) -> Result<Vec<RideQ
 
     let queue_details:Vec<RideQueueDetail> = queues.into_iter().map(
         |queue|{
-            let ride = find_ride(conn, queue.ride_id)?;
-            let customer = find_customer_name(conn, queue.customer_id)?;
+            let ride = find_ride(conn, queue.ride_id).unwrap();
+            let customer = find_customer_name(conn, queue.customer_id).unwrap();
 
             RideQueueDetail {
                 id:queue.id,

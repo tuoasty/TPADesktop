@@ -4,13 +4,24 @@ import {Ride} from "@/ types/ride.ts";
 import {invoke} from "@tauri-apps/api/core";
 import {toast} from "sonner";
 import {Staff} from "@/ types/staff.ts";
+import {RideQueue} from "@/ types/ride_queue.ts";
 export default function ViewRide() {
     const {staffId} = useStaffAuth();
     const [ride, setRide] = useState<Ride | null>(null)
+    const [queues, setQueues] = useState<RideQueue[]>([])
 
     const fetchRideStaffRide = async () => {
         try {
-            invoke<Ride>("find_staff_ride", {selectedId: staffId}).then(setRide)
+            let rides = await invoke<Ride>("find_staff_ride", {selectedId: staffId})
+            setRide(rides)
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
+
+    const fetchRideQueue = async () => {
+        try {
+           invoke<RideQueue[]>("find_ride_queue", {selectedId:ride?.id}).then(setQueues)
         } catch (e) {
             toast.error(`${e}`)
         }
@@ -19,6 +30,10 @@ export default function ViewRide() {
     useEffect(() => {
         fetchRideStaffRide();
     }, []);
+
+    useEffect(() => {
+        fetchRideQueue()
+    }, [ride]);
 
     return (
         <div className="h-screen w-full bg-purple-200 flex flex-col p-16 overflow-auto gap-5">
@@ -46,6 +61,16 @@ export default function ViewRide() {
                                     <h2>{staff.name}</h2>
                                 </div>
                             ))}
+                        </div>
+                        <div>
+                            <h1 className="font-bold text-2xl">Queue</h1>
+                            {queues.length <= 0 ? (
+                                <h1>No Queue</h1>
+                            ) : (
+                                queues.map((queue:RideQueue) => (
+                                    <h1>{queue.customer_name}</h1>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>

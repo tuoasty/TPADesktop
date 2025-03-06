@@ -14,7 +14,7 @@ export default function StaffNavbar(){
         {text:"View All Ride", key:5, to:"/staff/view-all-ride", roles: ["Ride Manager", "CEO", "Customer Service"]},
         {text:"View All Maintenance Report", key:6, to:"/staff/view-all-maintenance-report", roles: ["Maintenance Manager", "CEO", "COO"]},
         {text:"View All Lost Items", key:7, to:"/staff/view-lost-and-found", roles: ["Lost and Found Staff"]},
-        {text:"View Ride Proposal", key:8, to:"/staff/view-ride-proposal", roles: ["CEO"]},
+        {text:"View Ride Proposal", key:8, to:"/staff/view-ride-proposal", roles: ["COO"]},
         {text:"View Restaurant Proposal", key:9, to:"/staff/view-restaurant-proposal", roles: ["CEO", "CFO"]},
         {text:"View Store Proposal", key:10, to:"/staff/view-store-proposal", roles: ["CEO"]},
         {text:"Broadcast Message", key:11, to:"/staff/send-broadcast-message", roles: ["Customer Service"]},

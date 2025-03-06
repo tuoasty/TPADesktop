@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {LostItem, UpdateLostItemPayload} from "@/ types/lost_item.ts";
 import {invoke} from "@tauri-apps/api/core";
 import {toast} from "sonner";
-import {UpdateItemDialog} from "@/apps/staff/pages/lostandfound/UpdateItemDialog.tsx";
+import {UpdateItemDialog} from "@/apps/staff/pages/customerserviceassistance/lostandfound/UpdateItemDialog.tsx";
 
 
 export default function ViewAllLostAndFound() {

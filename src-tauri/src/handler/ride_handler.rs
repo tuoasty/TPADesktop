@@ -1,5 +1,4 @@
 use chrono::{Local, NaiveTime};
-use diesel::dsl::select;
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
 use crate::handler::image_handler::get_image_data;
