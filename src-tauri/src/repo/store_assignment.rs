@@ -94,4 +94,11 @@ impl StoreAssignment {
 
         Ok(deleted_store_id)
     }
+
+    pub fn get_staff_store(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+        store_assignments.filter(staff_id.eq(&selected_id))
+            .select(store_id)
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
 }

@@ -20,3 +20,7 @@ pub fn check_store_staff_to_open(conn: &mut DbConnect, selected_id:i32) -> Resul
 pub fn reassign_staff_to_store(conn: &mut DbConnect, staff_id:i32, store_id:i32) -> Result<i32, String> {
     StoreAssignment::reassign_store_staff(conn, staff_id, store_id)
 }
+
+pub fn find_staff_store(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+    StoreAssignment::get_staff_store(conn, selected_id)
+}

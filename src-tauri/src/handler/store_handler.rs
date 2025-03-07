@@ -69,7 +69,37 @@ pub fn find_store_by_id(state:State<DbPool>, selected_id:i32) -> Result<StoreDet
     Ok(store_detail)
 }
 
+#[command]
+pub fn find_staff_store(state: State<DbPool>, selected_id:i32) -> Result<StoreDetail, String> {
+    let conn = &mut get_conn(&state)?;
+    let store = Store::get_staff_store(conn, selected_id)?;
+    let image_data = get_image_data(conn, store.image_id)?;
+    let souvenirs = find_store_souvenir(conn, store.id)?;
+    let staffs = get_store_staffs(conn, store.id)?;
 
+    let store_detail = StoreDetail {
+        id:store.id,
+        name:store.name,
+        open_time:store.open_time.to_string(),
+        close_time:store.close_time.to_string(),
+        status: {
+            let current_time = Local::now().time();
+
+            if store.status == "Shut Down" {
+                store.status
+            } else if current_time < store.open_time || current_time > store.close_time {
+                "Closed for the day".to_string()
+            } else {
+                store.status
+            }
+        },
+        image_data,
+        souvenirs,
+        staffs
+    };
+
+    Ok(store_detail)
+}
 
 pub fn create_new_store(conn: &mut DbConnect, proposal:StoreProposal) -> Result<(), String> {
     let new_store = NewStore {

@@ -4,7 +4,7 @@ use crate::schema::stores::dsl::stores;
 use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
 use crate::handler::souvenir_handler::find_store_souvenir;
-use crate::handler::store_assignment_handler::{check_store_staff_to_open, get_store_staffs, reassign_staff_to_store};
+use crate::handler::store_assignment_handler::{check_store_staff_to_open, find_staff_store, get_store_staffs, reassign_staff_to_store};
 use crate::model::souvenir_model::SouvenirDetail;
 use crate::model::staff_model::StaffDetail;
 use crate::schema::stores::{id, status};
@@ -89,5 +89,14 @@ impl Store {
             .map_err(|e| e.to_string())?;
 
         Ok(())
+    }
+
+    pub fn get_staff_store(conn: &mut DbConnect, selected_id:i32) -> Result<Self, String> {
+        let store_id = find_staff_store(conn, selected_id)?;
+
+        stores.filter(id.eq(&store_id))
+            .select(Store::as_select())
+            .first(conn)
+            .map_err(|e| e.to_string())
     }
 }
