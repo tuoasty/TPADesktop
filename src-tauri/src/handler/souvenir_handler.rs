@@ -1,8 +1,10 @@
+use base64::Engine;
+use base64::engine::general_purpose::STANDARD;
 use tauri::{command, State};
 use crate::{get_conn, CurrentCustomer, DbConnect, DbPool};
 use crate::handler::customer_handler::{deduct_customer_balance, get_customer_balance, get_customer_id};
 use crate::handler::store_transaction_handler::create_new_store_transaction;
-use crate::model::souvenir_model::{Souvenir, SouvenirDetail};
+use crate::model::souvenir_model::{NewSouvenir, NewSouvenirDetail, Souvenir, SouvenirDetail};
 pub fn find_store_souvenir(conn: &mut DbConnect,selected_id:i32) -> Result<Vec<SouvenirDetail>, String> {
     let store_souvenirs = Souvenir::get_souvenir_of_store(conn, selected_id)?;
 
@@ -14,6 +16,23 @@ pub fn remove_souvenir(state:State<DbPool>, selected_id:i32) -> Result<(), Strin
     let conn = &mut get_conn(&state)?;
 
     Souvenir::remove_souvenir_and_image(conn, selected_id)
+}
+
+#[command]
+pub fn create_souvenir(state:State<DbPool>, souvenir:NewSouvenirDetail) -> Result<(), String> {
+    if souvenir.name.is_empty() || souvenir.description.is_empty() || souvenir.image_name.is_empty() ||
+        souvenir.mime_type.is_empty() || souvenir.image_data.is_empty() || souvenir.store_id <= 0{
+        return Err("All fields must be filled".to_string())
+    };
+
+    if souvenir.price <= 0 {
+        return Err("Price must be greater than 0".to_string())
+    };
+
+    let conn = &mut get_conn(&state)?;
+    let image_data = STANDARD.decode(&souvenir.image_data).map_err(|_| "Invalid Base encoding".to_string())?;
+
+    Souvenir::create_souvenir(conn, souvenir, image_data)
 }
 
 #[command]

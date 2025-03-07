@@ -1,5 +1,5 @@
 use diesel::{Insertable, Queryable, Selectable};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Selectable, Serialize)]
 #[diesel(belongs_to(Store, foreign_key = store_id))]
@@ -31,4 +31,15 @@ pub struct SouvenirDetail {
     pub price: i32,
     pub description: String,
     pub image_data: String
+}
+
+#[derive(Deserialize)]
+pub struct NewSouvenirDetail {
+    pub name: String,
+    pub price: i32,
+    pub description: String,
+    pub store_id:i32,
+    pub image_data: String,
+    pub mime_type:String,
+    pub image_name:String
 }

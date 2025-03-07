@@ -1,8 +1,8 @@
 use crate::DbConnect;
-use crate::model::souvenir_model::{Souvenir, SouvenirDetail};
+use crate::model::souvenir_model::{NewSouvenir, NewSouvenirDetail, Souvenir, SouvenirDetail};
 use crate::schema::souvenirs::dsl::souvenirs;
 use diesel::prelude::*;
-use crate::handler::image_handler::{get_image_data, remove_image};
+use crate::handler::image_handler::{create_image, get_image_data, remove_image};
 use crate::schema::souvenirs::{id, image_id, store_id};
 impl Souvenir{
     pub fn get_souvenir_of_store(conn: &mut DbConnect, selected_id:i32) -> Result<Vec<SouvenirDetail>, String> {
@@ -28,6 +28,25 @@ impl Souvenir{
             .collect();
 
         Ok(souvenir_details)
+    }
+
+    pub fn create_souvenir(conn: &mut DbConnect, souvenir_detail: NewSouvenirDetail, image_data:Vec<u8>) -> Result<(), String> {
+        let new_image_id = create_image(conn, image_data, souvenir_detail.mime_type, souvenir_detail.image_name)?;
+
+        let new_souvenir = NewSouvenir {
+            name:souvenir_detail.name,
+            store_id:souvenir_detail.store_id,
+            price:souvenir_detail.price,
+            image_id:new_image_id,
+            description:souvenir_detail.description
+        };
+
+        diesel::insert_into(souvenirs)
+            .values(new_souvenir)
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 
     pub fn remove_souvenir_and_image(conn: &mut DbConnect, selected_id:i32) -> Result<(), String> {

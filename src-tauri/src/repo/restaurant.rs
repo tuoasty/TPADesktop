@@ -7,8 +7,6 @@ use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
 use crate::handler::menu_handler::find_restaurant_menu;
 use crate::handler::restaurant_assignment_handler::{check_restaurant_staff_to_open, find_staff_restaurant, get_restaurant_staffs, reassign_staff_to_restaurant};
-use crate::model::ride_model::NewRide;
-use crate::schema::rides::dsl::rides;
 
 impl Restaurant {
     pub fn get_restaurant(conn: &mut DbConnect, restaurant_id: i32) -> Result<Self, String> {

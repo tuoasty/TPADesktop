@@ -48,6 +48,7 @@ macro_rules! all_handlers {
             $crate::handler::store_handler::find_store_transaction,
             $crate::handler::souvenir_handler::remove_souvenir,
             $crate::handler::souvenir_handler::purchase_souvenir,
+            $crate::handler::souvenir_handler::create_souvenir,
             $crate::handler::ride_handler::find_all_ride,
             $crate::handler::ride_handler::change_ride_status,
             $crate::handler::ride_handler::reassign_ride_and_check_status,
