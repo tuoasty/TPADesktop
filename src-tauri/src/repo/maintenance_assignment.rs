@@ -22,4 +22,12 @@ impl MaintenanceAssignment {
 
         Ok(())
     }
+
+    pub fn get_staff_maintenance(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
+        maintenance_assignments
+            .filter(staff_id.eq(&selected_id))
+            .select(maintenance_report_id)
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
 }

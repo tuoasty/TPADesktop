@@ -123,3 +123,7 @@ pub fn find_staff_per_role(
 pub fn find_staff_role(conn: &mut DbConnect, selected_id: i32) -> Result<String, String> {
     Staff::get_role(conn, selected_id)
 }
+
+pub fn find_staff(conn: &mut DbConnect, selected_id:i32) -> Result<Staff, String> {
+    Staff::get_staff_by_id(conn, selected_id)
+}

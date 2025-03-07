@@ -1,8 +1,10 @@
 use tauri::{command, State};
 use crate::{get_conn, DbPool};
-use crate::handler::staff_handler::{find_staff_per_role};
+use crate::handler::ride_handler::find_ride;
+use crate::handler::staff_handler::{find_staff, find_staff_per_role};
 use crate::model::maintenance_report_model::{MaintenanceReport, MaintenanceReportDetail};
 use crate::model::staff_model::StaffDetail;
+use crate::schema::maintenance_reports::dsl::maintenance_reports;
 
 #[command]
 pub fn find_all_maintenance_report(state:State<DbPool>) -> Result<Vec<MaintenanceReportDetail>, String> {
@@ -36,4 +38,25 @@ pub fn reject_request(state:State<DbPool>, selected_maintenance_id:i32) -> Resul
     let conn = &mut get_conn(&state)?;
 
     MaintenanceReport::reject_request(conn, selected_maintenance_id)
+}
+
+#[command]
+pub fn find_staff_maintenance(state:State<DbPool>, selected_id:i32) -> Result<MaintenanceReportDetail, String> {
+    let conn = &mut get_conn(&state)?;
+
+    let maintenance = MaintenanceReport::get_staff_maintenance(conn, selected_id)?;
+    let ride = find_ride(conn, maintenance.ride_id)?;
+    let staff = find_staff(conn, selected_id)?;
+
+    let maintenance_detail = MaintenanceReportDetail {
+        id:maintenance.id,
+        ride_id:maintenance.ride_id,
+        ride_name:ride.name,
+        staff_id:Some(selected_id),
+        staff_name:Some(staff.name),
+        description:maintenance.description,
+        status:maintenance.status
+    };
+
+    Ok(maintenance_detail)
 }

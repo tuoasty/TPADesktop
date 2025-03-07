@@ -2,7 +2,7 @@ use crate::DbConnect;
 use crate::model::maintenance_report_model::{MaintenanceReport, MaintenanceReportDetail};
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use diesel::prelude::*;
-use crate::handler::maintenance_assignment_handler::{check_maintenance_staff_availability, create_maintenance_assignment};
+use crate::handler::maintenance_assignment_handler::{check_maintenance_staff_availability, create_maintenance_assignment, find_staff_maintenance};
 use crate::handler::ride_handler::{accept_ride_maintenance, find_ride, reject_ride_maintenance};
 use crate::schema::maintenance_reports::{id, ride_id, status};
 impl MaintenanceReport {
@@ -67,6 +67,15 @@ impl MaintenanceReport {
             .filter(id.eq(&selected_maintenance_id))
             .select(ride_id)
             .first::<i32>(conn)
+            .map_err(|e| e.to_string())
+    }
+
+    pub fn get_staff_maintenance(conn: &mut DbConnect, selected_id:i32) -> Result<Self, String> {
+        let staff_maintenance_id = find_staff_maintenance(conn, selected_id)?;
+
+        maintenance_reports.filter(id.eq(&staff_maintenance_id))
+            .select(MaintenanceReport::as_select())
+            .first(conn)
             .map_err(|e| e.to_string())
     }
 }

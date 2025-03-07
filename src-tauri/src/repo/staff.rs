@@ -20,6 +20,13 @@ impl Staff {
         Ok("Successfully created staff account!".to_string())
     }
 
+    pub fn get_staff_by_id(conn: &mut DbConnect, selected_id:i32) -> Result<Self, String> {
+        staffs.filter(id.eq(&selected_id))
+            .select(Staff::as_select())
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
+
     pub fn get_staff_per_role(conn: &mut DbConnect, staff_role:String) -> Result<Vec<StaffDetail>, String> {
         let staff_list = staffs
             .filter(role.eq(&staff_role))
