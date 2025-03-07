@@ -32,6 +32,7 @@ import LostAndFoundChat from "@/apps/staff/pages/customerserviceassistance/losta
 import ChatMaintenanceAccount from "@/apps/staff/pages/operational/ridemanager/ChatMaintenanceAccount.tsx";
 import MaintenanceOfficialAccount
     from "@/apps/staff/pages/careandmaintenance/maintenancemanager/MaintenanceOfficialAccount.tsx";
+import ViewStore from "@/apps/staff/pages/marketing/salesassociate/ViewStore.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -88,6 +89,8 @@ export default function StaffApp() {
                                     allowedRoles={["Maintenance Manager", "CEO"]}><MaintenanceOfficialAccount/></ProtectedRoute>}/>
                                 <Route path="view-restaurant" element={<ProtectedRoute
                                     allowedRoles={["Waiter", "Chef"]}><ViewRestaurant/></ProtectedRoute>}/>
+                                <Route path="view-store" element={<ProtectedRoute
+                                    allowedRoles={["Sales Associate"]}><ViewStore/></ProtectedRoute>}/>
                                 <Route path="staff-chat" element={<ProtectedRoute><GlobalChat/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>

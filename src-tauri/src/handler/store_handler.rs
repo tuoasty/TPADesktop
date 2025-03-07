@@ -2,10 +2,12 @@ use chrono::{Local, NaiveTime};
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
 use crate::handler::image_handler::get_image_data;
-use crate::handler::souvenir_handler::find_store_souvenir;
+use crate::handler::souvenir_handler::{find_souvenir, find_store_souvenir};
 use crate::handler::store_assignment_handler::get_store_staffs;
+use crate::handler::store_transaction_handler::get_store_transaction;
 use crate::model::store_model::{NewStore, Store, StoreDetail};
 use crate::model::store_proposal_model::StoreProposal;
+use crate::model::store_transaction_model::{StoreTransaction, StoreTransactionDetail};
 
 #[command]
 pub fn find_all_store(state: State<DbPool>) -> Result<Vec<StoreDetail>, String> {
@@ -119,5 +121,27 @@ pub fn close_store(conn: &mut DbConnect, store_id:i32) -> Result<(), String> {
 
 pub fn find_store(conn: &mut DbConnect, store_id:i32) -> Result<Store, String> {
     Store::get_store(conn, store_id)
+}
+
+#[command]
+pub fn find_store_transaction(state:State<DbPool>, selected_id:i32) -> Result<Vec<StoreTransactionDetail>, String> {
+    let conn = &mut get_conn(&state)?;
+    let transactions = get_store_transaction(conn, selected_id)?;
+
+    let transaction_detail = transactions.into_iter().map(
+        |transaction| {
+            let souvenir = find_souvenir(conn, transaction.souvenir_id).unwrap();
+            StoreTransactionDetail {
+                customer_id:transaction.customer_id,
+                store_id:transaction.store_id,
+                souvenir_id:transaction.souvenir_id,
+                souvenir_name:souvenir.name,
+                count:transaction.count,
+                value:transaction.value
+            }
+        }
+    ).collect();
+
+    Ok(transaction_detail)
 }
 

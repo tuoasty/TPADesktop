@@ -30,6 +30,7 @@ export default function StaffNavbar(){
         {text:"Customer Service Chat", key:21, to:"/staff/customer-service-chat", roles: ["Customer Service"]},
         {text:"Chat Maintenance Account", key:22, to:"/staff/maintenance-account-chat", roles: ["Ride Manager", "CEO"]},
         {text:"Care and Maintenance Official Account", key:23, to:"/staff/maintenance-official-account", roles: ["Maintenance Manager", "CEO"]},
+        {text:"View Store", key:24, to:"/staff/view-store", roles: ["Sales Associate"]},
     ]
 
 

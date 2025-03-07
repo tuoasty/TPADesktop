@@ -38,3 +38,7 @@ pub fn purchase_souvenir(state:State<DbPool>, curr_customer:State<CurrentCustome
     create_new_store_transaction(conn, customer_id, souvenir.store_id, souvenir.id, souvenir_count, souvenir.price * souvenir_count)
 
 }
+
+pub fn find_souvenir(conn: &mut DbConnect, selected_id:i32) -> Result<Souvenir, String> {
+    Souvenir::get_souvenir(conn, selected_id)
+}

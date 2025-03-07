@@ -18,12 +18,12 @@ pub struct StoreTransaction {
     pub time_ordered:NaiveTime
 }
 
-#[derive(Insertable, Deserialize, Serialize)]
-#[diesel(table_name = crate::schema::store_transactions)]
+#[derive(Deserialize, Serialize)]
 pub struct StoreTransactionDetail {
     pub customer_id:i32,
     pub store_id:i32,
     pub souvenir_id:i32,
+    pub souvenir_name:String,
     pub count:i32,
     pub value:i32
 }
