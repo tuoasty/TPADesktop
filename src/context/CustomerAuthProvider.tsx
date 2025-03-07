@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useEffect, useState} from "react";
+import React, {createContext, useContext, useEffect, useRef, useState} from "react";
 import {toast} from "sonner";
 import {invoke} from "@tauri-apps/api/core";
 import {useNavigate} from "react-router-dom";
@@ -13,10 +13,14 @@ type CustomerAuthContextType = {
     customerLogout:() => Promise<void>;
     getCurrentCustomer:() => Promise<void>;
 }
+
+const INACTIVITY_TIMEOUT = 60 * 1000;
 export const CustomerAuthProvider = ({children} : {children:React.ReactNode}) => {
     const [customerId, setCustomerId] = useState<number | null>(null);
     const [name, setName] = useState<string | null>(null);
     const [balance, setBalance] = useState<number | null>(null);
+    const timeoutRef = useRef<number | null>(null);
+    const navigate = useNavigate();
 
     const customerIsLoggedIn = async(): Promise<boolean> => {
         try {
@@ -52,6 +56,49 @@ export const CustomerAuthProvider = ({children} : {children:React.ReactNode}) =>
             setBalance(null);
         }
     }
+
+    const resetInactivityTimer = () => {
+        if (timeoutRef.current) {
+            window.clearTimeout(timeoutRef.current);
+        }
+
+        if (customerId) {
+            timeoutRef.current = window.setTimeout(async () => {
+                await customerLogout();
+                toast.info("You have been logged out due to inactivity");
+                navigate("/customer/login");
+            }, INACTIVITY_TIMEOUT);
+        }
+    };
+
+    useEffect(() => {
+        if (!customerId) return;
+
+        const activityEvents = [
+            'mousedown', 'mousemove', 'keypress',
+            'scroll', 'touchstart', 'click'
+        ];
+
+        resetInactivityTimer();
+
+        activityEvents.forEach(event => {
+            window.addEventListener(event, resetInactivityTimer);
+        });
+
+        return () => {
+            if (timeoutRef.current) {
+                window.clearTimeout(timeoutRef.current);
+            }
+
+            activityEvents.forEach(event => {
+                window.removeEventListener(event, resetInactivityTimer);
+            });
+        };
+    }, [customerId]);
+
+    useEffect(() => {
+        getCurrentCustomer();
+    }, []);
 
     const value:CustomerAuthContextType = {
         customerId,
