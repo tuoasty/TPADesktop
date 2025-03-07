@@ -3,7 +3,7 @@ use tauri::{command, State};
 use crate::{get_conn, DbPool};
 use crate::handler::customer_handler::{deduct_customer_balance, get_balance};
 use crate::handler::menu_handler::find_menu;
-use crate::model::restaurant_order_model::{NewRestaurantOrder, RestaurantOrder, RestaurantOrderDetail};
+use crate::model::restaurant_order_model::{NewRestaurantOrder, RestaurantOrder, RestaurantOrderDetail, RestaurantRevenue};
 
 #[command]
 pub fn order_restaurant_food(state:State<DbPool>, selected_restaurant_id:i32, selected_menu_id:i32, selected_customer_id:i32, order_count:i32) -> Result<(), String>{
@@ -63,4 +63,24 @@ pub fn set_order_status(state:State<DbPool>, selected_id:i32, new_status:String)
     let conn = &mut get_conn(&state)?;
 
     RestaurantOrder::set_order_status(conn, selected_id, new_status)
+}
+
+#[command]
+pub fn find_restaurant_revenue(state:State<DbPool>) -> Result<Vec<RestaurantRevenue>, String> {
+    let conn = &mut get_conn(&state)?;
+
+    let restaurant_revenue = RestaurantOrder::get_restaurant_revenue(conn)?;
+
+    let revenue_details = restaurant_revenue.into_iter().map(
+        |revenue| {
+            RestaurantRevenue {
+                id:revenue.id,
+                time:revenue.time_ordered.to_string(),
+                value:revenue.value,
+                restaurant_id:revenue.restaurant_id
+            }
+        }
+    ).collect();
+
+    Ok(revenue_details)
 }

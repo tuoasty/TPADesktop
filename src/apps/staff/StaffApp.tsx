@@ -35,6 +35,7 @@ import MaintenanceOfficialAccount
 import ViewStore from "@/apps/staff/pages/marketing/salesassociate/ViewStore.tsx";
 import ViewMaintenance from "@/apps/staff/pages/careandmaintenance/maintenancestaff/ViewMaintenance.tsx";
 import ViewRideRevenue from "@/apps/staff/pages/operational/ridemanager/ViewRideRevenue.tsx";
+import ViewRestaurantRevenue from "@/apps/staff/pages/consumption/fbsupervisor/ViewRestaurantRevenue.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -97,6 +98,8 @@ export default function StaffApp() {
                                     allowedRoles={["Maintenance Staff"]}><ViewMaintenance/></ProtectedRoute>}/>
                                 <Route path="view-ride-revenue" element={<ProtectedRoute
                                     allowedRoles={["Ride Manager", "CFO"]}><ViewRideRevenue/></ProtectedRoute>}/>
+                                <Route path="view-restaurant-revenue" element={<ProtectedRoute
+                                    allowedRoles={["F&B Supervisor", "CFO"]}><ViewRestaurantRevenue/></ProtectedRoute>}/>
                                 <Route path="staff-chat" element={<ProtectedRoute><GlobalChat/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                             </Route>

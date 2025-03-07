@@ -87,6 +87,7 @@ macro_rules! all_handlers {
             $crate::handler::restaurant_order_handler::order_restaurant_food,
             $crate::handler::restaurant_order_handler::find_restaurant_orders,
             $crate::handler::restaurant_order_handler::set_order_status,
+            $crate::handler::restaurant_order_handler::find_restaurant_revenue,
         ]
     };
 }

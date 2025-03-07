@@ -33,8 +33,8 @@ export default function StaffNavbar(){
         {text:"View Store", key:24, to:"/staff/view-store", roles: ["Sales Associate"]},
         {text:"View Maintenance", key:25, to:"/staff/view-maintenance", roles: ["Maintenance Staff"]},
         {text:"View Ride Revenue", key:26, to:"/staff/view-ride-revenue", roles: ["Ride Manager", "CFO"]},
+        {text:"View Restaurant Revenue", key:27, to:"/staff/view-restaurant-revenue", roles: ["F&B Supervisor", "CFO"]},
     ]
-
 
     const showNavItem = (allowedRoles: string[]) => {
         if (!isAuthenticated) return false;

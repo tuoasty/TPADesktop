@@ -29,4 +29,11 @@ impl RestaurantOrder {
 
         Ok(())
     }
+
+    pub fn get_restaurant_revenue(conn: &mut DbConnect) -> Result<Vec<RestaurantOrder>, String> {
+        restaurant_orders
+            .select(RestaurantOrder::as_select())
+            .load(conn)
+            .map_err(|e| e.to_string())
+    }
 }
