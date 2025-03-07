@@ -35,7 +35,6 @@ impl MaintenanceReport {
     }
 
     pub fn assign_staff_to_report(conn:&mut DbConnect, selected_staff_id:i32, selected_maintenance_id:i32) -> Result<(), String> {
-        // Set Create MaintenanceAssignment, Set MaintenanceReport Status, Set Ride Status
         create_maintenance_assignment(conn, selected_staff_id, selected_maintenance_id)?;
 
         let maintenance_ride_id = MaintenanceReport::get_maintenance_ride_id(conn, selected_maintenance_id)?;
