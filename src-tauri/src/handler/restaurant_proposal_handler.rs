@@ -23,3 +23,24 @@ pub fn find_restaurant_proposals(state:State<DbPool>) -> Result<Vec<RestaurantPr
 
     RestaurantProposal::get_restaurant_proposals(conn)
 }
+
+#[command]
+pub fn accept_restaurant_proposal(state:State<DbPool>, proposal_id:i32, role:String, current_status:String) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    let mut new_status = "Pending".to_string();
+
+    if current_status == "Accepted by CEO" && role == "CFO" {
+        new_status = "Accepted".to_string()
+    } else if current_status == "Accepted by CFO" && role == "CEO" {
+        new_status = "Accepted".to_string()
+    } else if role == "CEO" {
+        new_status = "Accepted by CEO".to_string()
+    } else if role == "CFO" {
+        new_status = "Accepted by CFO".to_string()
+    } else {
+        new_status = current_status
+    }
+
+    RestaurantProposal::accept_restaurant_proposal(conn, proposal_id, new_status)
+}

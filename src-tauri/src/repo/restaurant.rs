@@ -1,5 +1,5 @@
 use chrono::{Local};
-use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
+use crate::model::restaurant_model::{NewRestaurant, Restaurant, RestaurantDetail};
 use crate::schema::restaurants::dsl::restaurants;
 use crate::schema::restaurants::{id, status};
 use crate::DbConnect;
@@ -7,6 +7,8 @@ use diesel::prelude::*;
 use crate::handler::image_handler::get_image_data;
 use crate::handler::menu_handler::find_restaurant_menu;
 use crate::handler::restaurant_assignment_handler::{check_restaurant_staff_to_open, find_staff_restaurant, get_restaurant_staffs, reassign_staff_to_restaurant};
+use crate::model::ride_model::NewRide;
+use crate::schema::rides::dsl::rides;
 
 impl Restaurant {
     pub fn get_restaurant(conn: &mut DbConnect, restaurant_id: i32) -> Result<Self, String> {
@@ -53,6 +55,14 @@ impl Restaurant {
             .collect();
 
         Ok(restaurant_details)
+    }
+
+    pub fn create_restaurant(conn:&mut DbConnect, new_restaurant:NewRestaurant) -> Result<(), String> {
+        diesel::insert_into(restaurants)
+            .values(new_restaurant)
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+        Ok(())
     }
 
     pub fn update_restaurant_status(conn:&mut DbConnect, restaurant_id:i32, new_status:String) -> Result<(), String>{

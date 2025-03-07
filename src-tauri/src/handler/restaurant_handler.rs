@@ -1,11 +1,13 @@
 use chrono::Local;
-use crate::model::restaurant_model::{Restaurant, RestaurantDetail};
-use crate::{get_conn, DbPool};
+use crate::model::restaurant_model::{NewRestaurant, Restaurant, RestaurantDetail};
+use crate::{get_conn, DbConnect, DbPool};
 use tauri::{command, State};
 use crate::handler::image_handler::get_image_data;
 use crate::handler::menu_handler::find_restaurant_menu;
 use crate::handler::restaurant_assignment_handler::get_restaurant_staffs;
 use crate::handler::staff_handler::find_staff_per_role;
+use crate::model::restaurant_proposal_model::RestaurantProposal;
+use crate::model::ride_model::Ride;
 use crate::model::staff_model::StaffDetail;
 #[command]
 pub fn find_all_restaurant(state: State<DbPool>) -> Result<Vec<RestaurantDetail>, String> {
@@ -84,4 +86,17 @@ pub fn reassign_restaurant_and_check_status(state: State<DbPool>, new_staff_id:i
 pub fn find_staff_restaurant(state:State<DbPool>, selected_id:i32) -> Result<RestaurantDetail, String> {
     let conn = &mut get_conn(&state)?;
     Restaurant::get_staff_restaurant(conn, selected_id)
+}
+
+pub fn create_new_restaurant(conn: &mut DbConnect, restaurant_proposal:RestaurantProposal) -> Result<(), String> {
+    let new_restaurant = NewRestaurant {
+        name:restaurant_proposal.name,
+        image_id:restaurant_proposal.image_id,
+        open_time:restaurant_proposal.open_time,
+        close_time:restaurant_proposal.close_time,
+        cuisine:restaurant_proposal.cuisine,
+        status:"In Construction".to_string()
+    };
+
+    Restaurant::create_restaurant(conn, new_restaurant)
 }

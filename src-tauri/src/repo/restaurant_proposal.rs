@@ -1,9 +1,10 @@
 use crate::DbConnect;
 use crate::handler::image_handler::{create_image, get_image_data};
 use diesel::prelude::*;
-use diesel::serialize::ToSql;
+use crate::handler::restaurant_handler::create_new_restaurant;
 use crate::model::restaurant_proposal_model::{NewRestaurantProposal, NewRestaurantProposalDetail, RestaurantProposal, RestaurantProposalDetail};
 use crate::schema::restaurant_proposals::dsl::restaurant_proposals;
+use crate::schema::restaurant_proposals::{id, status};
 
 impl RestaurantProposal {
     pub fn propose_new_restaurant(conn: &mut DbConnect, new_proposal:NewRestaurantProposalDetail, image_data:Vec<u8>) -> Result<(), String> {
@@ -50,5 +51,27 @@ impl RestaurantProposal {
             .collect();
 
         Ok(proposal_details)
+    }
+
+    pub fn get_restaurant_proposal(conn: &mut DbConnect, proposal_id:i32) -> Result<Self, String> {
+        restaurant_proposals.filter(id.eq(&proposal_id))
+            .select(RestaurantProposal::as_select())
+            .first(conn)
+            .map_err(|e| e.to_string())
+    }
+
+    pub fn accept_restaurant_proposal(conn: &mut DbConnect, proposal_id:i32, new_status:String) -> Result<(), String> {
+        diesel::update(restaurant_proposals)
+            .filter(id.eq(&proposal_id))
+            .set(status.eq(&new_status))
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        if new_status == "Accepted" {
+            let proposal = RestaurantProposal::get_restaurant_proposal(conn, proposal_id)?;
+            create_new_restaurant(conn, proposal)?;
+        }
+
+        Ok(())
     }
 }

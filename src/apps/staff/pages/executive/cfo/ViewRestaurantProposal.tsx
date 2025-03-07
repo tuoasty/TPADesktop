@@ -18,9 +18,9 @@ export default function ViewRestaurantProposal() {
         }
     };
 
-    const acceptRestaurantProposal = async (proposalId: number) => {
+    const acceptRestaurantProposal = async (proposalId: number, currentStatus:string) => {
         try {
-            // await invoke("accept_ride_proposal", {proposalId:proposalId});
+            await invoke("accept_restaurant_proposal", {proposalId:proposalId, role:role, currentStatus:currentStatus});
             toast.success("Success")
             fetchRestaurantProposals();
         } catch (e) {
@@ -62,13 +62,13 @@ export default function ViewRestaurantProposal() {
                             </div>
                             <div className="flex flex-col gap-5 justify-center pr-8">
                                 <Button className="w-48" onClick={() => {
-                                    acceptRestaurantProposal(proposal.id)
+                                    acceptRestaurantProposal(proposal.id, proposal.status)
                                 }}
-                                        disabled={proposal.status == "Accepted" || proposal.status == "Rejected"}>Accept</Button>
+                                        disabled={proposal.status == "Accepted" || proposal.status == "Rejected" || proposal.status == `Accepted by ${role}`}>Accept</Button>
                                 <Button className="w-48" onClick={() => {
                                     rejectRestaurantProposal(proposal.id)
                                 }}
-                                        disabled={proposal.status == "Accepted" || proposal.status == "Rejected"}>Reject</Button>
+                                        disabled={proposal.status == "Accepted" || proposal.status == "Rejected" || proposal.status == `Accepted by ${role}`}>Reject</Button>
                             </div>
                         </div>
                     </div>

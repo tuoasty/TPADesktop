@@ -152,9 +152,10 @@ export default function ViewAllRestaurant() {
                                             </AlertDialogFooter>
                                         </AlertDialogContent>
                                     </AlertDialog>
-                                    <Button className={`w-48 h-12 ${restaurant.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}
+                                    <Button className={`w-48 h-12 ${restaurant.status == "Open" ? "bg-red-500" : "bg-green-500"}`}
+                                            disabled={restaurant.status == "In Construction" || restaurant.status == "Shut Down"}
                                     onClick={() => {changeRestaurantStatus(restaurant.id, restaurant.status)}}>
-                                        {restaurant.status == "Closed" ? "Open" : "Close"}
+                                        {restaurant.status == "Open" ? "Closed" : "Open"}
                                     </Button>
                                 </div>
                             </div>

@@ -166,8 +166,9 @@ export default function ViewAllStore() {
                                         </AlertDialog>
                                         <Button
                                             onClick={() => changeStoreStatus(store.id, store.status)}
-                                            className={`w-48 h-12 ${store.status == "Closed" ? "bg-green-500" : "bg-red-500"}`}>
-                                            {store.status == "Closed" ? "Open" : "Close"}
+                                            className={`w-48 h-12 ${store.status == "Open" ? "bg-red-500" : "bg-green-500"}`}
+                                            disabled={store.status == "In Construction" || store.status == "Shut Down"}>
+                                            {store.status == "Open" ? "Closed" : "Open"}
                                         </Button>
                                     </div>
                                 </div>
