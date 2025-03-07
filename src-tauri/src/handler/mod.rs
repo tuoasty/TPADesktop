@@ -79,6 +79,7 @@ macro_rules! all_handlers {
             $crate::handler::store_proposal_handler::find_store_proposal,
             $crate::handler::store_proposal_handler::accept_store_proposal,
             $crate::handler::store_proposal_handler::reject_store_proposal,
+            $crate::handler::restaurant_proposal_handler::propose_new_restaurant,
             $crate::handler::chat_handler::send_chat_message,
             $crate::handler::chat_handler::fetch_new_messages,
             $crate::handler::ride_queue_handler::find_ride_queue,

@@ -173,10 +173,12 @@ CREATE TABLE store_proposals
 CREATE TABLE restaurant_proposals
 (
     id         SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
     image_id   INTEGER NOT NULL REFERENCES images (id),
     open_time  TIME    NOT NULL,
     close_time TIME    NOT NULL,
-    cuisine    VARCHAR NOT NULL
+    cuisine    VARCHAR NOT NULL,
+    status VARCHAR NOT NULL
 );
 
 CREATE TABLE store_transactions

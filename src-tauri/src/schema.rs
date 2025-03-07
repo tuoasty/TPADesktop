@@ -94,10 +94,12 @@ diesel::table! {
 diesel::table! {
     restaurant_proposals (id) {
         id -> Int4,
+        name -> Varchar,
         image_id -> Int4,
         open_time -> Time,
         close_time -> Time,
         cuisine -> Varchar,
+        status -> Varchar,
     }
 }
 
