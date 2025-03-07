@@ -28,6 +28,10 @@ import OperationalChat from "@/apps/staff/pages/operational/OperationalChat.tsx"
 import ViewRide from "@/apps/staff/pages/operational/ridestaff/ViewRide.tsx";
 import ViewRestaurant from "@/apps/staff/pages/consumption/ViewRestaurant.tsx";
 import CustomerServiceChat from "@/apps/staff/pages/customerserviceassistance/customerservice/CustomerServiceChat.tsx";
+import LostAndFoundChat from "@/apps/staff/pages/customerserviceassistance/lostandfound/LostAndFoundChat.tsx";
+import ChatMaintenanceAccount from "@/apps/staff/pages/operational/ridemanager/ChatMaintenanceAccount.tsx";
+import MaintenanceOfficialAccount
+    from "@/apps/staff/pages/careandmaintenance/maintenancemanager/MaintenanceOfficialAccount.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -74,8 +78,14 @@ export default function StaffApp() {
                                     allowedRoles={["Retail Manager", "Sales Associate", "CEO"]}><MarketingChat/></ProtectedRoute>}/>
                                 <Route path="operational-chat" element={<ProtectedRoute
                                     allowedRoles={["Ride Manager", "Ride Staff", "CEO"]}><OperationalChat/></ProtectedRoute>}/>
+                                <Route path="lost-and-found-chat" element={<ProtectedRoute
+                                    allowedRoles={["Lost and Found Staff"]}><LostAndFoundChat/></ProtectedRoute>}/>
                                 <Route path="customer-service-chat" element={<ProtectedRoute
                                     allowedRoles={["Customer Service"]}><CustomerServiceChat/></ProtectedRoute>}/>
+                                <Route path="maintenance-account-chat" element={<ProtectedRoute
+                                    allowedRoles={["Ride Manager", "CEO"]}><ChatMaintenanceAccount/></ProtectedRoute>}/>
+                                <Route path="maintenance-official-account" element={<ProtectedRoute
+                                    allowedRoles={["Maintenance Manager", "CEO"]}><MaintenanceOfficialAccount/></ProtectedRoute>}/>
                                 <Route path="view-restaurant" element={<ProtectedRoute
                                     allowedRoles={["Waiter", "Chef"]}><ViewRestaurant/></ProtectedRoute>}/>
                                 <Route path="staff-chat" element={<ProtectedRoute><GlobalChat/></ProtectedRoute>}/>

@@ -8,7 +8,7 @@ interface Message {
     timestamp: number;
 }
 
-const GlobalChat: React.FC = () => {
+const MarketingChat: React.FC = () => {
     const { username } = useStaffAuth();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
@@ -111,4 +111,4 @@ const GlobalChat: React.FC = () => {
     );
 };
 
-export default GlobalChat;
+export default MarketingChat;

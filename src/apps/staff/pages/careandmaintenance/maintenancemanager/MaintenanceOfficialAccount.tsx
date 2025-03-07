@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { invoke } from "@tauri-apps/api/core";
-import { useStaffAuth } from "@/context/StaffAuthProvider.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 interface Message {
     text: string;
@@ -8,8 +8,8 @@ interface Message {
     timestamp: number;
 }
 
-const CareAndMaintenanceChat: React.FC = () => {
-    const { username } = useStaffAuth();
+const MaintenanceOfficialAccount: React.FC = () => {
+    const username = "Care and Maintenance OA"
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState('');
     const pollingRef = useRef<NodeJS.Timeout | null>(null);
@@ -17,7 +17,7 @@ const CareAndMaintenanceChat: React.FC = () => {
     useEffect(() => {
         const fetchInitialMessages = async () => {
             try {
-                const initialMessages = await invoke<Message[]>('fetch_new_messages', { group: "CareAndMaintenance" });
+                const initialMessages = await invoke<Message[]>('fetch_new_messages', { group: "Maintenance Account" });
                 setMessages(initialMessages);
             } catch (error) {
                 console.error('Failed to fetch messages:', error);
@@ -27,7 +27,7 @@ const CareAndMaintenanceChat: React.FC = () => {
         const startPolling = () => {
             pollingRef.current = setInterval(async () => {
                 try {
-                    const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "CareAndMaintenance" });
+                    const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "Maintenance Account" });
                     if (newMessages.length > 0) {
                         setMessages(prevMessages => {
                             const combinedMessages = [...prevMessages, ...newMessages];
@@ -59,11 +59,11 @@ const CareAndMaintenanceChat: React.FC = () => {
             await invoke('send_chat_message', {
                 text: newMessage,
                 sender: username,
-                group: "CareAndMaintenance"
+                group: "Maintenance Accoun"
             });
             setNewMessage('');
 
-            const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "CareAndMaintenance" });
+            const newMessages = await invoke<Message[]>('fetch_new_messages', { group: "Maintenance Account" });
             setMessages(prevMessages => {
                 const combinedMessages = [...prevMessages, ...newMessages];
                 const uniqueMessages = Array.from(
@@ -100,15 +100,15 @@ const CareAndMaintenanceChat: React.FC = () => {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                 />
-                <button
+                <Button
                     className="px-4 py-2 bg-purple-500 rounded-lg hover:bg-purple-600"
                     onClick={sendMessage}
                 >
                     Send
-                </button>
+                </Button>
             </div>
         </div>
     );
 };
 
-export default CareAndMaintenanceChat;
+export default MaintenanceOfficialAccount;

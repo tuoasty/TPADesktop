@@ -24,9 +24,12 @@ export default function StaffNavbar(){
         {text:"Executive Chat", key:15, to:"/staff/executive-chat", roles: ["COO", "CFO", "CEO"]},
         {text:"Marketing Chat", key:16, to:"/staff/marketing-chat", roles: ["Retail Manager", "Sales Associate", "CEO"]},
         {text:"Operational Chat", key:17, to:"/staff/operational-chat", roles: ["Ride Manager", "Ride Staff", "CEO"]},
-        {text:"View Ride", key:18, to:"/staff/view-ride", roles: ["Ride Staff"]},
-        {text:"View Restaurant", key:19, to:"/staff/view-restaurant", roles: ["Waiter", "Chef"]},
-        {text:"Customer Service Chat", key:20, to:"/staff/customer-service-chat", roles: ["Customer Service"]},
+        {text:"Lost and Found Chat", key:18, to:"/staff/lost-and-found-chat", roles: ["Lost and Found Staff"]},
+        {text:"View Ride", key:19, to:"/staff/view-ride", roles: ["Ride Staff"]},
+        {text:"View Restaurant", key:20, to:"/staff/view-restaurant", roles: ["Waiter", "Chef"]},
+        {text:"Customer Service Chat", key:21, to:"/staff/customer-service-chat", roles: ["Customer Service"]},
+        {text:"Chat Maintenance Account", key:22, to:"/staff/maintenance-account-chat", roles: ["Ride Manager", "CEO"]},
+        {text:"Care and Maintenance Official Account", key:23, to:"/staff/maintenance-official-account", roles: ["Maintenance Manager", "CEO"]},
     ]
 
 
