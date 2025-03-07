@@ -29,6 +29,7 @@ pub struct NewRestaurantProposal {
 #[derive(Serialize)]
 pub struct RestaurantProposalDetail {
     pub id: i32,
+    pub name:String,
     pub open_time:String,
     pub close_time:String,
     pub cuisine:String,

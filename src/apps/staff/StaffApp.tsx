@@ -75,23 +75,23 @@ export default function StaffApp() {
                                 <Route path="create-customer-account" element={<ProtectedRoute
                                     allowedRoles={["Customer Service"]}><CreateCustomerAccount/></ProtectedRoute>}/>
                                 <Route path="care-and-maintenance-chat" element={<ProtectedRoute
-                                    allowedRoles={["Maintenance Manager", "Maintenance Staff", "CEO"]}><CareAndMaintenanceChat/></ProtectedRoute>}/>
+                                    allowedRoles={["Maintenance Manager", "Maintenance Staff"]}><CareAndMaintenanceChat/></ProtectedRoute>}/>
                                 <Route path="consumption-chat" element={<ProtectedRoute
                                     allowedRoles={["F&B Supervisor", "Waiter", "Chef"]}><ConsumptionChat/></ProtectedRoute>}/>
                                 <Route path="executive-chat" element={<ProtectedRoute
                                     allowedRoles={["COO", "CFO", "CEO"]}><ExecutiveChat/></ProtectedRoute>}/>
                                 <Route path="marketing-chat" element={<ProtectedRoute
-                                    allowedRoles={["Retail Manager", "Sales Associate", "CEO"]}><MarketingChat/></ProtectedRoute>}/>
+                                    allowedRoles={["Retail Manager", "Sales Associate"]}><MarketingChat/></ProtectedRoute>}/>
                                 <Route path="operational-chat" element={<ProtectedRoute
-                                    allowedRoles={["Ride Manager", "Ride Staff", "CEO"]}><OperationalChat/></ProtectedRoute>}/>
+                                    allowedRoles={["Ride Manager", "Ride Staff"]}><OperationalChat/></ProtectedRoute>}/>
                                 <Route path="lost-and-found-chat" element={<ProtectedRoute
                                     allowedRoles={["Lost and Found Staff"]}><LostAndFoundChat/></ProtectedRoute>}/>
                                 <Route path="customer-service-chat" element={<ProtectedRoute
                                     allowedRoles={["Customer Service"]}><CustomerServiceChat/></ProtectedRoute>}/>
                                 <Route path="maintenance-account-chat" element={<ProtectedRoute
-                                    allowedRoles={["Ride Manager", "CEO"]}><ChatMaintenanceAccount/></ProtectedRoute>}/>
+                                    allowedRoles={["Ride Manager"]}><ChatMaintenanceAccount/></ProtectedRoute>}/>
                                 <Route path="maintenance-official-account" element={<ProtectedRoute
-                                    allowedRoles={["Maintenance Manager", "CEO"]}><MaintenanceOfficialAccount/></ProtectedRoute>}/>
+                                    allowedRoles={["Maintenance Manager"]}><MaintenanceOfficialAccount/></ProtectedRoute>}/>
                                 <Route path="view-restaurant" element={<ProtectedRoute
                                     allowedRoles={["Waiter", "Chef"]}><ViewRestaurant/></ProtectedRoute>}/>
                                 <Route path="view-store" element={<ProtectedRoute
