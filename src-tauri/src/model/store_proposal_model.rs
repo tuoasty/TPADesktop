@@ -35,3 +35,12 @@ pub struct StoreProposalDetail {
     pub store_id:Option<i32>,
     pub image_data:Option<String>,
 }
+
+#[derive(Deserialize)]
+pub struct NewStoreProposalDetail {
+    pub name:String,
+    pub description:String,
+    pub image_data: String,
+    pub mime_type: String,
+    pub image_name: String
+}

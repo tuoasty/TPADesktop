@@ -1,12 +1,33 @@
 use crate::DbConnect;
-use crate::handler::image_handler::get_image_data;
-use crate::model::store_proposal_model::{StoreProposal, StoreProposalDetail};
+use crate::handler::image_handler::{create_image, get_image_data};
+use crate::model::store_proposal_model::{NewStoreProposal, NewStoreProposalDetail, StoreProposal, StoreProposalDetail};
 use diesel::prelude::*;
 use crate::handler::store_handler::{close_store, create_new_store};
 use crate::schema::store_proposals::dsl::store_proposals;
 use crate::schema::store_proposals::{id, status};
 
 impl StoreProposal {
+
+    pub fn propose_new_store(conn: &mut DbConnect, new_proposal:NewStoreProposalDetail, image_data:Vec<u8>) -> Result<(), String> {
+        let image_id = create_image(conn, image_data, new_proposal.mime_type, new_proposal.image_name)?;
+
+        let proposal = NewStoreProposal {
+            name:new_proposal.name,
+            proposal_type:"New".to_string(),
+            status:"Pending".to_string(),
+            description:new_proposal.description,
+            store_id:None,
+            image_id:Some(image_id)
+        };
+
+        diesel::insert_into(store_proposals)
+            .values(proposal)
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
+    }
+
     pub fn get_store_proposals(conn: &mut DbConnect) -> Result<Vec<StoreProposalDetail>, String> {
         let proposals = store_proposals
             .select(StoreProposal::as_select())

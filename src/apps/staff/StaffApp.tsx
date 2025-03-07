@@ -39,6 +39,7 @@ import ViewRestaurantRevenue from "@/apps/staff/pages/consumption/fbsupervisor/V
 import ViewStoreRevenue from "@/apps/staff/pages/marketing/retailmanager/ViewStoreRevenue.tsx";
 import ProposeNewRestaurant from "@/apps/staff/pages/consumption/fbsupervisor/ProposeNewRestaurant.tsx";
 import ProposeNewRide from "@/apps/staff/pages/operational/ridemanager/ProposeNewRide.tsx";
+import ProposeNewStore from "@/apps/staff/pages/marketing/retailmanager/ProposeNewStore.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -107,6 +108,8 @@ export default function StaffApp() {
                                     allowedRoles={["Retail Manager", "CFO"]}><ViewStoreRevenue/></ProtectedRoute>}/>
                                 <Route path="propose-new-restaurant" element={<ProtectedRoute
                                     allowedRoles={["F&B Supervisor"]}><ProposeNewRestaurant/></ProtectedRoute>}/>
+                                <Route path="propose-new-store" element={<ProtectedRoute
+                                    allowedRoles={["Retail Manager"]}><ProposeNewStore/></ProtectedRoute>}/>
                                 <Route path="staff-chat" element={<ProtectedRoute><GlobalChat/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                                 <Route path="propose-new-ride" element={<ProtectedRoute

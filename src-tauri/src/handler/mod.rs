@@ -80,6 +80,7 @@ macro_rules! all_handlers {
             $crate::handler::store_proposal_handler::find_store_proposal,
             $crate::handler::store_proposal_handler::accept_store_proposal,
             $crate::handler::store_proposal_handler::reject_store_proposal,
+            $crate::handler::store_proposal_handler::propose_new_store,
             $crate::handler::restaurant_proposal_handler::propose_new_restaurant,
             $crate::handler::restaurant_proposal_handler::find_restaurant_proposals,
             $crate::handler::restaurant_proposal_handler::accept_restaurant_proposal,
