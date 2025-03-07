@@ -74,4 +74,14 @@ impl RestaurantProposal {
 
         Ok(())
     }
+
+    pub fn reject_restaurant_proposal(conn: &mut DbConnect, proposal_id:i32) -> Result<(), String> {
+        diesel::update(restaurant_proposals)
+            .filter(id.eq(&proposal_id))
+            .set(status.eq("Rejected".to_string()))
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
+    }
 }

@@ -44,3 +44,10 @@ pub fn accept_restaurant_proposal(state:State<DbPool>, proposal_id:i32, role:Str
 
     RestaurantProposal::accept_restaurant_proposal(conn, proposal_id, new_status)
 }
+
+#[command]
+pub fn reject_restaurant_proposal(state:State<DbPool>, proposal_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    RestaurantProposal::reject_restaurant_proposal(conn, proposal_id)
+}

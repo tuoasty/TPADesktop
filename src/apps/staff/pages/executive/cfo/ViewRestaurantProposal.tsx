@@ -30,7 +30,7 @@ export default function ViewRestaurantProposal() {
 
     const rejectRestaurantProposal = async (proposalId: number) => {
         try {
-            // await invoke("reject_ride_proposal", {proposalId:proposalId});
+            await invoke("reject_restaurant_proposal", {proposalId:proposalId});
             toast.success("Success")
             fetchRestaurantProposals();
         } catch (e) {
