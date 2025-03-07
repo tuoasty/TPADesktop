@@ -41,6 +41,7 @@ import ProposeNewRestaurant from "@/apps/staff/pages/consumption/fbsupervisor/Pr
 import ProposeNewRide from "@/apps/staff/pages/operational/ridemanager/ProposeNewRide.tsx";
 import ProposeNewStore from "@/apps/staff/pages/marketing/retailmanager/ProposeNewStore.tsx";
 import AddNewSouvenir from "@/apps/staff/pages/marketing/retailmanager/AddNewSouvenir.tsx";
+import CreateMaintenanceTask from "@/apps/staff/pages/careandmaintenance/maintenancemanager/CreateMaintenanceTask.tsx";
 export default function StaffApp() {
     return (
         <BrowserRouter>
@@ -113,6 +114,8 @@ export default function StaffApp() {
                                     allowedRoles={["Retail Manager"]}><ProposeNewStore/></ProtectedRoute>}/>
                                 <Route path="add-new-souvenir" element={<ProtectedRoute
                                     allowedRoles={["Retail Manager"]}><AddNewSouvenir/></ProtectedRoute>}/>
+                                <Route path="add-new-maintenance" element={<ProtectedRoute
+                                    allowedRoles={["Maintenance Manager"]}><CreateMaintenanceTask/></ProtectedRoute>}/>
                                 <Route path="staff-chat" element={<ProtectedRoute><GlobalChat/></ProtectedRoute>}/>
                                 <Route path="/staff" element={<ProtectedRoute><StaffDashboard/></ProtectedRoute>}/>
                                 <Route path="propose-new-ride" element={<ProtectedRoute

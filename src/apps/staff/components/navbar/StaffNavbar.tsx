@@ -39,6 +39,7 @@ export default function StaffNavbar(){
         {text:"Propose New Ride", key:30, to:"/staff/propose-new-ride", roles: ["Ride Manager"]},
         {text:"Propose New Store", key:31, to:"/staff/propose-new-store", roles: ["Retail Manager"]},
         {text:"Add New Souvenir", key:32, to:"/staff/add-new-souvenir", roles: ["Retail Manager"]},
+        {text:"Add New Maintenance", key:33, to:"/staff/add-new-maintenance", roles: ["Maintenance Manager"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {
