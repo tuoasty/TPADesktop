@@ -37,3 +37,12 @@ pub struct NewStoreTransaction {
     pub value:i32,
     pub time_ordered:NaiveTime
 }
+
+#[derive(Serialize)]
+pub struct StoreRevenue {
+    pub id:i32,
+    pub time:String,
+    pub value:i32,
+    pub store_id:i32,
+    pub souvenir_id:i32
+}

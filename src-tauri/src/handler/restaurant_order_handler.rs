@@ -77,7 +77,8 @@ pub fn find_restaurant_revenue(state:State<DbPool>) -> Result<Vec<RestaurantReve
                 id:revenue.id,
                 time:revenue.time_ordered.to_string(),
                 value:revenue.value,
-                restaurant_id:revenue.restaurant_id
+                restaurant_id:revenue.restaurant_id,
+                menu_id:revenue.menu_id
             }
         }
     ).collect();

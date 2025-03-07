@@ -20,4 +20,11 @@ impl StoreTransaction {
             .load(conn)
             .map_err(|e| e.to_string())
     }
+
+    pub fn get_store_revenue(conn: &mut DbConnect) -> Result<Vec<Self>, String> {
+        store_transactions
+            .select(StoreTransaction::as_select())
+            .load(conn)
+            .map_err(|e| e.to_string())
+    }
 }

@@ -3,4 +3,5 @@ export interface RestaurantRevenue{
     restaurant_id:number,
     time:string,
     value:number,
+    menu_id:number,
 }

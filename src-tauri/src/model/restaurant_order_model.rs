@@ -50,5 +50,6 @@ pub struct RestaurantRevenue {
     pub id:i32,
     pub time:String,
     pub value:i32,
-    pub restaurant_id:i32
+    pub restaurant_id:i32,
+    pub menu_id:i32
 }

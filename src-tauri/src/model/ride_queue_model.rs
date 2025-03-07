@@ -43,5 +43,5 @@ pub struct RideRevenue {
     pub id:i32,
     pub time:String,
     pub value:i32,
-    pub ride_id:i32
+    pub ride_id:i32,
 }
