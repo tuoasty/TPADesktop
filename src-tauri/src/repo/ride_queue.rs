@@ -35,4 +35,11 @@ impl RideQueue {
 
         Ok(())
     }
+
+    pub fn get_ride_revenue(conn: &mut DbConnect) -> Result<Vec<RideQueue>, String> {
+        ride_queues
+            .select(RideQueue::as_select())
+            .load(conn)
+            .map_err(|e| e.to_string())
+    }
 }

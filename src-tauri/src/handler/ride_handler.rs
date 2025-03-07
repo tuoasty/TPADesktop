@@ -66,7 +66,6 @@ pub fn change_ride_status(state:State<DbPool>, ride_id:i32, ride_status:String) 
 
     Ride::update_ride_status(conn, ride_id, new_status)
 }
-
 #[command]
 pub fn reassign_ride_and_check_status(state:State<DbPool>, new_staff_id:i32, new_ride_id:i32) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;

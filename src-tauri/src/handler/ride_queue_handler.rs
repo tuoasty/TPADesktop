@@ -3,7 +3,7 @@ use tauri::{command, State};
 use crate::{get_conn, DbPool};
 use crate::handler::customer_handler::{deduct_customer_balance, find_customer_name, get_balance};
 use crate::handler::ride_handler::{find_ride, find_ride_price};
-use crate::model::ride_queue_model::{NewRideQueue, RideQueue, RideQueueDetail};
+use crate::model::ride_queue_model::{NewRideQueue, RideQueue, RideQueueDetail, RideRevenue};
 
 #[command]
 pub fn find_ride_queue(state:State<DbPool>, selected_id:i32) -> Result<Vec<RideQueueDetail>, String> {
@@ -58,4 +58,22 @@ pub fn dequeue_customer_from_ride(state:State<DbPool>, selected_ride_id:i32, sel
     let conn = &mut get_conn(&state)?;
 
     RideQueue::dequeue_ride(conn, selected_ride_id, selected_customer_id)
+}
+
+#[command]
+pub fn find_ride_revenue(state:State<DbPool>) -> Result<Vec<RideRevenue>, String> {
+    let conn = &mut get_conn(&state)?;
+    let ride_queue = RideQueue::get_ride_revenue(conn)?;
+    let ride_revenue = ride_queue.into_iter().map(
+        |ride| {
+            RideRevenue {
+                id:ride.id,
+                time:ride.time_joined.to_string(),
+                value:ride.value,
+                ride_id:ride.ride_id,
+            }
+        }
+    ).collect();
+
+    Ok(ride_revenue)
 }
