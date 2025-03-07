@@ -18,6 +18,10 @@ impl Customer {
             .map_err(|e| e.to_string())
     }
 
+    pub fn get_all_customer(conn:&mut DbConnect) -> Result<Vec<Self>, String> {
+        customers.select(Customer::as_select()).load(conn).map_err(|e| e.to_string())
+    }
+
     pub fn deduct_customer_balance(conn: &mut DbConnect, customer_id:i32, value:i32) -> Result<(), String> {
         let current_balance:i32 = customers.filter(id.eq(&customer_id))
             .select(balance)

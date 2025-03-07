@@ -10,6 +10,7 @@ export default function CustomerNavbar(){
             <CustomerNavButton text="Notifications" to="/customer/notification"/>
             <CustomerNavButton text="Ride" to="/customer/ride"/>
             <CustomerNavButton text="Restaurant" to="/customer/restaurant"/>
+            <CustomerNavButton text="Customer Service" to="/customer/customer-service"/>
         </div>
     )
 }

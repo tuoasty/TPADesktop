@@ -14,7 +14,6 @@ export default function RideDashboard({ rideId }: Props) {
     const navigate = useNavigate();
     const { customerId, name, balance, customerIsLoggedIn } = useCustomerAuth();
 
-    // Use the query hook instead of useState and useEffect
     const { data: ride, isLoading, error } = useRideData(rideId);
 
     const addCustomerToRideQueue = async () => {

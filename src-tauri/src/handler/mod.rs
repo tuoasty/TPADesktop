@@ -65,6 +65,7 @@ macro_rules! all_handlers {
             $crate::handler::customer_handler::logout_customer,
             $crate::handler::customer_handler::get_current_customer,
             $crate::handler::customer_handler::create_customer_account,
+            $crate::handler::customer_handler::get_all_customer,
             $crate::handler::notification_handler::find_customer_notifications,
             $crate::handler::notification_handler::broadcast_message,
             $crate::handler::ride_proposal_handler::find_ride_proposal,

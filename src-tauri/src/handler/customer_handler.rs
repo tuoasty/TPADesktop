@@ -52,6 +52,13 @@ pub fn get_customer_balance(current_customer:&CurrentCustomer) -> Result<i32, St
     Ok(curr_customer.2)
 }
 
+#[command]
+pub fn get_all_customer(state:State<DbPool>) -> Result<Vec<Customer>, String> {
+    let conn = &mut get_conn(&state)?;
+
+    Customer::get_all_customer(conn)
+}
+
 pub fn get_balance(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
     Customer::get_balance(conn, selected_id)
 }

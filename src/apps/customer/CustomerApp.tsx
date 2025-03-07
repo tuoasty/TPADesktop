@@ -7,6 +7,7 @@ import CustomerNotification from "@/apps/customer/pages/CustomerNotification.tsx
 import {Toaster} from "@/components/ui/sonner.tsx";
 import CustomerRide from "@/apps/customer/pages/CustomerRide.tsx";
 import CustomerRestaurant from "@/apps/customer/pages/CustomerRestaurant.tsx";
+import CustomerChatService from "@/apps/customer/pages/CustomerChatService.tsx";
 
 function CustomerApp() {
   return (
@@ -22,6 +23,9 @@ function CustomerApp() {
                           <Route path="restaurant" element={<CustomerRestaurant/>}/>
                           <Route path="notification" element={<ProtectedRoute>
                               <CustomerNotification/>
+                          </ProtectedRoute>}/>
+                          <Route path="customer-service" element={<ProtectedRoute>
+                              <CustomerChatService/>
                           </ProtectedRoute>}/>
                           <Route path="/customer" element={<ProtectedRoute>
                               <CustomerDashboard/>

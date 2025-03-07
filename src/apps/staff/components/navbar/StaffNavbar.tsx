@@ -26,6 +26,7 @@ export default function StaffNavbar(){
         {text:"Operational Chat", key:17, to:"/staff/operational-chat", roles: ["Ride Manager", "Ride Staff", "CEO"]},
         {text:"View Ride", key:18, to:"/staff/view-ride", roles: ["Ride Staff"]},
         {text:"View Restaurant", key:19, to:"/staff/view-restaurant", roles: ["Waiter", "Chef"]},
+        {text:"Customer Service Chat", key:20, to:"/staff/customer-service-chat", roles: ["Customer Service"]},
     ]
 
 
