@@ -3,6 +3,7 @@ use crate::DbConnect;
 use crate::handler::image_handler::get_image_data;
 use crate::model::ride_model::{NewRide, Ride, RideDetail};
 use diesel::prelude::*;
+use crate::handler::maintenance_report_handler::report_ride_maintenance;
 use crate::handler::ride_assignment_handler::{check_ride_staff_to_open, find_staff_ride, get_ride_staffs, reassign_staff_to_ride};
 use crate::schema::rides::dsl::rides;
 use crate::schema::rides::{id, price, status};
@@ -120,6 +121,17 @@ impl Ride {
     pub fn close_ride(conn: &mut DbConnect, ride_id:i32) -> Result<(), String> {
         diesel::update(rides).filter(id.eq(&ride_id))
             .set(status.eq("Shut Down".to_string()))
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
+    }
+
+    pub fn report_ride_maintenance(conn: &mut DbConnect, ride_id:i32, description:String) -> Result<(), String> {
+        report_ride_maintenance(conn, ride_id, description)?;
+
+        diesel::update(rides).filter(id.eq(&ride_id))
+            .set(status.eq("Pending Maintenance".to_string()))
             .execute(conn)
             .map_err(|e| e.to_string())?;
 

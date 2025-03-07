@@ -53,6 +53,7 @@ macro_rules! all_handlers {
             $crate::handler::ride_handler::reassign_ride_and_check_status,
             $crate::handler::ride_handler::find_ride_by_id,
             $crate::handler::ride_handler::find_staff_ride,
+            $crate::handler::ride_handler::report_ride_maintenance,
             $crate::handler::maintenance_report_handler::find_all_maintenance_report,
             $crate::handler::maintenance_report_handler::find_all_maintenance_staff,
             $crate::handler::maintenance_report_handler::accept_request,

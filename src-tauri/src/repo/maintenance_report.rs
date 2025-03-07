@@ -1,5 +1,5 @@
 use crate::DbConnect;
-use crate::model::maintenance_report_model::{MaintenanceReport, MaintenanceReportDetail};
+use crate::model::maintenance_report_model::{MaintenanceReport, MaintenanceReportDetail, NewMaintenanceReport};
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use diesel::prelude::*;
 use crate::handler::maintenance_assignment_handler::{check_maintenance_staff_availability, create_maintenance_assignment, find_staff_maintenance};
@@ -28,6 +28,15 @@ impl MaintenanceReport {
             .collect();
 
         Ok(report_details)
+    }
+
+    pub fn create_maintenance_report(conn:&mut DbConnect, new_report:NewMaintenanceReport) -> Result<(), String> {
+        diesel::insert_into(maintenance_reports)
+            .values(new_report)
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 
     pub fn check_staff_availability(conn: &mut DbConnect, selected_staff_id:i32) -> Result<bool, String> {

@@ -34,6 +34,7 @@ export default function ViewAllRide() {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [rideId, setRideId] = useState<number | null>(null);
     const [reassignDialog, setReassignDialog] = useState(false);
+    const [maintenanceReason, setMaintenanceReason] = useState("");
 
     const fetchRides = async () => {
         invoke<Ride[]>("find_all_ride").then(setRides);
@@ -71,6 +72,16 @@ export default function ViewAllRide() {
             await invoke("reassign_ride_and_check_status", {newStaffId: selectedId, newRideId: rideId})
             toast.success("Succesfully reassigned staff")
             fetchRides();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
+    }
+
+    const reportRideMaintenance = async (rideId:number) => {
+        try {
+            await invoke("report_ride_maintenance", {rideId:rideId, description:maintenanceReason})
+            toast.success("Successfully reported for maintenance")
+            fetchRides()
         } catch (e) {
             toast.error(`${e}`)
         }
@@ -121,11 +132,11 @@ export default function ViewAllRide() {
                                                         <Label htmlFor="reason" className="text-right">
                                                             Reasoning
                                                         </Label>
-                                                        <Input id="reason" type="text" className="col-span-3"/>
+                                                        <Input id="reason" type="text" className="col-span-3" onChange={(val) => setMaintenanceReason(val.target.value)}/>
                                                     </div>
                                                 </div>
                                                 <DialogFooter>
-                                                    <Button type="submit" className="bg-purple-700">Save changes</Button>
+                                                    <Button onClick={() => reportRideMaintenance(ride.id)} type="submit" className="bg-purple-700">Save changes</Button>
                                                 </DialogFooter>
                                             </DialogContent>
                                         </Dialog>

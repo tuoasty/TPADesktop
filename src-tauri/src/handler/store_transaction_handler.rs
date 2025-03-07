@@ -1,7 +1,7 @@
 use chrono::Local;
 use tauri::{command, State};
 use crate::{get_conn, DbConnect, DbPool};
-use crate::model::store_transaction_model::{NewStoreTransaction, StoreRevenue, StoreTransaction, StoreTransactionDetail};
+use crate::model::store_transaction_model::{NewStoreTransaction, StoreRevenue, StoreTransaction};
 
 pub fn create_new_store_transaction(conn: &mut DbConnect, customer_id:i32, store_id:i32, souvenir_id:i32, count:i32, value:i32) -> Result<(), String> {
     let transaction = NewStoreTransaction {

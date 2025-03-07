@@ -1,10 +1,9 @@
 use tauri::{command, State};
-use crate::{get_conn, DbPool};
+use crate::{get_conn, DbConnect, DbPool};
 use crate::handler::ride_handler::find_ride;
 use crate::handler::staff_handler::{find_staff, find_staff_per_role};
-use crate::model::maintenance_report_model::{MaintenanceReport, MaintenanceReportDetail};
+use crate::model::maintenance_report_model::{MaintenanceReport, MaintenanceReportDetail, NewMaintenanceReport};
 use crate::model::staff_model::StaffDetail;
-use crate::schema::maintenance_reports::dsl::maintenance_reports;
 
 #[command]
 pub fn find_all_maintenance_report(state:State<DbPool>) -> Result<Vec<MaintenanceReportDetail>, String> {
@@ -38,6 +37,16 @@ pub fn submit_task(state:State<DbPool>, selected_maintenance_id:i32) -> Result<(
     let conn = &mut get_conn(&state)?;
 
     MaintenanceReport::set_maintenance_status(conn, selected_maintenance_id, "Pending Review".to_string())
+}
+
+pub fn report_ride_maintenance(conn: &mut DbConnect, ride_id:i32, description:String) -> Result<(), String> {
+    let new_maintenance = NewMaintenanceReport {
+        ride_id,
+        description,
+        status:"Pending Maintenance".to_string()
+    };
+
+    MaintenanceReport::create_maintenance_report(conn, new_maintenance)
 }
 
 #[command]
