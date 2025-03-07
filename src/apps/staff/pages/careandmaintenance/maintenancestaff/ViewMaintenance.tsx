@@ -17,8 +17,14 @@ export default function ViewMaintenance() {
         }
     };
 
-    const finishMaintenance = async () => {
-
+    const submitTask = async () => {
+        try {
+            invoke("submit_task", {selectedMaintenanceId:maintenance?.id})
+            toast.success("Successfully submitted task")
+            fetchStaffMaintenance();
+        } catch (e) {
+            toast.error(`${e}`)
+        }
     };
 
     useEffect(() => {
@@ -40,7 +46,7 @@ export default function ViewMaintenance() {
                         </div>
                         <Button
                             className="mt-4 px-6 py-2 bg-purple-700 text-white"
-                            onClick={finishMaintenance}
+                            onClick={submitTask}
                         >
                             Finish Maintenance
                         </Button>

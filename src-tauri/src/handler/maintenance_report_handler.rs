@@ -34,6 +34,13 @@ pub fn accept_request(state:State<DbPool>, selected_staff_id:i32, selected_maint
 }
 
 #[command]
+pub fn submit_task(state:State<DbPool>, selected_maintenance_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+
+    MaintenanceReport::set_maintenance_status(conn, selected_maintenance_id, "Pending Review".to_string())
+}
+
+#[command]
 pub fn reject_request(state:State<DbPool>, selected_maintenance_id:i32) -> Result<(), String> {
     let conn = &mut get_conn(&state)?;
 
