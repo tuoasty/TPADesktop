@@ -76,6 +76,7 @@ macro_rules! all_handlers {
             $crate::handler::ride_proposal_handler::find_ride_proposal,
             $crate::handler::ride_proposal_handler::accept_ride_proposal,
             $crate::handler::ride_proposal_handler::reject_ride_proposal,
+            $crate::handler::ride_proposal_handler::propose_new_ride,
             $crate::handler::store_proposal_handler::find_store_proposal,
             $crate::handler::store_proposal_handler::accept_store_proposal,
             $crate::handler::store_proposal_handler::reject_store_proposal,

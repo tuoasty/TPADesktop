@@ -35,8 +35,6 @@ export default function ProposeNewRestaurant() {
     }
 
     async function proposeNewRestaurant() {
-        console.log("Submitting Form Data:", formData);
-
         try {
             await invoke("propose_new_restaurant", { newProposal: formData });
             toast.success("Successfully proposed a new restaurant");

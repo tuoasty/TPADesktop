@@ -1,12 +1,33 @@
 use crate::DbConnect;
-use crate::model::ride_proposal_model::{RideProposal, RideProposalDetail};
+use crate::model::ride_proposal_model::{NewRideProposal, NewRideProposalDetail, RideProposal, RideProposalDetail};
 use diesel::prelude::*;
-use crate::handler::image_handler::{get_image_data};
+use crate::handler::image_handler::{create_image, get_image_data};
 use crate::handler::ride_handler::{close_ride, create_new_ride};
 use crate::schema::ride_proposals::dsl::ride_proposals;
 use crate::schema::ride_proposals::{id, status};
 
 impl RideProposal {
+
+    pub fn propose_new_ride(conn: &mut DbConnect, new_proposal:NewRideProposalDetail, image_data:Vec<u8>) -> Result<(), String> {
+        let image_id = create_image(conn, image_data, new_proposal.mime_type, new_proposal.image_name)?;
+
+        let proposal = NewRideProposal {
+            name:new_proposal.name,
+            proposal_type:"New".to_string(),
+            status:"Pending".to_string(),
+            description:new_proposal.description,
+            price:new_proposal.price,
+            ride_id:None,
+            image_id:Some(image_id)
+        };
+
+        diesel::insert_into(ride_proposals)
+            .values(proposal)
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
+    }
     pub fn get_ride_proposals(conn: &mut DbConnect) -> Result<Vec<RideProposalDetail>, String> {
         let proposals = ride_proposals
             .select(RideProposal::as_select())

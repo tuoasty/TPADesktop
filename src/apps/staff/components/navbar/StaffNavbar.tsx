@@ -36,6 +36,7 @@ export default function StaffNavbar(){
         {text:"View Restaurant Revenue", key:27, to:"/staff/view-restaurant-revenue", roles: ["F&B Supervisor", "CFO"]},
         {text:"View Store Revenue", key:28, to:"/staff/view-store-revenue", roles: ["Retail Manager", "CFO"]},
         {text:"Propose New Restaurant", key:29, to:"/staff/propose-new-restaurant", roles: ["F&B Supervisor"]},
+        {text:"Propose New Ride", key:30, to:"/staff/propose-new-ride", roles: ["Ride Manager"]},
     ]
 
     const showNavItem = (allowedRoles: string[]) => {

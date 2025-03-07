@@ -1,3 +1,4 @@
+use chrono::NaiveTime;
 use diesel::{Insertable, Queryable, Selectable};
 use serde::{Deserialize, Serialize};
 
@@ -37,4 +38,14 @@ pub struct RideProposalDetail {
     pub price:i32,
     pub ride_id:Option<i32>,
     pub image_data:Option<String>,
+}
+
+#[derive(Deserialize)]
+pub struct NewRideProposalDetail {
+    pub name:String,
+    pub description:String,
+    pub price:i32,
+    pub image_data: String,
+    pub mime_type: String,
+    pub image_name: String
 }
