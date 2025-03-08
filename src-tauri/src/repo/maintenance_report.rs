@@ -2,7 +2,7 @@ use crate::DbConnect;
 use crate::model::maintenance_report_model::{MaintenanceReport, MaintenanceReportDetail, NewMaintenanceReport};
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use diesel::prelude::*;
-use crate::handler::maintenance_assignment_handler::{check_maintenance_staff_availability, create_maintenance_assignment, find_staff_maintenance};
+use crate::handler::maintenance_assignment_handler::{check_maintenance_staff_availability, create_maintenance_assignment, find_maintenance_staff, find_staff_maintenance};
 use crate::handler::ride_handler::{accept_ride_maintenance, find_ride, reject_ride_maintenance};
 use crate::schema::maintenance_reports::{id, ride_id, status};
 impl MaintenanceReport {
@@ -14,13 +14,17 @@ impl MaintenanceReport {
             .map(|report| {
 
                 let ride = find_ride(conn, report.ride_id).unwrap();
+                let (staff_id, staff_name) = match find_maintenance_staff(conn, report.id) {
+                    Ok(staff) => (Some(staff.id), Some(staff.name)),
+                    Err(_) => (None, None)
+                };
 
                 MaintenanceReportDetail {
                     id:report.id,
                     ride_id:report.ride_id,
                     ride_name:ride.name,
-                    staff_id:None,
-                    staff_name:None,
+                    staff_id,
+                    staff_name,
                     description:report.description,
                     status:report.status
                 }

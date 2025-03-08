@@ -2,9 +2,10 @@ use crate::schema::maintenance_assignments;
 use crate::schema::maintenance_assignments::dsl::*;
 use crate::DbConnect;
 use diesel::prelude::*;
+use crate::handler::staff_handler::find_staff;
 use crate::model::maintenance_assignment_model::{MaintenanceAssignment, NewMaintenanceAssignment};
+use crate::model::staff_model::Staff;
 use crate::schema::maintenance_assignments::status;
-
 
 impl MaintenanceAssignment {
     pub fn get_current_assignments(conn: &mut DbConnect) -> Result<Vec<Self>, String> {
@@ -29,5 +30,14 @@ impl MaintenanceAssignment {
             .select(maintenance_report_id)
             .first(conn)
             .map_err(|e| e.to_string())
+    }
+
+    pub fn get_maintenance_staff(conn: &mut DbConnect, selected_id:i32) -> Result<Staff, String> {
+        let maintenance_staff_id = maintenance_assignments.filter(maintenance_report_id.eq(&selected_id))
+            .select(staff_id)
+            .first(conn)
+            .map_err(|e| e.to_string())?;
+
+        find_staff(conn, maintenance_staff_id)
     }
 }

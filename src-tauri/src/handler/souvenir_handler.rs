@@ -4,7 +4,7 @@ use tauri::{command, State};
 use crate::{get_conn, CurrentCustomer, DbConnect, DbPool};
 use crate::handler::customer_handler::{deduct_customer_balance, get_customer_balance, get_customer_id};
 use crate::handler::store_transaction_handler::create_new_store_transaction;
-use crate::model::souvenir_model::{NewSouvenir, NewSouvenirDetail, Souvenir, SouvenirDetail};
+use crate::model::souvenir_model::{NewSouvenirDetail, Souvenir, SouvenirDetail};
 pub fn find_store_souvenir(conn: &mut DbConnect,selected_id:i32) -> Result<Vec<SouvenirDetail>, String> {
     let store_souvenirs = Souvenir::get_souvenir_of_store(conn, selected_id)?;
 

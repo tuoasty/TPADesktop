@@ -33,7 +33,7 @@ pub fn find_ride_by_id(state: State<DbPool>, redis_state: State<RedisCache>, sel
         status: {
             let current_time = Local::now().time();
 
-            if ride.status == "Shut Down" {
+            if ride.status == "Shut Down"  || ride.status == "Maintenance in Progress" || ride.status == "Pending Maintenance" {
                 ride.status
             } else if current_time < ride.open_time || current_time > ride.close_time {
                 "Closed for the day".to_string()

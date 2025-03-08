@@ -1,4 +1,3 @@
-use chrono::NaiveTime;
 use diesel::{Insertable, Queryable, Selectable};
 use serde::{Deserialize, Serialize};
 

@@ -47,6 +47,7 @@ export default function ViewMaintenance() {
                         <Button
                             className="mt-4 px-6 py-2 bg-purple-700 text-white"
                             onClick={submitTask}
+                            disabled={maintenance.status == "Pending Review" || maintenance.status == "Finished"}
                         >
                             Finish Maintenance
                         </Button>

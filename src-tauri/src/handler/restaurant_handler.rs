@@ -7,7 +7,6 @@ use crate::handler::menu_handler::find_restaurant_menu;
 use crate::handler::restaurant_assignment_handler::get_restaurant_staffs;
 use crate::handler::staff_handler::find_staff_per_role;
 use crate::model::restaurant_proposal_model::RestaurantProposal;
-use crate::model::ride_model::Ride;
 use crate::model::staff_model::StaffDetail;
 #[command]
 pub fn find_all_restaurant(state: State<DbPool>) -> Result<Vec<RestaurantDetail>, String> {

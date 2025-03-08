@@ -7,7 +7,7 @@ use crate::handler::store_assignment_handler::get_store_staffs;
 use crate::handler::store_transaction_handler::get_store_transaction;
 use crate::model::store_model::{NewStore, Store, StoreDetail};
 use crate::model::store_proposal_model::StoreProposal;
-use crate::model::store_transaction_model::{StoreTransaction, StoreTransactionDetail};
+use crate::model::store_transaction_model::{StoreTransactionDetail};
 
 #[command]
 pub fn find_all_store(state: State<DbPool>) -> Result<Vec<StoreDetail>, String> {

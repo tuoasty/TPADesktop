@@ -1,6 +1,7 @@
 use chrono::Local;
 use crate::DbConnect;
 use crate::model::maintenance_assignment_model::{MaintenanceAssignment, NewMaintenanceAssignment};
+use crate::model::staff_model::Staff;
 
 pub fn check_maintenance_staff_availability(conn: &mut DbConnect, selected_id:i32) -> Result<bool, String> {
 
@@ -26,5 +27,8 @@ pub fn create_maintenance_assignment(conn: &mut DbConnect, id_staff:i32, id_repo
 
 pub fn find_staff_maintenance(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
     MaintenanceAssignment::get_staff_maintenance(conn, selected_id)
+}
 
+pub fn find_maintenance_staff(conn: &mut DbConnect, selected_id:i32) -> Result<Staff, String> {
+    MaintenanceAssignment::get_maintenance_staff(conn, selected_id)
 }
