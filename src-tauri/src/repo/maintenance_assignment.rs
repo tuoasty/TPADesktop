@@ -10,9 +10,19 @@ use crate::schema::maintenance_assignments::status;
 impl MaintenanceAssignment {
     pub fn get_current_assignments(conn: &mut DbConnect) -> Result<Vec<Self>, String> {
         maintenance_assignments
-            .filter(status.eq("In Progress"))
+            .filter(status.eq("In Progress".to_string()))
             .load(conn)
             .map_err(|e| e.to_string())
+
+    }
+
+    pub fn change_assignment_status(conn: &mut DbConnect, selected_id:i32, new_status:String) -> Result<(), String> {
+        diesel::update(maintenance_assignments.filter(maintenance_report_id.eq(&selected_id)))
+            .set(status.eq(&new_status))
+            .execute(conn)
+            .map_err(|e| e.to_string())?;
+
+        Ok(())
     }
 
     pub fn create_maintenance_assignment(conn: &mut DbConnect, new_assignment:NewMaintenanceAssignment) -> Result<(), String> {

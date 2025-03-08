@@ -57,6 +57,18 @@ pub fn reject_request(state:State<DbPool>, selected_maintenance_id:i32) -> Resul
 }
 
 #[command]
+pub fn accept_submission(state:State<DbPool>, selected_maintenance_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+    MaintenanceReport::accept_submission(conn, selected_maintenance_id)
+}
+
+#[command]
+pub fn reject_submission(state:State<DbPool>, selected_maintenance_id:i32) -> Result<(), String> {
+    let conn = &mut get_conn(&state)?;
+    MaintenanceReport::set_maintenance_status(conn, selected_maintenance_id, "In Progress".to_string())
+}
+
+#[command]
 pub fn find_staff_maintenance(state:State<DbPool>, selected_id:i32) -> Result<MaintenanceReportDetail, String> {
     let conn = &mut get_conn(&state)?;
 

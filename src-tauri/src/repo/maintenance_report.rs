@@ -2,7 +2,7 @@ use crate::DbConnect;
 use crate::model::maintenance_report_model::{MaintenanceReport, MaintenanceReportDetail, NewMaintenanceReport};
 use crate::schema::maintenance_reports::dsl::maintenance_reports;
 use diesel::prelude::*;
-use crate::handler::maintenance_assignment_handler::{check_maintenance_staff_availability, create_maintenance_assignment, find_maintenance_staff, find_staff_maintenance};
+use crate::handler::maintenance_assignment_handler::{check_maintenance_staff_availability, complete_maintenance_assignment, create_maintenance_assignment, find_maintenance_staff, find_staff_maintenance};
 use crate::handler::ride_handler::{accept_ride_maintenance, find_ride, reject_ride_maintenance};
 use crate::schema::maintenance_reports::{id, ride_id, status};
 impl MaintenanceReport {
@@ -70,6 +70,15 @@ impl MaintenanceReport {
         let selected_ride_id = MaintenanceReport::get_maintenance_ride_id(conn, selected_maintenance_id)?;
 
         Self::set_maintenance_status(conn, selected_maintenance_id, "Rejected".to_string())?;
+        reject_ride_maintenance(conn, selected_ride_id)?;
+        Ok(())
+    }
+
+    pub fn accept_submission(conn:&mut DbConnect, selected_maintenance_id:i32) -> Result<(), String> {
+        let selected_ride_id = MaintenanceReport::get_maintenance_ride_id(conn, selected_maintenance_id)?;
+
+        Self::set_maintenance_status(conn, selected_maintenance_id, "Completed".to_string())?;
+        complete_maintenance_assignment(conn, selected_maintenance_id)?;
         reject_ride_maintenance(conn, selected_ride_id)?;
         Ok(())
     }

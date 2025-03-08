@@ -61,6 +61,8 @@ macro_rules! all_handlers {
             $crate::handler::maintenance_report_handler::reject_request,
             $crate::handler::maintenance_report_handler::find_staff_maintenance,
             $crate::handler::maintenance_report_handler::submit_task,
+            $crate::handler::maintenance_report_handler::accept_submission,
+            $crate::handler::maintenance_report_handler::reject_submission,
             $crate::handler::restaurant_assignment_handler::assign_staff_to_restaurant,
             $crate::handler::store_assignment_handler::assign_staff_to_store,
             $crate::handler::ride_assignment_handler::assign_staff_to_ride,

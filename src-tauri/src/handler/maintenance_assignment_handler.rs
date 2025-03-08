@@ -25,6 +25,9 @@ pub fn create_maintenance_assignment(conn: &mut DbConnect, id_staff:i32, id_repo
     MaintenanceAssignment::create_maintenance_assignment(conn, new_assignment)
 }
 
+pub fn complete_maintenance_assignment(conn: &mut DbConnect, selected_id:i32) -> Result<(), String> {
+    MaintenanceAssignment::change_assignment_status(conn, selected_id, "Completed".to_string())
+}
 pub fn find_staff_maintenance(conn: &mut DbConnect, selected_id:i32) -> Result<i32, String> {
     MaintenanceAssignment::get_staff_maintenance(conn, selected_id)
 }
